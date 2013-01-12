@@ -18,9 +18,23 @@ describe('Boom', function () {
 
     it('returns an error with info when constructed using another error and message', function (done) {
 
-        var err = new Boom(new Error('inner'), 'outter');
+        var error = new Error('inner');
+        error.xyz = 123;
+        var err = new Boom(error, 'outter');
         expect(err.message).to.equal('inner');
         expect(err.info).to.equal('outter');
+        expect(err.xyz).to.equal(123);
+        expect(err.toResponse()).to.deep.equal({
+            code: 500,
+            payload: {
+                error: 'Internal Server Error',
+                code: 500,
+                message: 'inner',
+                xyz: 123,
+                name: 'Error',
+                info: 'outter'
+            }
+        });
         done();
     });
 
@@ -112,7 +126,9 @@ describe('Boom', function () {
 
         it('sets the message with the passed in message', function (done) {
 
-            expect(Boom.internal('my message').message).to.equal('my message');
+            var err = Boom.internal('my message');
+            expect(err.message).to.equal('my message');
+            expect(err.toResponse().payload.message).to.equal('An internal server error occurred');
             done();
         });
 
@@ -123,17 +139,19 @@ describe('Boom', function () {
         });
     });
 
-    describe('#toResponse', function () {
+    describe('#passThrough', function () {
 
-        it('formats a custom error', function (done) {
+        it('returns a pass-through error', function (done) {
 
-            var err = new Boom(500, 'Unknown');
-            err.toResponse = function () {
-
-                return { payload: { test: true } };
-            };
-
-            expect(err.toResponse().payload.test).to.equal(true);
+            var err = Boom.passThrough(499, { a: 1 }, 'application/text', { 'X-Test': 'Boom' });
+            expect(err.code).to.equal(500);
+            expect(err.message).to.equal('Pass-through');
+            expect(err.toResponse()).to.deep.equal({
+                code: 499,
+                payload: { a: 1 },
+                type: 'application/text',
+                headers: { 'X-Test': 'Boom' }
+            });
             done();
         });
     });
