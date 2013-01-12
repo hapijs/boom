@@ -43,7 +43,9 @@ describe('Boom', function () {
 
         it('returns a 401 error code', function (done) {
 
-            expect(Boom.unauthorized().code).to.equal(401);
+            var err = Boom.unauthorized();
+            expect(err.code).to.equal(401);
+            expect(err.toResponse().headers).to.not.exist;
             done();
         });
 
@@ -57,7 +59,15 @@ describe('Boom', function () {
 
             var err = Boom.unauthorized('boom', 'Test');
             expect(err.code).to.equal(401);
-            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Test');
+            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Test error="boom"');
+            done();
+        });
+
+        it('returns a WWW-Authenticate header when passed a scheme and attributes', function (done) {
+
+            var err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
+            expect(err.code).to.equal(401);
+            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
             done();
         });
     });
