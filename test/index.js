@@ -86,6 +86,36 @@ describe('Boom', function () {
         });
     });
 
+    describe('#clientTimeout', function () {
+
+        it('returns a 408 error code', function (done) {
+
+            expect(Boom.clientTimeout().code).to.equal(408);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.clientTimeout('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+    describe('#serverTimeout', function () {
+
+        it('returns a 503 error code', function (done) {
+
+            expect(Boom.serverTimeout().code).to.equal(503);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.serverTimeout('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
     describe('#forbidden', function () {
 
         it('returns a 403 error code', function (done) {
