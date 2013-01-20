@@ -84,6 +84,20 @@ describe('Boom', function () {
             expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
             done();
         });
+
+        it('sets the isMissing flag when error message is empty', function (done) {
+
+            var err = Boom.unauthorized('', 'Basic');
+            expect(err.isMissing).to.equal(true);
+            done();
+        });
+
+        it('does not set the isMissing flag when error message is not empty', function (done) {
+
+            var err = Boom.unauthorized('message', 'Basic');
+            expect(err.isMissing).to.equal(undefined);
+            done();
+        });
     });
 
     describe('#clientTimeout', function () {
