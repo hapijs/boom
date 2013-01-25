@@ -98,6 +98,13 @@ describe('Boom', function () {
             expect(err.isMissing).to.equal(undefined);
             done();
         });
+
+        it('sets a WWW-Authenticate when passed as an array', function (done) {
+
+            var err = Boom.unauthorized('message', ['Basic', 'Example e="1"', 'Another x="3", y="4"']);
+            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Basic, Example e="1", Another x="3", y="4"');
+            done();
+        });
     });
 
     describe('#clientTimeout', function () {
