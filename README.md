@@ -1,5 +1,4 @@
-boom
-====
+# boom
 
 HTTP-friendly error objects
 
