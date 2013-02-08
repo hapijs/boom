@@ -16,24 +16,21 @@ var expect = Chai.expect;
 
 describe('Boom', function () {
 
-    it('returns an error with info when constructed using another error and message', function (done) {
+    it('returns an error with info when constructed using another error', function (done) {
 
-        var error = new Error('inner');
+        var error = new Error('ka-boom');
         error.xyz = 123;
-        var err = new Boom(error, 'outter');
-        expect(err.message).to.equal('inner');
-        expect(err.info).to.equal('outter');
-        expect(err.xyz).to.equal(123);
-        expect(err.toResponse()).to.deep.equal({
+        var err = new Boom(error);
+        expect(err.data.xyz).to.equal(123);
+        expect(err.message).to.equal('ka-boom');
+        expect(err.response).to.deep.equal({
             code: 500,
             payload: {
-                error: 'Internal Server Error',
                 code: 500,
-                message: 'inner',
-                xyz: 123,
-                name: 'Error',
-                info: 'outter'
-            }
+                error: 'Internal Server Error',
+                message: 'ka-boom'
+            },
+            headers: {}
         });
         done();
     });
@@ -42,7 +39,7 @@ describe('Boom', function () {
 
         it('returns a 400 error code', function (done) {
 
-            expect(Boom.badRequest().code).to.equal(400);
+            expect(Boom.badRequest().response.code).to.equal(400);
             done();
         });
 
@@ -58,8 +55,8 @@ describe('Boom', function () {
         it('returns a 401 error code', function (done) {
 
             var err = Boom.unauthorized();
-            expect(err.code).to.equal(401);
-            expect(err.toResponse().headers).to.not.exist;
+            expect(err.response.code).to.equal(401);
+            expect(err.response.headers).to.deep.equal({});
             done();
         });
 
@@ -72,16 +69,16 @@ describe('Boom', function () {
         it('returns a WWW-Authenticate header when passed a scheme', function (done) {
 
             var err = Boom.unauthorized('boom', 'Test');
-            expect(err.code).to.equal(401);
-            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Test error="boom"');
+            expect(err.response.code).to.equal(401);
+            expect(err.response.headers['WWW-Authenticate']).to.equal('Test error="boom"');
             done();
         });
 
         it('returns a WWW-Authenticate header when passed a scheme and attributes', function (done) {
 
             var err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
-            expect(err.code).to.equal(401);
-            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
+            expect(err.response.code).to.equal(401);
+            expect(err.response.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
             done();
         });
 
@@ -102,7 +99,7 @@ describe('Boom', function () {
         it('sets a WWW-Authenticate when passed as an array', function (done) {
 
             var err = Boom.unauthorized('message', ['Basic', 'Example e="1"', 'Another x="3", y="4"']);
-            expect(err.toResponse().headers['WWW-Authenticate']).to.equal('Basic, Example e="1", Another x="3", y="4"');
+            expect(err.response.headers['WWW-Authenticate']).to.equal('Basic, Example e="1", Another x="3", y="4"');
             done();
         });
     });
@@ -111,7 +108,7 @@ describe('Boom', function () {
 
         it('returns a 408 error code', function (done) {
 
-            expect(Boom.clientTimeout().code).to.equal(408);
+            expect(Boom.clientTimeout().response.code).to.equal(408);
             done();
         });
 
@@ -126,7 +123,7 @@ describe('Boom', function () {
 
         it('returns a 503 error code', function (done) {
 
-            expect(Boom.serverTimeout().code).to.equal(503);
+            expect(Boom.serverTimeout().response.code).to.equal(503);
             done();
         });
 
@@ -141,7 +138,7 @@ describe('Boom', function () {
 
         it('returns a 403 error code', function (done) {
 
-            expect(Boom.forbidden().code).to.equal(403);
+            expect(Boom.forbidden().response.code).to.equal(403);
             done();
         });
 
@@ -156,7 +153,7 @@ describe('Boom', function () {
 
         it('returns a 404 error code', function (done) {
 
-            expect(Boom.notFound().code).to.equal(404);
+            expect(Boom.notFound().response.code).to.equal(404);
             done();
         });
 
@@ -171,7 +168,7 @@ describe('Boom', function () {
 
         it('returns a 500 error code', function (done) {
 
-            expect(Boom.internal().code).to.equal(500);
+            expect(Boom.internal().response.code).to.equal(500);
             done();
         });
 
@@ -179,7 +176,7 @@ describe('Boom', function () {
 
             var err = Boom.internal('my message');
             expect(err.message).to.equal('my message');
-            expect(err.toResponse().payload.message).to.equal('An internal server error occurred');
+            expect(err.response.payload.message).to.equal('An internal server error occurred');
             done();
         });
 
@@ -195,13 +192,13 @@ describe('Boom', function () {
         it('returns a pass-through error', function (done) {
 
             var err = Boom.passThrough(499, { a: 1 }, 'application/text', { 'X-Test': 'Boom' });
-            expect(err.code).to.equal(500);
+            expect(err.response.code).to.equal(499);
             expect(err.message).to.equal('Pass-through');
-            expect(err.toResponse()).to.deep.equal({
+            expect(err.response).to.deep.equal({
                 code: 499,
                 payload: { a: 1 },
-                type: 'application/text',
-                headers: { 'X-Test': 'Boom' }
+                headers: { 'X-Test': 'Boom' },
+                type: 'application/text'
             });
             done();
         });
