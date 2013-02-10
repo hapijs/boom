@@ -35,6 +35,21 @@ describe('Boom', function () {
         done();
     });
 
+    describe('#isBoom', function () {
+
+        it('returns true for Boom object', function (done) {
+
+            expect(Boom.badRequest().isBoom).to.equal(true);
+            done();
+        });
+
+        it('returns false for Error object', function (done) {
+
+            expect(new Error().isBoom).to.not.exist;
+            done();
+        });
+    });
+
     describe('#badRequest', function () {
 
         it('returns a 400 error code', function (done) {
