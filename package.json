@@ -4,7 +4,7 @@
   "version": "0.3.4",
   "author": "Eran Hammer <eran@hueniverse.com> (http://hueniverse.com)",
   "contributors": [],
-  "repository": "git://github.com/hueniverse/boom",
+  "repository": "git://github.com/spumko/boom",
   "main": "index",
   "keywords": [
     "error",
@@ -30,7 +30,7 @@
   "licenses": [
     {
       "type": "BSD",
-      "url": "http://github.com/hueniverse/boom/raw/master/LICENSE"
+      "url": "http://github.com/spumko/boom/raw/master/LICENSE"
     }
   ]
 }
