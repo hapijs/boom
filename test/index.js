@@ -209,7 +209,6 @@ describe('Boom', function () {
 
             var error = new Error();
             error.stack = 'my stack line\nmy second stack line';
-
             expect(Boom.internal('my message', error).trace[0]).to.equal('my stack line');
             done();
         });
