@@ -204,6 +204,26 @@ describe('Boom', function () {
             expect(Boom.internal('my message', { my: 'data' }).data.my).to.equal('data');
             done();
         });
+
+        it('sets the payload to the error when the SHOW_ERROR environmental variable is set to true', function (done) {
+
+            var current = process.env.SHOW_ERROR;
+            process.env.SHOW_ERROR = true;
+            var err = Boom.internal('my message', { my: 'data' });
+            expect(err.response.payload.message.data.my).to.equal('data');
+            process.env.SHOW_ERROR = current;
+            done();
+        });
+
+        it('sets the payload to generic message when the SHOW_ERROR environmental variable is set to false', function (done) {
+
+            var current = process.env.SHOW_ERROR;
+            process.env.SHOW_ERROR = false;
+            var err = Boom.internal('my message', { my: 'data' });
+            expect(err.response.payload.message).to.equal('An internal server error occurred');
+            process.env.SHOW_ERROR = current;
+            done();
+        });
     });
 
     describe('#passThrough', function () {
