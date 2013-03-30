@@ -204,6 +204,14 @@ describe('Boom', function () {
             expect(Boom.internal('my message', { my: 'data' }).data.my).to.equal('data');
             done();
         });
+
+        it('uses passed in stack if its available', function (done) {
+
+            var error = new Error();
+            error.stack = 'my stack line\nmy second stack line';
+            expect(Boom.internal('my message', error).trace[0]).to.equal('my stack line');
+            done();
+        });
     });
 
     describe('#passThrough', function () {
