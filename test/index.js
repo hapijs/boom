@@ -230,6 +230,16 @@ describe('Boom', function () {
             done();
         });
     });
+
+    describe('#reformat', function () {
+
+        it('encodes any HTML markup in the response payload', function (done) {
+
+            var boom = new Boom(new Error('<script>alert(1)</script>'));
+            expect(boom.response.payload.message).to.not.contain('<script>');
+            done();
+        });
+    });
 });
 
 
