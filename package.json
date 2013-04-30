@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "Eran Hammer <eran@hueniverse.com> (http://hueniverse.com)",
   "contributors": [],
   "repository": "git://github.com/spumko/boom",
@@ -11,7 +11,7 @@
     "http"
   ],
   "engines": {
-    "node": "0.10.x"
+    "node": ">=0.8.0"
   },
   "dependencies": {
     "hoek": "0.8.x"
