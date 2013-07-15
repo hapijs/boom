@@ -69,6 +69,21 @@ describe('Boom', function () {
         });
     });
 
+    describe('#uriTooLong', function () {
+
+        it('returns a 414 error code', function (done) {
+
+            expect(Boom.uriTooLong().response.code).to.equal(414);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.uriTooLong('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
     describe('#unauthorized', function () {
 
         it('returns a 401 error code', function (done) {
