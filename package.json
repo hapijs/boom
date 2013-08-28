@@ -2,8 +2,6 @@
   "name": "boom",
   "description": "HTTP-friendly error objects",
   "version": "0.4.2",
-  "author": "Eran Hammer <eran@hueniverse.com> (http://hueniverse.com)",
-  "contributors": [],
   "repository": "git://github.com/spumko/boom",
   "main": "index",
   "keywords": [
@@ -14,10 +12,10 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "hoek": "0.9.x"
+    "hoek": "1.0.x"
   },
   "devDependencies": {
-    "lab": "0.1.x"
+    "lab": "0.2.x"
   },
   "scripts": {
     "test": "make test-cov"
