@@ -123,6 +123,55 @@ describe('Boom', function () {
         });
     });
 
+
+    describe('#methodNotAllowed', function () {
+
+        it('returns a 405 error code', function (done) {
+
+            expect(Boom.methodNotAllowed().response.code).to.equal(405);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.methodNotAllowed('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#notAcceptable', function () {
+
+        it('returns a 406 error code', function (done) {
+
+            expect(Boom.notAcceptable().response.code).to.equal(406);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.notAcceptable('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#proxyAuthRequired', function () {
+
+        it('returns a 407 error code', function (done) {
+
+            expect(Boom.proxyAuthRequired().response.code).to.equal(407);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.proxyAuthRequired('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
     describe('#clientTimeout', function () {
 
         it('returns a 408 error code', function (done) {
@@ -137,6 +186,151 @@ describe('Boom', function () {
             done();
         });
     });
+
+
+    describe('#conflict', function () {
+
+        it('returns a 409 error code', function (done) {
+
+            expect(Boom.conflict().response.code).to.equal(409);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.conflict('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#resourceGone', function () {
+
+        it('returns a 410 error code', function (done) {
+
+            expect(Boom.resourceGone().response.code).to.equal(410);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.resourceGone('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#lengthRequired', function () {
+
+        it('returns a 411 error code', function (done) {
+
+            expect(Boom.lengthRequired().response.code).to.equal(411);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.lengthRequired('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#preconditionFailed', function () {
+
+        it('returns a 412 error code', function (done) {
+
+            expect(Boom.preconditionFailed().response.code).to.equal(412);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.preconditionFailed('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#entityTooLarge', function () {
+
+        it('returns a 413 error code', function (done) {
+
+            expect(Boom.entityTooLarge().response.code).to.equal(413);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.entityTooLarge('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#uriTooLong', function () {
+
+        it('returns a 414 error code', function (done) {
+
+            expect(Boom.uriTooLong().response.code).to.equal(414);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.uriTooLong('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#unsupportedMediaType', function () {
+
+        it('returns a 415 error code', function (done) {
+
+            expect(Boom.unsupportedMediaType().response.code).to.equal(415);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.unsupportedMediaType('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#rangeNotSatisfiable', function () {
+
+        it('returns a 416 error code', function (done) {
+
+            expect(Boom.rangeNotSatisfiable().response.code).to.equal(416);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.rangeNotSatisfiable('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#expectationFailed', function () {
+
+        it('returns a 417 error code', function (done) {
+
+            expect(Boom.expectationFailed().response.code).to.equal(417);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.expectationFailed('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
 
     describe('#serverTimeout', function () {
 
@@ -213,6 +407,55 @@ describe('Boom', function () {
             done();
         });
     });
+
+
+    describe('#notImplemented', function () {
+
+        it('returns a 501 error code', function (done) {
+
+            expect(Boom.notImplemented().response.code).to.equal(501);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.notImplemented('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#badGateway', function () {
+
+        it('returns a 502 error code', function (done) {
+
+            expect(Boom.badGateway().response.code).to.equal(502);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.badGateway('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
+    describe('#gatewayTimeout', function () {
+
+        it('returns a 504 error code', function (done) {
+
+            expect(Boom.gatewayTimeout().response.code).to.equal(504);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.gatewayTimeout('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
 
     describe('#passThrough', function () {
 
