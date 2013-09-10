@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "git://github.com/spumko/boom",
   "main": "index",
   "keywords": [
@@ -15,7 +15,7 @@
     "hoek": "1.0.x"
   },
   "devDependencies": {
-    "lab": "0.2.x"
+    "lab": "1.x.x"
   },
   "scripts": {
     "test": "make test-cov"
