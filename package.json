@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "git://github.com/spumko/boom",
   "main": "index",
   "keywords": [
@@ -12,7 +12,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "hoek": "1.0.x"
+    "hoek": "1.x.x"
   },
   "devDependencies": {
     "lab": "1.x.x"
