@@ -39,6 +39,24 @@ describe('Boom', function () {
         done();
     });
 
+    describe('#decorations', function () {
+
+        it('returns custom members', function (done) {
+
+            var error = Boom.badRequest('Custom');
+            error.a1 = 'Have an A1 day';
+            error.response.payload.walt = 'heisenberg';
+
+            expect(error.decorations()).to.deep.equal({
+                a1: 'Have an A1 day',
+                response: {
+                    walt: 'heisenberg'
+                }
+            });
+            done();
+        });
+    });
+
     describe('#isBoom', function () {
 
         it('returns true for Boom object', function (done) {
