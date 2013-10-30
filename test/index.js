@@ -2,7 +2,7 @@
 
 var Lab = require('lab');
 var Boom = require('../lib');
-
+var Util = require('util');
 
 // Declare internals
 
@@ -500,6 +500,20 @@ describe('Boom', function () {
             expect(boom.response.payload.message).to.not.contain('<script>');
             done();
         });
+    });
+
+    describe('Boom subclasses', function () {
+         it('can be subclassed to create custom errors', function (done) {
+
+             function BoomSubclass(err) {
+                 Boom.call(this, err);
+                 this.upcaseMsg = err.message.toUpperCase();
+             }
+             Util.inherits(BoomSubclass, Boom);
+             var boomSubclass = new BoomSubclass(new Error('foo'));
+             expect(boomSubclass.upcaseMsg).to.contain('FOO');
+             done();
+         });
     });
 });
 
