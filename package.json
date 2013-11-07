@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "repository": "git://github.com/spumko/boom",
   "main": "index",
   "keywords": [
