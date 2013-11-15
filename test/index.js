@@ -458,7 +458,6 @@ describe('Boom', function () {
         });
     });
 
-
     describe('#gatewayTimeout', function () {
 
         it('returns a 504 error code', function (done) {
@@ -474,6 +473,16 @@ describe('Boom', function () {
         });
     });
 
+    describe('#badImplementation', function () {
+
+        it('returns a 500 error code', function (done) {
+
+            var err = Boom.badImplementation();
+            expect(err.response.code).to.equal(500);
+            expect(err.isDeveloperError).to.equal(true);
+            done();
+        });
+    });
 
     describe('#passThrough', function () {
 
