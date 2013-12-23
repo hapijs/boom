@@ -39,6 +39,16 @@ describe('Boom', function () {
         done();
     });
 
+    describe('#create', function () {
+
+        it('does not sets null message', function (done) {
+
+            var error = Boom.unauthorized(null);
+            expect(error.response.payload.message).to.not.exist;
+            done();
+        });
+    });
+
     describe('#isBoom', function () {
 
         it('returns true for Boom object', function (done) {
