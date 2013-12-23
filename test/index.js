@@ -412,7 +412,6 @@ describe('Boom', function () {
         });
     });
 
-
     describe('#notImplemented', function () {
 
         it('returns a 501 error statusCode', function (done) {
