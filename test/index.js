@@ -27,7 +27,7 @@ describe('Boom', function () {
         var err = Boom.wrap(error);
         expect(err.xyz).to.equal(123);
         expect(err.message).to.equal('ka-boom');
-        expect(err.response).to.deep.equal({
+        expect(err.output).to.deep.equal({
             statusCode: 500,
             payload: {
                 statusCode: 500,
@@ -44,7 +44,7 @@ describe('Boom', function () {
         it('does not sets null message', function (done) {
 
             var error = Boom.unauthorized(null);
-            expect(error.response.payload.message).to.not.exist;
+            expect(error.output.payload.message).to.not.exist;
             done();
         });
     });
@@ -68,7 +68,7 @@ describe('Boom', function () {
 
         it('returns a 400 error statusCode', function (done) {
 
-            expect(Boom.badRequest().response.statusCode).to.equal(400);
+            expect(Boom.badRequest().output.statusCode).to.equal(400);
             done();
         });
 
@@ -84,8 +84,8 @@ describe('Boom', function () {
         it('returns a 401 error statusCode', function (done) {
 
             var err = Boom.unauthorized();
-            expect(err.response.statusCode).to.equal(401);
-            expect(err.response.headers).to.deep.equal({});
+            expect(err.output.statusCode).to.equal(401);
+            expect(err.output.headers).to.deep.equal({});
             done();
         });
 
@@ -98,16 +98,16 @@ describe('Boom', function () {
         it('returns a WWW-Authenticate header when passed a scheme', function (done) {
 
             var err = Boom.unauthorized('boom', 'Test');
-            expect(err.response.statusCode).to.equal(401);
-            expect(err.response.headers['WWW-Authenticate']).to.equal('Test error="boom"');
+            expect(err.output.statusCode).to.equal(401);
+            expect(err.output.headers['WWW-Authenticate']).to.equal('Test error="boom"');
             done();
         });
 
         it('returns a WWW-Authenticate header when passed a scheme and attributes', function (done) {
 
             var err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
-            expect(err.response.statusCode).to.equal(401);
-            expect(err.response.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
+            expect(err.output.statusCode).to.equal(401);
+            expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
             done();
         });
 
@@ -128,7 +128,7 @@ describe('Boom', function () {
         it('sets a WWW-Authenticate when passed as an array', function (done) {
 
             var err = Boom.unauthorized('message', ['Basic', 'Example e="1"', 'Another x="3", y="4"']);
-            expect(err.response.headers['WWW-Authenticate']).to.equal('Basic, Example e="1", Another x="3", y="4"');
+            expect(err.output.headers['WWW-Authenticate']).to.equal('Basic, Example e="1", Another x="3", y="4"');
             done();
         });
     });
@@ -138,7 +138,7 @@ describe('Boom', function () {
 
         it('returns a 405 error statusCode', function (done) {
 
-            expect(Boom.methodNotAllowed().response.statusCode).to.equal(405);
+            expect(Boom.methodNotAllowed().output.statusCode).to.equal(405);
             done();
         });
 
@@ -154,7 +154,7 @@ describe('Boom', function () {
 
         it('returns a 406 error statusCode', function (done) {
 
-            expect(Boom.notAcceptable().response.statusCode).to.equal(406);
+            expect(Boom.notAcceptable().output.statusCode).to.equal(406);
             done();
         });
 
@@ -170,7 +170,7 @@ describe('Boom', function () {
 
         it('returns a 407 error statusCode', function (done) {
 
-            expect(Boom.proxyAuthRequired().response.statusCode).to.equal(407);
+            expect(Boom.proxyAuthRequired().output.statusCode).to.equal(407);
             done();
         });
 
@@ -186,7 +186,7 @@ describe('Boom', function () {
 
         it('returns a 408 error statusCode', function (done) {
 
-            expect(Boom.clientTimeout().response.statusCode).to.equal(408);
+            expect(Boom.clientTimeout().output.statusCode).to.equal(408);
             done();
         });
 
@@ -202,7 +202,7 @@ describe('Boom', function () {
 
         it('returns a 409 error statusCode', function (done) {
 
-            expect(Boom.conflict().response.statusCode).to.equal(409);
+            expect(Boom.conflict().output.statusCode).to.equal(409);
             done();
         });
 
@@ -218,7 +218,7 @@ describe('Boom', function () {
 
         it('returns a 410 error statusCode', function (done) {
 
-            expect(Boom.resourceGone().response.statusCode).to.equal(410);
+            expect(Boom.resourceGone().output.statusCode).to.equal(410);
             done();
         });
 
@@ -234,7 +234,7 @@ describe('Boom', function () {
 
         it('returns a 411 error statusCode', function (done) {
 
-            expect(Boom.lengthRequired().response.statusCode).to.equal(411);
+            expect(Boom.lengthRequired().output.statusCode).to.equal(411);
             done();
         });
 
@@ -250,7 +250,7 @@ describe('Boom', function () {
 
         it('returns a 412 error statusCode', function (done) {
 
-            expect(Boom.preconditionFailed().response.statusCode).to.equal(412);
+            expect(Boom.preconditionFailed().output.statusCode).to.equal(412);
             done();
         });
 
@@ -266,7 +266,7 @@ describe('Boom', function () {
 
         it('returns a 413 error statusCode', function (done) {
 
-            expect(Boom.entityTooLarge().response.statusCode).to.equal(413);
+            expect(Boom.entityTooLarge().output.statusCode).to.equal(413);
             done();
         });
 
@@ -282,7 +282,7 @@ describe('Boom', function () {
 
         it('returns a 414 error statusCode', function (done) {
 
-            expect(Boom.uriTooLong().response.statusCode).to.equal(414);
+            expect(Boom.uriTooLong().output.statusCode).to.equal(414);
             done();
         });
 
@@ -298,7 +298,7 @@ describe('Boom', function () {
 
         it('returns a 415 error statusCode', function (done) {
 
-            expect(Boom.unsupportedMediaType().response.statusCode).to.equal(415);
+            expect(Boom.unsupportedMediaType().output.statusCode).to.equal(415);
             done();
         });
 
@@ -314,7 +314,7 @@ describe('Boom', function () {
 
         it('returns a 416 error statusCode', function (done) {
 
-            expect(Boom.rangeNotSatisfiable().response.statusCode).to.equal(416);
+            expect(Boom.rangeNotSatisfiable().output.statusCode).to.equal(416);
             done();
         });
 
@@ -330,7 +330,7 @@ describe('Boom', function () {
 
         it('returns a 417 error statusCode', function (done) {
 
-            expect(Boom.expectationFailed().response.statusCode).to.equal(417);
+            expect(Boom.expectationFailed().output.statusCode).to.equal(417);
             done();
         });
 
@@ -346,7 +346,7 @@ describe('Boom', function () {
 
         it('returns a 503 error statusCode', function (done) {
 
-            expect(Boom.serverTimeout().response.statusCode).to.equal(503);
+            expect(Boom.serverTimeout().output.statusCode).to.equal(503);
             done();
         });
 
@@ -361,7 +361,7 @@ describe('Boom', function () {
 
         it('returns a 403 error statusCode', function (done) {
 
-            expect(Boom.forbidden().response.statusCode).to.equal(403);
+            expect(Boom.forbidden().output.statusCode).to.equal(403);
             done();
         });
 
@@ -376,7 +376,7 @@ describe('Boom', function () {
 
         it('returns a 404 error statusCode', function (done) {
 
-            expect(Boom.notFound().response.statusCode).to.equal(404);
+            expect(Boom.notFound().output.statusCode).to.equal(404);
             done();
         });
 
@@ -391,7 +391,7 @@ describe('Boom', function () {
 
         it('returns a 500 error statusCode', function (done) {
 
-            expect(Boom.internal().response.statusCode).to.equal(500);
+            expect(Boom.internal().output.statusCode).to.equal(500);
             done();
         });
 
@@ -399,7 +399,7 @@ describe('Boom', function () {
 
             var err = Boom.internal('my message');
             expect(err.message).to.equal('my message');
-            expect(err.response.payload.message).to.equal('An internal server error occurred');
+            expect(err.output.payload.message).to.equal('An internal server error occurred');
             done();
         });
 
@@ -426,7 +426,7 @@ describe('Boom', function () {
 
         it('returns a 501 error statusCode', function (done) {
 
-            expect(Boom.notImplemented().response.statusCode).to.equal(501);
+            expect(Boom.notImplemented().output.statusCode).to.equal(501);
             done();
         });
 
@@ -442,7 +442,7 @@ describe('Boom', function () {
 
         it('returns a 502 error statusCode', function (done) {
 
-            expect(Boom.badGateway().response.statusCode).to.equal(502);
+            expect(Boom.badGateway().output.statusCode).to.equal(502);
             done();
         });
 
@@ -457,7 +457,7 @@ describe('Boom', function () {
 
         it('returns a 504 error statusCode', function (done) {
 
-            expect(Boom.gatewayTimeout().response.statusCode).to.equal(504);
+            expect(Boom.gatewayTimeout().output.statusCode).to.equal(504);
             done();
         });
 
@@ -473,7 +473,7 @@ describe('Boom', function () {
         it('returns a 500 error statusCode', function (done) {
 
             var err = Boom.badImplementation();
-            expect(err.response.statusCode).to.equal(500);
+            expect(err.output.statusCode).to.equal(500);
             expect(err.isDeveloperError).to.equal(true);
             done();
         });
@@ -484,7 +484,7 @@ describe('Boom', function () {
         it('enstatusCodes any HTML markup in the response payload', function (done) {
 
             var boom = Boom.wrap(new Error('<script>alert(1)</script>'));
-            expect(boom.response.payload.message).to.not.contain('<script>');
+            expect(boom.output.payload.message).to.not.contain('<script>');
             done();
         });
     });
