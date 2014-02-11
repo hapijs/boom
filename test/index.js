@@ -478,16 +478,6 @@ describe('Boom', function () {
             done();
         });
     });
-
-    describe('#reformat', function () {
-
-        it('enstatusCodes any HTML markup in the response payload', function (done) {
-
-            var boom = Boom.wrap(new Error('<script>alert(1)</script>'));
-            expect(boom.output.payload.message).to.not.contain('<script>');
-            done();
-        });
-    });
 });
 
 
