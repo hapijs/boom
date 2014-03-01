@@ -36,6 +36,16 @@ describe('Boom', function () {
             },
             headers: {}
         });
+        expect(err.data).to.equal(null);
+        done();
+    });
+    
+    it('does not override data when constructed using another error', function (done) {
+
+        var error = new Error('ka-boom');
+        error.data = { useful: 'data' };
+        var err = Boom.wrap(error);
+        expect(err.data).to.equal(error.data);
         done();
     });
 
