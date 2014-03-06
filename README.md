@@ -120,7 +120,6 @@ example payload for `Boom.lengthRequired('your message');`
 ###Boom.preconditionFailed
 example payload for `Boom.preconditionFailed('your message');`
 ```json
-example boom response for: Boom.preconditionFailed
 {
     "statusCode": 412,
     "error": "Precondition Failed",
