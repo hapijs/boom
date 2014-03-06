@@ -20,6 +20,14 @@ var it = Lab.test;
 
 describe('Boom', function () {
 
+    it('returns the same object when already boom', function (done) {
+
+        var error = Boom.badRequest();
+        var wrapped = Boom.wrap(error);
+        expect(error).to.equal(wrapped);
+        done();
+    });
+
     it('returns an error with info when constructed using another error', function (done) {
 
         var error = new Error('ka-boom');
@@ -46,6 +54,14 @@ describe('Boom', function () {
         error.data = { useful: 'data' };
         var err = Boom.wrap(error);
         expect(err.data).to.equal(error.data);
+        done();
+    });
+
+    it('sets new message when none exists', function (done) {
+
+        var error = new Error();
+        var wrapped = Boom.wrap(error, 400, 'something bad');
+        expect(wrapped.message).to.equal('something bad');
         done();
     });
 
