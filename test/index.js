@@ -40,14 +40,14 @@ describe('Boom', function () {
             payload: {
                 statusCode: 500,
                 error: 'Internal Server Error',
-                message: 'ka-boom'
+                message: 'An internal server error occurred'
             },
             headers: {}
         });
         expect(err.data).to.equal(null);
         done();
     });
-    
+
     it('does not override data when constructed using another error', function (done) {
 
         var error = new Error('ka-boom');
@@ -62,6 +62,31 @@ describe('Boom', function () {
         var error = new Error();
         var wrapped = Boom.wrap(error, 400, 'something bad');
         expect(wrapped.message).to.equal('something bad');
+        done();
+    });
+
+    it('throws when statusCode is not a number', function (done) {
+
+        expect(function () {
+
+            Boom.create('x');
+        }).to.throw('First argument must be a number (400+): x');
+        done();
+    });
+
+    it('throws when statusCode is not finite', function (done) {
+
+        expect(function () {
+
+            Boom.create(1 / 0);
+        }).to.throw('First argument must be a number (400+): null');
+        done();
+    });
+
+    it('sets error code to unknown', function (done) {
+
+        var err = Boom.create(999);
+        expect(err.output.payload.error).to.equal('Unknown');
         done();
     });
 
