@@ -98,6 +98,14 @@ describe('Boom', function () {
             expect(error.output.payload.message).to.not.exist;
             done();
         });
+
+        it('sets message and data', function (done) {
+
+            var error = Boom.badRequest('Missing data', { type: 'user' });
+            expect(error.data.type).to.equal('user');
+            expect(error.output.payload.message).to.equal('Missing data');
+            done();
+        });
     });
 
     describe('#isBoom', function () {
