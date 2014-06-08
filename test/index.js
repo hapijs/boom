@@ -136,6 +136,12 @@ describe('Boom', function () {
             expect(Boom.badRequest('my message').message).to.equal('my message');
             done();
         });
+
+        it('sets the message to HTTP status if none provided', function (done) {
+
+            expect(Boom.badRequest().message).to.equal('Bad Request');
+            done();
+        });
     });
 
     describe('#unauthorized', function () {
