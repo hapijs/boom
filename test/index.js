@@ -28,6 +28,14 @@ describe('Boom', function () {
         done();
     });
 
+    it('returns the same object when already internal boom', function (done) {
+
+        var error = Boom.internal();
+        var wrapped = Boom.internal(error);
+        expect(error).to.equal(wrapped);
+        done();
+    });
+
     it('returns an error with info when constructed using another error', function (done) {
 
         var error = new Error('ka-boom');
