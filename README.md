@@ -5,10 +5,7 @@ HTTP-friendly error objects
 
 [![Build Status](https://secure.travis-ci.org/spumko/boom.png)](http://travis-ci.org/spumko/boom)
 
-| Lead Maintainer  |
-|:-:|
-|[hueniverse](https://github.com/hueniverse)|
-|![hueniverse](https://secure.gravatar.com/avatar/28d0cb94cd9afcc9763dd64fea80a187?s=128)|
+Lead Maintainer: [Eran Hammer](https://github.com/hueniverse)
 
 #List of friendly errors available
 
