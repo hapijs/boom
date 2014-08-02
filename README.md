@@ -179,6 +179,16 @@ example payload for `Boom.expectationFailed('your message');`
 }
 ```
 
+###Boom.badData
+example payload for `Boom.badData('your message');`
+```json
+{
+    "statusCode": 422,
+    "error": "Unprocessable Entity",
+    "message": "your message"
+}
+```
+
 ###Boom.notImplemented
 example payload for `Boom.notImplemented('your message');`
 ```json
