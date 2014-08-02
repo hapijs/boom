@@ -407,6 +407,22 @@ describe('Boom', function () {
     });
 
 
+    describe('#badData', function () {
+
+        it('returns a 422 error statusCode', function (done) {
+
+            expect(Boom.badData().output.statusCode).to.equal(422);
+            done();
+        });
+
+        it('sets the message with the passed in message', function (done) {
+
+            expect(Boom.badData('my message').message).to.equal('my message');
+            done();
+        });
+    });
+
+
     describe('#serverTimeout', function () {
 
         it('returns a 503 error statusCode', function (done) {
