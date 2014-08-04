@@ -4,7 +4,7 @@ HTTP-friendly error objects
 
 [![Build Status](https://secure.travis-ci.org/hapijs/boom.png)](http://travis-ci.org/hapijs/boom)
 
-Lead Maintainer: [Eran Hammer](https://github.com/hueniverse)
+Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 #List of friendly errors available
 
