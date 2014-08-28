@@ -192,7 +192,7 @@ example payload for `Boom.badData('your message');`
 
 ## 5xx Errors
 
-All 5xx errors hide your message from the end user. Your message is what is output in the server log.
+All 5xx errors hide your message from the end user. Your message is recorded in the server log.
 
 ###Boom.notImplemented
 example payload for `Boom.notImplemented('your message');`
