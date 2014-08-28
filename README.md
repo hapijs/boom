@@ -8,6 +8,8 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 #List of friendly errors available
 
+## 4xx Errors
+
 ###Boom.badRequest
 example payload for `Boom.badRequest('your message');`
 ```json
@@ -187,6 +189,10 @@ example payload for `Boom.badData('your message');`
     "message": "your message"
 }
 ```
+
+## 5xx Errors
+
+All 5xx errors hide your message from the end user. Your message is what is output in the server log.
 
 ###Boom.notImplemented
 example payload for `Boom.notImplemented('your message');`
