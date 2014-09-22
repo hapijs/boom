@@ -243,3 +243,22 @@ example payload for `Boom.badImplementation('your message');`
     "message": "An internal server error occurred"
 }
 ```
+
+## Helper Methods
+
+###Boom.wrap
+example usages of `Boom.wrap(error, statusCode, message);`
+```js
+var error = Boom.badRequest();
+Boom.wrap(error);
+
+OR
+
+var error = new Error('an error occurred');
+Boom.wrap(error);
+
+OR
+
+var error = new Error();
+Boom.wrap(error, 400, 'an error occurred');
+```
