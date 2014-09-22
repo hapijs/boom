@@ -252,12 +252,12 @@ example usages of `Boom.wrap(error, statusCode, message);`
 var error = Boom.badRequest();
 Boom.wrap(error);
 
-OR
+// Or
 
 var error = new Error('an error occurred');
 Boom.wrap(error);
 
-OR
+// Or
 
 var error = new Error();
 Boom.wrap(error, 400, 'an error occurred');
