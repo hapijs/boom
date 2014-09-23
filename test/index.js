@@ -14,12 +14,10 @@ var internals = {};
 var lab = exports.lab = Lab.script();
 var describe = lab.describe;
 var it = lab.it;
-var before = lab.before;
-var after = lab.after;
 var expect = Lab.expect;
 
 
-describe('Boom', function () {
+describe('boom', function () {
 
     it('returns the same object when already boom', function (done) {
 
@@ -91,7 +89,7 @@ describe('Boom', function () {
         done();
     });
 
-    describe('#create', function () {
+    describe('create()', function () {
 
         it('does not sets null message', function (done) {
 
@@ -109,7 +107,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#isBoom', function () {
+    describe('isBoom()', function () {
 
         it('returns true for Boom object', function (done) {
 
@@ -124,7 +122,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#badRequest', function () {
+    describe('badRequest()', function () {
 
         it('returns a 400 error statusCode', function (done) {
 
@@ -145,7 +143,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#unauthorized', function () {
+    describe('unauthorized()', function () {
 
         it('returns a 401 error statusCode', function (done) {
 
@@ -200,7 +198,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#methodNotAllowed', function () {
+    describe('methodNotAllowed()', function () {
 
         it('returns a 405 error statusCode', function (done) {
 
@@ -216,7 +214,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#notAcceptable', function () {
+    describe('notAcceptable()', function () {
 
         it('returns a 406 error statusCode', function (done) {
 
@@ -232,7 +230,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#proxyAuthRequired', function () {
+    describe('proxyAuthRequired()', function () {
 
         it('returns a 407 error statusCode', function (done) {
 
@@ -248,7 +246,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#clientTimeout', function () {
+    describe('clientTimeout()', function () {
 
         it('returns a 408 error statusCode', function (done) {
 
@@ -264,7 +262,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#conflict', function () {
+    describe('conflict()', function () {
 
         it('returns a 409 error statusCode', function (done) {
 
@@ -280,7 +278,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#resourceGone', function () {
+    describe('resourceGone()', function () {
 
         it('returns a 410 error statusCode', function (done) {
 
@@ -296,7 +294,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#lengthRequired', function () {
+    describe('lengthRequired()', function () {
 
         it('returns a 411 error statusCode', function (done) {
 
@@ -312,7 +310,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#preconditionFailed', function () {
+    describe('preconditionFailed()', function () {
 
         it('returns a 412 error statusCode', function (done) {
 
@@ -328,7 +326,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#entityTooLarge', function () {
+    describe('entityTooLarge()', function () {
 
         it('returns a 413 error statusCode', function (done) {
 
@@ -344,7 +342,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#uriTooLong', function () {
+    describe('uriTooLong()', function () {
 
         it('returns a 414 error statusCode', function (done) {
 
@@ -360,7 +358,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#unsupportedMediaType', function () {
+    describe('unsupportedMediaType()', function () {
 
         it('returns a 415 error statusCode', function (done) {
 
@@ -376,7 +374,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#rangeNotSatisfiable', function () {
+    describe('rangeNotSatisfiable()', function () {
 
         it('returns a 416 error statusCode', function (done) {
 
@@ -392,7 +390,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#expectationFailed', function () {
+    describe('expectationFailed()', function () {
 
         it('returns a 417 error statusCode', function (done) {
 
@@ -408,7 +406,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#badData', function () {
+    describe('badData()', function () {
 
         it('returns a 422 error statusCode', function (done) {
 
@@ -424,7 +422,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#serverTimeout', function () {
+    describe('serverTimeout()', function () {
 
         it('returns a 503 error statusCode', function (done) {
 
@@ -439,7 +437,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#forbidden', function () {
+    describe('forbidden()', function () {
 
         it('returns a 403 error statusCode', function (done) {
 
@@ -454,7 +452,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#notFound', function () {
+    describe('notFound()', function () {
 
         it('returns a 404 error statusCode', function (done) {
 
@@ -469,7 +467,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#internal', function () {
+    describe('internal()', function () {
 
         it('returns a 500 error statusCode', function (done) {
 
@@ -504,7 +502,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#notImplemented', function () {
+    describe('notImplemented()', function () {
 
         it('returns a 501 error statusCode', function (done) {
 
@@ -520,7 +518,7 @@ describe('Boom', function () {
     });
 
 
-    describe('#badGateway', function () {
+    describe('badGateway()', function () {
 
         it('returns a 502 error statusCode', function (done) {
 
@@ -535,7 +533,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#gatewayTimeout', function () {
+    describe('gatewayTimeout()', function () {
 
         it('returns a 504 error statusCode', function (done) {
 
@@ -550,7 +548,7 @@ describe('Boom', function () {
         });
     });
 
-    describe('#badImplementation', function () {
+    describe('badImplementation()', function () {
 
         it('returns a 500 error statusCode', function (done) {
 
