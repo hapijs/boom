@@ -431,6 +431,7 @@ describe("tooManyRequests", function () {
     it('sets the message with the passed-in message', function (done) {
 
         expect(Boom.tooManyRequests('my message').message).to.equal('my message');
+        done();
     });
 });
 
