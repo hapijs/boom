@@ -420,7 +420,7 @@ describe('badData()', function () {
 });
 
 
-describe("tooManyRequests", function () {
+describe('tooManyRequests()', function () {
 
     it('returns a 429 error statusCode', function (done) {
 
