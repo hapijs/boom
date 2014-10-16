@@ -420,6 +420,20 @@ describe('badData()', function () {
 });
 
 
+describe("tooManyRequests", function () {
+
+    it('returns a 429 error statusCode', function (done) {
+
+        expect(Boom.tooManyRequests().output.statusCode).to.equal(429);
+        done();
+    });
+
+    it('sets the message with the passed-in message', function (done) {
+
+        expect(Boom.tooManyRequests('my message').message).to.equal('my message');
+    });
+});
+
 describe('serverTimeout()', function () {
 
     it('returns a 503 error statusCode', function (done) {
