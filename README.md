@@ -190,6 +190,16 @@ example payload for `Boom.badData('your message');`
 }
 ```
 
+###Boom.tooManyRequests
+example payload for `Boom.tooManyRequests('your message');`
+```json
+{
+    "statusCode": 429,
+    "error": "Too Many Requests",
+    "message": "your message"
+}
+```
+
 ## 5xx Errors
 
 All 5xx errors hide your message from the end user. Your message is recorded in the server log.
