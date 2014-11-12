@@ -165,11 +165,28 @@ describe('unauthorized()', function () {
         done();
     });
 
+    it('returns a WWW-Authenticate header set to the schema array value', function (done) {
+
+        var err = Boom.unauthorized(null, ['Test','one','two']);
+        expect(err.output.statusCode).to.equal(401);
+        expect(err.output.headers['WWW-Authenticate']).to.equal('Test, one, two');
+        done();
+    });
+
     it('returns a WWW-Authenticate header when passed a scheme and attributes', function (done) {
 
         var err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
         expect(err.output.statusCode).to.equal(401);
         expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
+        done();
+    });
+
+    it('returns a WWW-Authenticate header when passed attributes, missing error', function (done) {
+
+        var err = Boom.unauthorized(null, 'Test', { a: 1, b: 'something', c: null, d: 0 });
+        expect(err.output.statusCode).to.equal(401);
+        expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0"');
+        expect(err.isMissing).to.equal(true);
         done();
     });
 
