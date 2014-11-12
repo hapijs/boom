@@ -6,9 +6,52 @@ HTTP-friendly error objects
 
 Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
-#List of friendly errors available
+**boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom` error response
+object (instance of `Error`) which includes the following properties:
+- `isBoom` - if `true`, indicates this is a `Boom` object instance.
+- `message` - the error message.
+- `output` - the formatted response. Can be directly manipulated after object construction to return a custom
+  error response. Allowed root keys:
+    - `statusCode` - the HTTP status code (typically 4xx or 5xx).
+    - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
+    - `payload` - the formatted object used as the response payload (stringified). Can be directly manipulated but any
+      changes will be lost
+      if `reformat()` is called. Any content allowed and by default includes the following content:
+        - `statusCode` - the HTTP status code, derived from `error.output.statusCode`.
+        - `error` - the HTTP status message (e.g. 'Bad Request', 'Internal Server Error') derived from `statusCode`.
+        - `message` - the error message derived from `error.message`.
+- inherited `Error` properties.
 
-## 4xx Errors
+The `Boom` object also supports the following method:
+- `reformat()` - rebuilds `error.output` using the other object properties.
+
+## Helper Methods
+
+### `wrap(error, [statusCode], [message])`
+
+Decorates an error with the **boom** properties where:
+- `error` - the error object to wrap. If `error` is already a **boom** object, returns back the same object.
+- `statusCode` - optional HTTP status code. Defaults to `500`.
+- `message` - optional message string. If the error already has a message, it addes the message as a prefix.
+  Defaults to no message.
+
+```js
+var error = new Error('Unexpected input');
+Boom.wrap(error, 400);
+```
+
+### `create(statusCode, [message], [data])`
+
+Generates an `Error` object with the **boom** decorations where:
+- `statusCode` - an HTTP error code number. Must be greater or equal 400.
+- `message` - optional message string.
+- `data` - additional error data set to `error.data` property.
+
+```js
+var error = Boom.create(400, 'Bad request', { timestamp: Date.now() });
+```
+
+## HTTP 4xx Errors
 
 ###Boom.badRequest
 example payload for `Boom.badRequest('your message');`
@@ -200,7 +243,7 @@ example payload for `Boom.tooManyRequests('your message');`
 }
 ```
 
-## 5xx Errors
+## HTTP 5xx Errors
 
 All 5xx errors hide your message from the end user. Your message is recorded in the server log.
 
@@ -252,23 +295,4 @@ example payload for `Boom.badImplementation('your message');`
     "error": "Internal Server Error",
     "message": "An internal server error occurred"
 }
-```
-
-## Helper Methods
-
-###Boom.wrap
-example usages of `Boom.wrap(error, statusCode, message);`
-```js
-var error = Boom.badRequest();
-Boom.wrap(error);
-
-// Or
-
-var error = new Error('an error occurred');
-Boom.wrap(error);
-
-// Or
-
-var error = new Error();
-Boom.wrap(error, 400, 'an error occurred');
 ```
