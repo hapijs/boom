@@ -53,13 +53,23 @@ var error = Boom.create(400, 'Bad request', { timestamp: Date.now() });
 
 ## HTTP 4xx Errors
 
-###Boom.badRequest
-example payload for `Boom.badRequest('your message');`
+### `Boom.badRequest([message], [data])`
+
+Returns a 400 Bad Request error where:
+- `message` - optional message.
+- `data` - optional additonal error data.
+
+```js
+Boom.badRequest('invalid query');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 400,
     "error": "Bad Request",
-    "message": "your message"
+    "message": "invalid query"
 }
 ```
 
