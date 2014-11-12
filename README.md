@@ -32,7 +32,7 @@ The `Boom` object also supports the following method:
 Decorates an error with the **boom** properties where:
 - `error` - the error object to wrap. If `error` is already a **boom** object, returns back the same object.
 - `statusCode` - optional HTTP status code. Defaults to `500`.
-- `message` - optional message string. If the error already has a message, it addes the message as a prefix.
+- `message` - optional message string. If the error already has a message, it adds the message as a prefix.
   Defaults to no message.
 
 ```js
@@ -57,7 +57,7 @@ var error = Boom.create(400, 'Bad request', { timestamp: Date.now() });
 
 Returns a 400 Bad Request error where:
 - `message` - optional message.
-- `data` - optional additonal error data.
+- `data` - optional additional error data.
 
 ```js
 Boom.badRequest('invalid query');
@@ -73,232 +73,459 @@ Generates the following response payload:
 }
 ```
 
-###Boom.unauthorized
-example payload for `Boom.unauthorized('your message');`
+### `Boom.unauthorized([message], [data])`
+
+Returns a 401 Unauthorized error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.unauthorized('invalid password');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 401,
     "error": "Unauthorized",
-    "message": "your message"
+    "message": "invalid password"
 }
 ```
 
-###Boom.forbidden
-example payload for `Boom.forbidden('your message');`
+### `Boom.forbidden([message], [data])`
+
+Returns a 403 Forbidden error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.forbidden('try again some time');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 403,
     "error": "Forbidden",
-    "message": "your message"
+    "message": "try again some time"
 }
 ```
 
-###Boom.notFound
-example payload for `Boom.notFound('your message');`
+### `Boom.notFound([message], [data])`
+
+Returns a 404 Not Found error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.notFound('missing');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 404,
     "error": "Not Found",
-    "message": "your message"
+    "message": "missing"
 }
 ```
 
-###Boom.methodNotAllowed
-example payload for `Boom.methodNotAllowed('your message');`
+### `Boom.methodNotAllowed([message], [data])`
+
+Returns a 405 Method Not Allowed error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.methodNotAllowed('that method is not allowed');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 405,
     "error": "Method Not Allowed",
-    "message": "your message"
+    "message": "that method is not allowed"
 }
 ```
 
-###Boom.notAcceptable
-example payload for `Boom.notAcceptable('your message');`
+### `Boom.notAcceptable([message], [data])`
+
+Returns a 406 Not Acceptable error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.notAcceptable('unacceptable');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 406,
     "error": "Not Acceptable",
-    "message": "your message"
+    "message": "unacceptable"
 }
 ```
 
-###Boom.proxyAuthRequired
-example payload for `Boom.proxyAuthRequired('your message');`
+### `Boom.proxyAuthRequired([message], [data])`
+
+Returns a 407 Proxy Authentication Required error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.proxyAuthRequired('auth missing');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 407,
     "error": "Proxy Authentication Required",
-    "message": "your message"
+    "message": "auth missing"
 }
 ```
 
-###Boom.clientTimeout
-example payload for `Boom.clientTimeout('your message');`
+### `Boom.clientTimeout([message], [data])`
+
+Returns a 408 Request Time-out error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.clientTimeout('timed out');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 408,
     "error": "Request Time-out",
-    "message": "your message"
+    "message": "timed out"
 }
 ```
 
-###Boom.conflict
-example payload for `Boom.conflict('your message');`
+### `Boom.conflict([message], [data])`
+
+Returns a 409 Conflict error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.conflict('there was a conflict');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 409,
     "error": "Conflict",
-    "message": "your message"
+    "message": "there was a conflict"
 }
 ```
 
-###Boom.resourceGone
-example payload for `Boom.resourceGone('your message');`
+### `Boom.resourceGone([message], [data])`
+
+Returns a 410 Gone error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.resourceGone('it is gone');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 410,
     "error": "Gone",
-    "message": "your message"
+    "message": "it is gone"
 }
 ```
 
-###Boom.lengthRequired
-example payload for `Boom.lengthRequired('your message');`
+### `Boom.lengthRequired([message], [data])`
+
+Returns a 411 Length Required error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.lengthRequired('length needed');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 411,
     "error": "Length Required",
-    "message": "your message"
+    "message": "length needed"
 }
 ```
 
-###Boom.preconditionFailed
-example payload for `Boom.preconditionFailed('your message');`
+### `Boom.preconditionFailed([message], [data])`
+
+Returns a 412 Precondition Failed error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.preconditionFailed();
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 412,
-    "error": "Precondition Failed",
-    "message": "your message"
+    "error": "Precondition Failed"
 }
 ```
 
-###Boom.entityTooLarge
-example payload for `Boom.entityTooLarge('your message');`
+### `Boom.entityTooLarge([message], [data])`
+
+Returns a 413 Request Entity Too Large error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.entityTooLarge('too big');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 413,
     "error": "Request Entity Too Large",
-    "message": "your message"
+    "message": "too big"
 }
 ```
 
-###Boom.uriTooLong
-example payload for `Boom.uriTooLong('your message');`
+### `Boom.uriTooLong([message], [data])`
+
+Returns a 414 Request-URI Too Large error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.uriTooLong('uri is too long');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 414,
     "error": "Request-URI Too Large",
-    "message": "your message"
+    "message": "uri is too long"
 }
 ```
 
-###Boom.unsupportedMediaType
-example payload for `Boom.unsupportedMediaType('your message');`
+### `Boom.unsupportedMediaType([message], [data])`
+
+Returns a 415 Unsupported Media Type error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.unsupportedMediaType('that media is not supported');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 415,
     "error": "Unsupported Media Type",
-    "message": "your message"
+    "message": "that media is not supported"
 }
 ```
 
-###Boom.rangeNotSatisfiable
-example payload for `Boom.rangeNotSatisfiable('your message');`
+### `Boom.rangeNotSatisfiable([message], [data])`
+
+Returns a 416 Requested Range Not Satisfiable error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.rangeNotSatisfiable();
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 416,
-    "error": "Requested Range Not Satisfiable",
-    "message": "your message"
+    "error": "Requested Range Not Satisfiable"
 }
 ```
 
-###Boom.expectationFailed
-example payload for `Boom.expectationFailed('your message');`
+### `Boom.expectationFailed([message], [data])`
+
+Returns a 417 Expectation Failed error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.expectationFailed('expected this to work');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 417,
     "error": "Expectation Failed",
-    "message": "your message"
+    "message": "expected this to work"
 }
 ```
 
-###Boom.badData
-example payload for `Boom.badData('your message');`
+### `Boom.badData([message], [data])`
+
+Returns a 422 Unprocessable Entity error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.badData('your data is bad and you should feel bad');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 422,
     "error": "Unprocessable Entity",
-    "message": "your message"
+    "message": "your data is bad and you should feel bad"
 }
 ```
 
-###Boom.tooManyRequests
-example payload for `Boom.tooManyRequests('your message');`
+### `Boom.tooManyRequests([message], [data])`
+
+Returns a 422 Too Many Requests error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.tooManyRequests('you have exceeded your request limit');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 429,
     "error": "Too Many Requests",
-    "message": "your message"
+    "message": "you have exceeded your request limit"
 }
 ```
 
 ## HTTP 5xx Errors
 
-All 5xx errors hide your message from the end user. Your message is recorded in the server log.
+All 500 errors hide your message from the end user. Your message is recorded in the server log.
 
-###Boom.notImplemented
-example payload for `Boom.notImplemented('your message');`
+### `Boom.notImplemented([message], [data])`
+
+Returns a 501 Not Implemented error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.notImplemented('method not implemented');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 501,
     "error": "Not Implemented",
-    "message": "An internal server error occurred"
+    "message": "method not implemented"
 }
 ```
 
-###Boom.badGateway
-example payload for `Boom.badGateway('your message');`
+### `Boom.badGateway([message], [data])`
+
+Returns a 502 Bad Gateway error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.badGateway('that is a bad gateway');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 502,
     "error": "Bad Gateway",
-    "message": "An internal server error occurred"
+    "message": "that is a bad gateway"
 }
 ```
 
-###Boom.serverTimeout
-example payload for `Boom.serverTimeout('your message');`
+### `Boom.serverTimeout([message], [data])`
+
+Returns a 503 Service Unavailable error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.serverTimeout('unavailable');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 503,
     "error": "Service Unavailable",
-    "message": "An internal server error occurred"
+    "message": "unavailable"
 }
 ```
 
-###Boom.gatewayTimeout
-example payload for `Boom.gatewayTimeout('your message');`
+### `Boom.gatewayTimeout([message], [data])`
+
+Returns a 504 Gateway Time-out error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.gatewayTimeout();
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 504,
-    "error": "Gateway Time-out",
-    "message": "An internal server error occurred"
+    "error": "Gateway Time-out"
 }
 ```
 
-###Boom.badImplementation
-example payload for `Boom.badImplementation('your message');`
+### `Boom.badImplementation([message], [data])`
+
+Returns a 500 Internal Server Error error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.badImplementation('terrible implementation');
+```
+
+Generates the following response payload:
+
 ```json
 {
     "statusCode": 500,
