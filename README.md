@@ -73,23 +73,63 @@ Generates the following response payload:
 }
 ```
 
-### `Boom.unauthorized([message], [data])`
+### `Boom.unauthorized([message], [scheme], [attributes])`
 
 Returns a 401 Unauthorized error where:
 - `message` - optional message.
-- `data` - optional additional error data.
+- `scheme` can be one of the following:
+  - an authentication scheme name
+  - an array of string values. These values will be separated by ', ' and set to the 'WWW-Authenticate' header.
+- `attributes` - an object of values to use while setting the 'WWW-Authenticate' header. This value is only used when `schema` is a string, otherwise it is ignored. Every key/value pair will be included in the 'WWW-Authenticate' in the format of 'key="value"'. `null` and `undefined` will be replaced with an empty string. If `attributes` is set, `message` will be used as the 'error' segment of the 'WWW-Authenticate' header. If `message` is unset, the 'error' segment of the header will not be present and `isMissing` will be true on the error object.
+
+If either `scheme` or `attributes` are set, the resultant `Boom` object will have the 'WWW-Authenticate' header set for the response.
 
 ```js
 Boom.unauthorized('invalid password');
 ```
 
-Generates the following response payload:
+Generates the following response:
 
 ```json
-{
+"payload": {
     "statusCode": 401,
     "error": "Unauthorized",
     "message": "invalid password"
+},
+"headers" {}
+```
+
+```js
+Boom.unauthorized('invalid password', 'sample');
+```
+
+Generates the following response:
+
+```json
+"payload": {
+    "statusCode": 401,
+    "error": "Unauthorized",
+    "message": "invalid password"
+},
+"headers" {
+  "WWW-Authenticate": "sample error=\"invalid password\""
+}
+```
+
+```js
+Boom.unauthorized('invalid password', 'sample', { ttl: 0, cache: null, foo: 'bar' });
+```
+
+Generates the following response:
+
+```json
+"payload": {
+    "statusCode": 401,
+    "error": "Unauthorized",
+    "message": "invalid password"
+},
+"headers" {
+  "WWW-Authenticate": "sample ttl=\"0\", cache=\"\", foo=\"bar\", error=\"invalid password\""
 }
 ```
 
