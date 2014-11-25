@@ -1,8 +1,10 @@
 // Load modules
 
-var Lab = require('lab');
-var Boom = require('../lib');
 var Util = require('util');
+var Code = require('code');
+var Boom = require('../lib');
+var Lab = require('lab');
+
 
 // Declare internals
 
@@ -14,7 +16,7 @@ var internals = {};
 var lab = exports.lab = Lab.script();
 var describe = lab.describe;
 var it = lab.it;
-var expect = Lab.expect;
+var expect = Code.expect;
 
 
 it('returns the same object when already boom', function (done) {
@@ -92,7 +94,7 @@ describe('create()', function () {
     it('does not sets null message', function (done) {
 
         var error = Boom.unauthorized(null);
-        expect(error.output.payload.message).to.not.exist;
+        expect(error.output.payload.message).to.not.exist();
         done();
     });
 
@@ -115,7 +117,7 @@ describe('isBoom()', function () {
 
     it('returns false for Error object', function (done) {
 
-        expect((new Error()).isBoom).to.not.exist;
+        expect((new Error()).isBoom).to.not.exist();
         done();
     });
 });
