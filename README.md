@@ -453,7 +453,7 @@ Generates the following response payload:
 
 ### `Boom.tooManyRequests([message], [data])`
 
-Returns a 422 Too Many Requests error where:
+Returns a 429 Too Many Requests error where:
 - `message` - optional message.
 - `data` - optional additional error data.
 
