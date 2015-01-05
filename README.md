@@ -9,6 +9,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom` error response
 object (instance of `Error`) which includes the following properties:
 - `isBoom` - if `true`, indicates this is a `Boom` object instance.
+- `isServer` - convenience bool indicating status code >= 500.
 - `message` - the error message.
 - `output` - the formatted response. Can be directly manipulated after object construction to return a custom
   error response. Allowed root keys:
