@@ -597,3 +597,14 @@ describe('badImplementation()', function () {
         done();
     });
 });
+
+describe('extendOutput()', function () {
+
+    it('extends output object', function (done) {
+        var err = Boom.create(400, "Error message");
+        err.extendOutput({errorCode: 1234});
+        expect(err.output.payload.errorCode).to.equal(1234);
+        done();
+    });
+
+});
