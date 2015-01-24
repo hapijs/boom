@@ -1,3 +1,4 @@
+
 ![boom Logo](https://raw.github.com/hapijs/boom/master/images/boom.png)
 
 HTTP-friendly error objects
@@ -50,6 +51,18 @@ Generates an `Error` object with the **boom** decorations where:
 
 ```js
 var error = Boom.create(400, 'Bad request', { timestamp: Date.now() });
+```
+
+## Instance helper Methods
+
+### `extendObject(object)`
+
+Extends the boom output object to add your own properties:
+- `object` - An object with the parameters to attach to the output. If a property key already exists in the output parameter, it will be overriden.
+
+```js
+var error = Boom.forbidden('My message').extendOutput({customError: 123});
+// Returns { "statusCode": 403, "error": "Forbidden", "message": "My message", "customError": "123" }
 ```
 
 ## HTTP 4xx Errors
