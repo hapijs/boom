@@ -1,8 +1,8 @@
 {
-  "name": "boom",
+  "name": "boom-extended",
   "description": "HTTP-friendly error objects",
   "version": "2.6.1",
-  "repository": "git://github.com/hapijs/boom",
+  "repository": "git://github.com/c990802/boom",
   "main": "index",
   "keywords": [
     "error",
