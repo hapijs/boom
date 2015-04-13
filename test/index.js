@@ -73,6 +73,13 @@ it('throws when statusCode is not a number', function (done) {
     done();
 });
 
+it('will cast a string that looks like a number', function (done) {
+
+    var err = Boom.create('404');
+    expect(err.output.statusCode).to.equal(404);
+    done();
+});
+
 it('throws when statusCode is not finite', function (done) {
 
     expect(function () {
