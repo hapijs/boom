@@ -73,10 +73,19 @@ it('throws when statusCode is not a number', function (done) {
     done();
 });
 
-it('will cast a string that looks like a number', function (done) {
+it('will cast a number-string to an integer', function (done) {
 
-    var err = Boom.create('404');
-    expect(err.output.statusCode).to.equal(404);
+    var codes = [
+        { input: '404', result: 404 },
+        { input: '404.1', result: 404 },
+        { input: 400, result: 400 },
+        { input: 400.123, result: 400 }]
+    for (var i = 0, il = codes.length; i < il; ++i) {
+        var code = codes[i];
+        var err = Boom.create(code.input);
+        expect(err.output.statusCode).to.equal(code.result);
+    }
+
     done();
 });
 
