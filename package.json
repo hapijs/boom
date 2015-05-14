@@ -18,6 +18,9 @@
     "code": "1.x.x",
     "lab": "5.x.x"
   },
+  "browser": {
+    "http": "./lib/http-browser.js"
+  },
   "scripts": {
     "test": "lab -a code -t 100",
     "test-cov-html": "lab -a code -r html -o coverage.html"
