@@ -22,10 +22,5 @@
     "test": "lab -a code -t 100",
     "test-cov-html": "lab -a code -r html -o coverage.html"
   },
-  "licenses": [
-    {
-      "type": "BSD",
-      "url": "http://github.com/hapijs/boom/raw/master/LICENSE"
-    }
-  ]
+  "license": "BSD-3-Clause"
 }
