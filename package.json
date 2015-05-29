@@ -3,7 +3,7 @@
   "description": "HTTP-friendly error objects",
   "version": "2.7.2",
   "repository": "git://github.com/hapijs/boom",
-  "main": "index",
+  "main": "lib/index.js",
   "keywords": [
     "error",
     "http"
