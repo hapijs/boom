@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "lab -a code -t 100 -L",
-    "test-cov-html": "lab -a code -r html -o coverage.html"
+    "test-cov-html": "lab -a code -r html -o coverage.html -L"
   },
   "license": "BSD-3-Clause"
 }
