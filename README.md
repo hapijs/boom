@@ -38,7 +38,7 @@ The `Boom` object also supports the following method:
   - 403: [`Boom.forbidden([message], [data])`](#boomforbiddenmessage-data)
   - 404: [`Boom.notFound([message], [data])`](#boomnotfoundmessage-data)
   - 405: [`Boom.methodNotAllowed([message], [data])`](#boommethodnotallowedmessage-data)
-  - 406: [`Boom.notAcceptable([message], [data])`](#boomnotacceptable-message-data)
+  - 406: [`Boom.notAcceptable([message], [data])`](#boomnotacceptablemessage-data)
   - 407: [`Boom.proxyAuthRequired([message], [data])`](#boomproxyauthrequiredmessage-data)
   - 408: [`Boom.clientTimeout([message], [data])`](#boomclienttimeoutmessage-data)
   - 409: [`Boom.conflict([message], [data])`](#boomconflictmessage-data)
@@ -525,6 +525,26 @@ Generates the following response payload:
 
 All 500 errors hide your message from the end user. Your message is recorded in the server log.
 
+### `Boom.badImplementation([message], [data])`
+
+Returns a 500 Internal Server Error error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.badImplementation('terrible implementation');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 500,
+    "error": "Internal Server Error",
+    "message": "An internal server error occurred"
+}
+```
+
 ### `Boom.notImplemented([message], [data])`
 
 Returns a 501 Not Implemented error where:
@@ -601,26 +621,6 @@ Generates the following response payload:
 {
     "statusCode": 504,
     "error": "Gateway Time-out"
-}
-```
-
-### `Boom.badImplementation([message], [data])`
-
-Returns a 500 Internal Server Error error where:
-- `message` - optional message.
-- `data` - optional additional error data.
-
-```js
-Boom.badImplementation('terrible implementation');
-```
-
-Generates the following response payload:
-
-```json
-{
-    "statusCode": 500,
-    "error": "Internal Server Error",
-    "message": "An internal server error occurred"
 }
 ```
 
