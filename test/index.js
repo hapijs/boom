@@ -1,6 +1,5 @@
 // Load modules
 
-var Util = require('util');
 var Code = require('code');
 var Boom = require('../lib');
 var Lab = require('lab');
