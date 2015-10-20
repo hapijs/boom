@@ -459,6 +459,22 @@ describe('badData()', function () {
 });
 
 
+describe('preconditionRequired()', function () {
+
+    it('returns a 428 error statusCode', function (done) {
+
+        expect(Boom.preconditionRequired().output.statusCode).to.equal(428);
+        done();
+    });
+
+    it('sets the message with the passed in message', function (done) {
+
+        expect(Boom.preconditionRequired('my message').message).to.equal('my message');
+        done();
+    });
+});
+
+
 describe('tooManyRequests()', function () {
 
     it('returns a 429 error statusCode', function (done) {
