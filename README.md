@@ -51,6 +51,7 @@ The `Boom` object also supports the following method:
   - 416: [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
   - 417: [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
   - 422: [`Boom.badData([message], [data])`](#boombaddatamessage-data)
+  - 428: [`Boom.preconditionRequired([message], [data])`](#preconditionrequiredmessage-data)
   - 429: [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
 - HTTP 5xx Errors
   - 500: [`Boom.badImplementation([message], [data])`](#boombadimplementationmessage-data)
