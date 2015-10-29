@@ -50,6 +50,7 @@ The `Boom` object also supports the following method:
   - 415: [`Boom.unsupportedMediaType([message], [data])`](#boomunsupportedmediatypemessage-data)
   - 416: [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
   - 417: [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
+  - 418: [`Boom.teapot([message], [data])`](#boomteapotmessage-data)
   - 422: [`Boom.badData([message], [data])`](#boombaddatamessage-data)
   - 428: [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
   - 429: [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
@@ -479,6 +480,26 @@ Generates the following response payload:
     "statusCode": 417,
     "error": "Expectation Failed",
     "message": "expected this to work"
+}
+```
+
+### `Boom.teapot([message], [data])`
+
+Returns a 418 I'm a Teapot error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.teapot('Sorry, no coffee...');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 418,
+    "error": "I'm a Teapot",
+    "message": "Sorry, no coffee..."
 }
 ```
 

@@ -443,6 +443,22 @@ describe('expectationFailed()', function () {
 });
 
 
+describe('teapot()', function () {
+
+    it('returns a 418 error statusCode', function (done) {
+
+        expect(Boom.teapot().output.statusCode).to.equal(418);
+        done();
+    });
+
+    it('sets the message with the passed in message', function (done) {
+
+        expect(Boom.teapot('Sorry, no coffee...').message).to.equal('Sorry, no coffee...');
+        done();
+    });
+});
+
+
 describe('badData()', function () {
 
     it('returns a 422 error statusCode', function (done) {
