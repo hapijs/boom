@@ -118,7 +118,7 @@ Returns a 401 Unauthorized error where:
   - an authentication scheme name
   - an array of string values. These values will be separated by ', ' and set to the 'WWW-Authenticate' header.
 - `attributes` - an object of values to use while setting the 'WWW-Authenticate' header. This value is only used
-  when `schema` is a string, otherwise it is ignored. Every key/value pair will be included in the
+  when `scheme` is a string, otherwise it is ignored. Every key/value pair will be included in the
   'WWW-Authenticate' in the format of 'key="value"' as well as in the response payload under the `attributes` key.
   `null` and `undefined` will be replaced with an empty string. If `attributes` is set, `message` will be used as
   the 'error' segment of the 'WWW-Authenticate' header. If `message` is unset, the 'error' segment of the header
