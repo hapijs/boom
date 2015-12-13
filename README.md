@@ -7,6 +7,45 @@ HTTP-friendly error objects
 
 Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
+<!-- toc -->
+
+- [Boom](#boom)
+  - [Helper Methods](#helper-methods)
+    - [`wrap(error, [statusCode], [message])`](#wraperror-statuscode-message)
+    - [`create(statusCode, [message], [data])`](#createstatuscode-message-data)
+  - [HTTP 4xx Errors](#http-4xx-errors)
+    - [`Boom.badRequest([message], [data])`](#boombadrequestmessage-data)
+    - [`Boom.unauthorized([message], [scheme], [attributes])`](#boomunauthorizedmessage-scheme-attributes)
+    - [`Boom.forbidden([message], [data])`](#boomforbiddenmessage-data)
+    - [`Boom.notFound([message], [data])`](#boomnotfoundmessage-data)
+    - [`Boom.methodNotAllowed([message], [data])`](#boommethodnotallowedmessage-data)
+    - [`Boom.notAcceptable([message], [data])`](#boomnotacceptablemessage-data)
+    - [`Boom.proxyAuthRequired([message], [data])`](#boomproxyauthrequiredmessage-data)
+    - [`Boom.clientTimeout([message], [data])`](#boomclienttimeoutmessage-data)
+    - [`Boom.conflict([message], [data])`](#boomconflictmessage-data)
+    - [`Boom.resourceGone([message], [data])`](#boomresourcegonemessage-data)
+    - [`Boom.lengthRequired([message], [data])`](#boomlengthrequiredmessage-data)
+    - [`Boom.preconditionFailed([message], [data])`](#boompreconditionfailedmessage-data)
+    - [`Boom.entityTooLarge([message], [data])`](#boomentitytoolargemessage-data)
+    - [`Boom.uriTooLong([message], [data])`](#boomuritoolongmessage-data)
+    - [`Boom.unsupportedMediaType([message], [data])`](#boomunsupportedmediatypemessage-data)
+    - [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
+    - [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
+    - [`Boom.badData([message], [data])`](#boombaddatamessage-data)
+    - [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
+    - [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
+  - [HTTP 5xx Errors](#http-5xx-errors)
+    - [`Boom.badImplementation([message], [data])`](#boombadimplementationmessage-data)
+    - [`Boom.notImplemented([message], [data])`](#boomnotimplementedmessage-data)
+    - [`Boom.badGateway([message], [data])`](#boombadgatewaymessage-data)
+    - [`Boom.serverTimeout([message], [data])`](#boomservertimeoutmessage-data)
+    - [`Boom.gatewayTimeout([message], [data])`](#boomgatewaytimeoutmessage-data)
+  - [F.A.Q.](#faq)
+
+<!-- tocstop -->
+
+# Boom
+
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom` error response
 object (instance of `Error`) which includes the following properties:
 - `isBoom` - if `true`, indicates this is a `Boom` object instance.
@@ -26,40 +65,6 @@ object (instance of `Error`) which includes the following properties:
 
 The `Boom` object also supports the following method:
 - `reformat()` - rebuilds `error.output` using the other object properties.
-
-## Overview
-
-- Helper methods
-  - [`wrap(error, [statusCode], [message])`](#wraperror-statuscode-message)
-  - [`create(statusCode, [message], [data])`](#createstatuscode-message-data)
-- HTTP 4xx Errors
-  - 400: [`Boom.badRequest([message], [data])`](#boombadrequestmessage-data)
-  - 401: [`Boom.unauthorized([message], [scheme], [attributes])`](#boomunauthorizedmessage-scheme-attributes)
-  - 403: [`Boom.forbidden([message], [data])`](#boomforbiddenmessage-data)
-  - 404: [`Boom.notFound([message], [data])`](#boomnotfoundmessage-data)
-  - 405: [`Boom.methodNotAllowed([message], [data])`](#boommethodnotallowedmessage-data)
-  - 406: [`Boom.notAcceptable([message], [data])`](#boomnotacceptablemessage-data)
-  - 407: [`Boom.proxyAuthRequired([message], [data])`](#boomproxyauthrequiredmessage-data)
-  - 408: [`Boom.clientTimeout([message], [data])`](#boomclienttimeoutmessage-data)
-  - 409: [`Boom.conflict([message], [data])`](#boomconflictmessage-data)
-  - 410: [`Boom.resourceGone([message], [data])`](#boomresourcegonemessage-data)
-  - 411: [`Boom.lengthRequired([message], [data])`](#boomlengthrequiredmessage-data)
-  - 412: [`Boom.preconditionFailed([message], [data])`](#boompreconditionfailedmessage-data)
-  - 413: [`Boom.entityTooLarge([message], [data])`](#boomentitytoolargemessage-data)
-  - 414: [`Boom.uriTooLong([message], [data])`](#boomuritoolongmessage-data)
-  - 415: [`Boom.unsupportedMediaType([message], [data])`](#boomunsupportedmediatypemessage-data)
-  - 416: [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
-  - 417: [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
-  - 422: [`Boom.badData([message], [data])`](#boombaddatamessage-data)
-  - 428: [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
-  - 429: [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
-- HTTP 5xx Errors
-  - 500: [`Boom.badImplementation([message], [data])`](#boombadimplementationmessage-data)
-  - 501: [`Boom.notImplemented([message], [data])`](#boomnotimplementedmessage-data)
-  - 502: [`Boom.badGateway([message], [data])`](#boombadgatewaymessage-data)
-  - 503: [`Boom.serverTimeout([message], [data])`](#boomservertimeoutmessage-data)
-  - 504: [`Boom.gatewayTimeout([message], [data])`](#boomgatewaytimeoutmessage-data)
-- [FAQ](#faq)
 
 
 ## Helper Methods
@@ -647,6 +652,8 @@ Generates the following response payload:
 
 ## F.A.Q.
 
-###### How do I include extra information in my responses? `output.payload` is missing `data`, what gives?
+**Q** How do I include extra information in my responses? `output.payload` is missing `data`, what gives?
 
-There is a reason the values passed back in the response payloads are pretty locked down. It's mostly for security and to not leak any important information back to the client. This means you will need to put in a little more effort to include extra information about your custom error. Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.
+**A** There is a reason the values passed back in the response payloads are pretty locked down. It's mostly for security and to not leak any important information back to the client. This means you will need to put in a little more effort to include extra information about your custom error. Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.
+
+---
