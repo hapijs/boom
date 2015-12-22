@@ -547,6 +547,26 @@ Generates the following response payload:
 }
 ```
 
+### `Boom.illegal([message], [data])`
+
+Returns a 451 Unavailable For Legal Reasons error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.illegal('you are not permitted to view this resource for legal reasons');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 451,
+    "error": "Unavailable For Legal Reasons",
+    "message": "you are not permitted to view this resource for legal reasons"
+}
+```
+
 ## HTTP 5xx Errors
 
 All 500 errors hide your message from the end user. Your message is recorded in the server log.
