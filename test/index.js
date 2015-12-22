@@ -495,17 +495,17 @@ describe('tooManyRequests()', () => {
 });
 
 
-describe('censored()', () => {
+describe('illegal()', () => {
 
     it('returns a 451 error statusCode', (done) => {
 
-        expect(Boom.censored().output.statusCode).to.equal(451);
+        expect(Boom.illegal().output.statusCode).to.equal(451);
         done();
     });
 
     it('sets the message with the passed-in message', (done) => {
 
-        expect(Boom.censored('my message').message).to.equal('my message');
+        expect(Boom.illegal('my message').message).to.equal('my message');
         done();
     });
 });
