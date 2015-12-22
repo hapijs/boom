@@ -494,6 +494,23 @@ describe('tooManyRequests()', () => {
     });
 });
 
+
+describe('censored()', () => {
+
+    it('returns a 451 error statusCode', (done) => {
+
+        expect(Boom.censored().output.statusCode).to.equal(451);
+        done();
+    });
+
+    it('sets the message with the passed-in message', (done) => {
+
+        expect(Boom.censored('my message').message).to.equal('my message');
+        done();
+    });
+});
+
+
 describe('serverTimeout()', () => {
 
     it('returns a 503 error statusCode', (done) => {
