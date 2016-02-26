@@ -76,7 +76,7 @@ The `Boom` object also supports the following method:
 **boom** is a module for the framework [hapi.js](https://github.com/hapijs). **boom** is used to create user-friendly HTTP error messages that are easy to construct.
 
 ## Helper Methods
-
+ 
 ### `wrap(error, [statusCode], [message])`
 
 Decorates an error with the **boom** properties where:
