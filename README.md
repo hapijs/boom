@@ -67,7 +67,7 @@ object (instance of `Error`) which includes the following properties:
 The `Boom` object also supports the following method:
 - `reformat()` - rebuilds `error.output` using the other object properties.
 
-**1st option - this title is more discussionable based and not so long - I kept both answers short and sweet being all seemed fairly straightforward.**
+**1st option - this title is more discussionable# based and not so long - I kept both answers short and sweet being all seemed fairly straightforward.**
 
 # A step deeper
 
@@ -79,7 +79,7 @@ The `Boom` object also supports the following method:
 
 **boom** is a module for the framework [hapi.js](https://github.com/hapijs). **boom** is used to create user-friendly HTTP error messages that are easy to construct.
 
-**If you get a chance tell me what you like/dislike about each statement. Also what I can push forward to the next/final step. **
+**Tell me what you like/dislike about each statement. Also what I can push forward to the next/final step. **
 
 ## Helper Methods
  
