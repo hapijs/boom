@@ -2,7 +2,7 @@
 
 ## HTTP-friendly error objects
 
-The **boom** library is used by hapi web services framework to create all of its internal error codes. **Boom** gives the user a meaningful system to show HTTP errors. Error messages are customizable by changing the content of the key: `output`, which is the formatted response.  All errors returned by the **hapi** [reply interface](https://github.com/hapijs/hapi/blob/master/API.md#reply-interface) are converted to one of the **boom** objects listed below, or defaulted to status code 500 if it does not exist as a **boom** object.  
+The **boom** library is used by [hapi](https://github.com/hapijs/hapijs.com) web services framework to create all of its internal error codes. **Boom** gives the user a meaningful system to show HTTP errors. Error messages are customizable by changing the content of the key: `output`, which is the formatted response.  All errors returned by the **hapi** [reply interface](https://github.com/hapijs/hapi/blob/master/API.md#reply-interface) are converted to one of the **boom** objects listed below, or defaulted to status code 500 if it does not exist as a **boom** object.  
 
 
 [![Build Status](https://secure.travis-ci.org/hapijs/boom.svg)](http://travis-ci.org/hapijs/boom)
