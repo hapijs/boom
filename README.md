@@ -2,7 +2,8 @@
 
 HTTP-friendly error objects
 
-Boom allows hapi to create HTTP-friendly error objects.
+The boom javascript library is used by hapi web services framework to create all of it's error codes. Boom gives the user a meaningful system to show errors brought about by HTTP errors. Error messages are customizable by changing the content of the key: `output`, which is the formatted response.  All errors returned by boom are converted to one of the boom objects, or defaulted to status code 500 if it does not exist as a boom object.
+
 
 [![Build Status](https://secure.travis-ci.org/hapijs/boom.svg)](http://travis-ci.org/hapijs/boom)
 [![Current Version](https://img.shields.io/npm/v/boom.svg)](https://www.npmjs.com/package/boom)
