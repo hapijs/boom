@@ -73,6 +73,7 @@ The `Boom` object also supports the following method:
 
 
 ## Helper Methods
+
  
 ### `wrap(error, [statusCode], [message])`
 
