@@ -67,19 +67,10 @@ object (instance of `Error`) which includes the following properties:
 The `Boom` object also supports the following method:
 - `reformat()` - rebuilds `error.output` using the other object properties.
 
-**1st option - this title is more discussionable# based and not so long - I kept both answers short and sweet being all seemed fairly straightforward.**
 
-# A step deeper
+##What to Use boom for and When to Use It
 
-**boom** is a tool that returns HTTP errors back in a friendly, readable fashion. **boom** breaks the errors down into easy-to-use objects to display in a custom format.
- 
-**2nd option - this option is using the original header they want. When I put it in here I felt that it went against the style of the rest of the documentation. - I am not certain to say tool or module to call this out. - the 2nd option specificly calles out the framework, as a true first time reader not having a good grasp of frameworks and how they hapi work with boom, I feel the callout might be very beneficial if someone stumbles upon it.**
-
-#What to Use boom for and When to Use It
-
-**boom** is a module for the framework [hapi.js](https://github.com/hapijs). **boom** is used to create user-friendly HTTP error messages that are easy to construct.
-
-**Tell me what you like/dislike about each statement. Also what I can push forward to the next/final step. **
+**boom** is a module for the framework [hapi.js](https://github.com/hapi.js) that return HTTP errors. Once returned, **boom** breaks the error messages into objects that can be customized to read in a user-freindly format that are easy to construct. **boom** can be used during testing or production to improve error debugging.  
 
 ## Helper Methods
  
