@@ -582,11 +582,11 @@ describe('internal()', () => {
     it('returns an error with composite message', (done) => {
 
         try {
-            JSON.parse('{');
+            x.foo();
         }
         catch (err) {
             const boom = Boom.internal('Someting bad', err);
-            expect(boom.message).to.equal('Someting bad: Unexpected end of input');
+            expect(boom.message).to.equal('Someting bad: x is not defined');
             expect(boom.isServer).to.be.true();
             done();
         }
