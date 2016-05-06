@@ -12,18 +12,18 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "hoek": "3.x.x"
+    "hoek": "4.x.x"
   },
   "devDependencies": {
     "code": "2.x.x",
-    "lab": "7.x.x",
-    "markdown-toc": "0.11.x"
+    "lab": "10.x.x",
+    "markdown-toc": "0.12.x"
   },
   "scripts": {
     "test": "lab -a code -t 100 -L",
     "test-cov-html": "lab -a code -r html -o coverage.html -L",
     "toc": "node generate-toc.js",
-    "version": "npm run toc && git add README.md"
+    "postversion": "npm run toc && git add README.md"
   },
   "license": "BSD-3-Clause"
 }
