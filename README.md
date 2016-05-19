@@ -32,6 +32,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
     - [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
     - [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
     - [`Boom.badData([message], [data])`](#boombaddatamessage-data)
+    - [`Boom.locked([message], [data])`](#boomlockedmessage-data)
     - [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
     - [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
     - [`Boom.illegal([message], [data])`](#boomillegalmessage-data)
@@ -505,6 +506,26 @@ Generates the following response payload:
     "statusCode": 422,
     "error": "Unprocessable Entity",
     "message": "your data is bad and you should feel bad"
+}
+```
+
+### `Boom.locked([message], [data])`
+
+Returns a 423 Locked error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.locked('this account has been locked and it is your fault');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 423,
+    "error": "Locked",
+    "message": "this account has been locked and it is your fault"
 }
 ```
 
