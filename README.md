@@ -515,7 +515,7 @@ Returns a 423 Locked error where:
 - `data` - optional additional error data.
 
 ```js
-Boom.locked('this account has been locked and it is your fault');
+Boom.locked('this resource has been locked');
 ```
 
 Generates the following response payload:
@@ -524,7 +524,7 @@ Generates the following response payload:
 {
     "statusCode": 423,
     "error": "Locked",
-    "message": "this account has been locked and it is your fault"
+    "message": "this resource has been locked"
 }
 ```
 
