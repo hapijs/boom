@@ -463,6 +463,22 @@ describe('badData()', () => {
 });
 
 
+describe('locked()', () => {
+
+    it('returns a 423 error statusCode', (done) => {
+
+        expect(Boom.locked().output.statusCode).to.equal(423);
+        done();
+    });
+
+    it('sets the message with the passed in message', (done) => {
+
+        expect(Boom.locked('my message').message).to.equal('my message');
+        done();
+    });
+});
+
+
 describe('preconditionRequired()', () => {
 
     it('returns a 428 error statusCode', (done) => {

@@ -508,6 +508,26 @@ Generates the following response payload:
 }
 ```
 
+### `Boom.locked([message], [data])`
+
+Returns a 423 Locked error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.locked('this resource has been locked');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 423,
+    "error": "Locked",
+    "message": "this resource has been locked"
+}
+```
+
 ### `Boom.preconditionRequired([message], [data])`
 
 Returns a 428 Precondition Required error where:
