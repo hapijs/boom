@@ -35,7 +35,7 @@ it('returns an error with info when constructed using another error', (done) => 
     const err = Boom.wrap(error);
     expect(err.xyz).to.equal(123);
     expect(err.message).to.equal('ka-boom');
-    expect(err.output).to.deep.equal({
+    expect(err.output).to.equal({
         statusCode: 500,
         payload: {
             statusCode: 500,
@@ -172,7 +172,7 @@ describe('unauthorized()', () => {
 
         const err = Boom.unauthorized();
         expect(err.output.statusCode).to.equal(401);
-        expect(err.output.headers).to.deep.equal({});
+        expect(err.output.headers).to.equal({});
         done();
     });
 
@@ -203,7 +203,7 @@ describe('unauthorized()', () => {
         const err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
         expect(err.output.statusCode).to.equal(401);
         expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
-        expect(err.output.payload.attributes).to.deep.equal({ a: 1, b: 'something', c: '', d: 0, error: 'boom' });
+        expect(err.output.payload.attributes).to.equal({ a: 1, b: 'something', c: '', d: 0, error: 'boom' });
         done();
     });
 

@@ -15,12 +15,12 @@
     "hoek": "4.x.x"
   },
   "devDependencies": {
-    "code": "2.x.x",
+    "code": "3.x.x",
     "lab": "10.x.x",
     "markdown-toc": "0.12.x"
   },
   "scripts": {
-    "test": "lab -a code -t 100 -L",
+    "test": "lab -a code -t 100 -L -v",
     "test-cov-html": "lab -a code -r html -o coverage.html -L",
     "toc": "node generate-toc.js",
     "postversion": "npm run toc && git commit -a --amend --no-edit"
