@@ -23,7 +23,7 @@
     "test": "lab -a code -t 100 -L -v",
     "test-cov-html": "lab -a code -r html -o coverage.html -L",
     "toc": "node generate-toc.js",
-    "postversion": "npm run toc && git commit -a --amend --no-edit"
+    "version": "npm run toc && git add README.md"
   },
   "license": "BSD-3-Clause"
 }
