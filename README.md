@@ -40,7 +40,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
     - [`Boom.badImplementation([message], [data])`](#boombadimplementationmessage-data)
     - [`Boom.notImplemented([message], [data])`](#boomnotimplementedmessage-data)
     - [`Boom.badGateway([message], [data])`](#boombadgatewaymessage-data)
-    - [`Boom.serverUnavailable([message], [data])`](#boomserverunavailablemessage-data)
+    - [`Boom.serverTimeout([message], [data])`](#boomservertimeoutmessage-data)
     - [`Boom.gatewayTimeout([message], [data])`](#boomgatewaytimeoutmessage-data)
   - [F.A.Q.](#faq)
 
