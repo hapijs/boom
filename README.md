@@ -40,7 +40,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
     - [`Boom.badImplementation([message], [data])`](#boombadimplementationmessage-data)
     - [`Boom.notImplemented([message], [data])`](#boomnotimplementedmessage-data)
     - [`Boom.badGateway([message], [data])`](#boombadgatewaymessage-data)
-    - [`Boom.serverTimeout([message], [data])`](#boomservertimeoutmessage-data)
+    - [`Boom.serverUnavailable([message], [data])`](#boomserverunavailablemessage-data)
     - [`Boom.gatewayTimeout([message], [data])`](#boomgatewaytimeoutmessage-data)
   - [F.A.Q.](#faq)
 
@@ -653,14 +653,14 @@ Generates the following response payload:
 }
 ```
 
-### `Boom.serverTimeout([message], [data])`
+### `Boom.serverUnavailable([message], [data])`
 
 Returns a 503 Service Unavailable error where:
 - `message` - optional message.
 - `data` - optional additional error data.
 
 ```js
-Boom.serverTimeout('unavailable');
+Boom.serverUnavailable('unavailable');
 ```
 
 Generates the following response payload:
