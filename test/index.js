@@ -526,7 +526,6 @@ describe('illegal()', () => {
     });
 });
 
-
 describe('serverTimeout()', () => {
 
     it('returns a 503 error statusCode', (done) => {
@@ -538,6 +537,21 @@ describe('serverTimeout()', () => {
     it('sets the message with the passed in message', (done) => {
 
         expect(Boom.serverTimeout('my message').message).to.equal('my message');
+        done();
+    });
+});
+
+describe('serverUnavailable()', () => {
+
+    it('returns a 503 error statusCode', (done) => {
+
+        expect(Boom.serverUnavailable().output.statusCode).to.equal(503);
+        done();
+    });
+
+    it('sets the message with the passed in message', (done) => {
+
+        expect(Boom.serverUnavailable('my message').message).to.equal('my message');
         done();
     });
 });
@@ -678,8 +692,8 @@ describe('stack trace', () => {
             'badData', 'preconditionRequired', 'tooManyRequests',
 
             // 500s
-            'internal', 'notImplemented', 'badGateway', 'serverTimeout', 'gatewayTimeout',
-            'badImplementation'
+            'internal', 'notImplemented', 'badGateway', 'serverTimeout', 'serverUnavailable',
+            'gatewayTimeout', 'badImplementation'
         ].forEach((name) => {
 
             const err = Boom[name]();

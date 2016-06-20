@@ -653,14 +653,14 @@ Generates the following response payload:
 }
 ```
 
-### `Boom.serverTimeout([message], [data])`
+### `Boom.serverUnavailable([message], [data])`
 
 Returns a 503 Service Unavailable error where:
 - `message` - optional message.
 - `data` - optional additional error data.
 
 ```js
-Boom.serverTimeout('unavailable');
+Boom.serverUnavailable('unavailable');
 ```
 
 Generates the following response payload:
