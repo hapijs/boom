@@ -239,6 +239,28 @@ describe('unauthorized()', () => {
 });
 
 
+describe('paymentRequired()', () => {
+
+    it('returns a 402 error statusCode', (done) => {
+
+        expect(Boom.paymentRequired().output.statusCode).to.equal(402);
+        done();
+    });
+
+    it('sets the message with the passed in message', (done) => {
+
+        expect(Boom.paymentRequired('my message').message).to.equal('my message');
+        done();
+    });
+
+    it('sets the message to HTTP status if none provided', (done) => {
+
+        expect(Boom.paymentRequired().message).to.equal('Payment Required');
+        done();
+    });
+});
+
+
 describe('methodNotAllowed()', () => {
 
     it('returns a 405 error statusCode', (done) => {
