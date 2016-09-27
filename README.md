@@ -593,7 +593,7 @@ Generates the following response payload:
 
 All 500 errors hide your message from the end user. Your message is recorded in the server log.
 
-### `Boom.badImplementation([message], [data])`
+### `Boom.badImplementation([message], [data])` - (*alias: `internal`*)
 
 Returns a 500 Internal Server Error error where:
 - `message` - optional message.
