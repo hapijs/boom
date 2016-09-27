@@ -191,6 +191,26 @@ Generates the following response:
 }
 ```
 
+### `Boom.paymentRequired([message], [data])`
+
+Returns a 402 Payment Required error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.paymentRequired('bandwidth used');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 402,
+    "error": "Payment Required",
+    "message": "bandwidth used"
+}
+```
+
 ### `Boom.forbidden([message], [data])`
 
 Returns a 403 Forbidden error where:
