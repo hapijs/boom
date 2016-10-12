@@ -274,6 +274,28 @@ describe('methodNotAllowed()', () => {
         expect(Boom.methodNotAllowed('my message').message).to.equal('my message');
         done();
     });
+
+    it('sets the message with the passed in message', (done) => {
+
+        expect(Boom.methodNotAllowed('my message').message).to.equal('my message');
+        done();
+    });
+
+    it('returns an Allow header when passed a string', (done) => {
+
+        const err = Boom.methodNotAllowed('my message', null, 'GET');
+        expect(err.output.statusCode).to.equal(405);
+        expect(err.output.headers.Allow).to.equal('GET');
+        done();
+    });
+
+    it('returns an Allow header when passed an array', (done) => {
+
+        const err = Boom.methodNotAllowed('my message', null, ['GET', 'POST']);
+        expect(err.output.statusCode).to.equal(405);
+        expect(err.output.headers.Allow).to.equal('GET, POST');
+        done();
+    });
 });
 
 

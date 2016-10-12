@@ -252,11 +252,12 @@ Generates the following response payload:
 }
 ```
 
-### `Boom.methodNotAllowed([message], [data])`
+### `Boom.methodNotAllowed([message], [data], [allow])`
 
 Returns a 405 Method Not Allowed error where:
 - `message` - optional message.
 - `data` - optional additional error data.
+- `allow` can be either a string or an array of strings (to be combined and separated by ', ') which is set to the 'Allow' header.
 
 ```js
 Boom.methodNotAllowed('that method is not allowed');
