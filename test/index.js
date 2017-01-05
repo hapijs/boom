@@ -65,6 +65,12 @@ it('sets new message when none exists', (done) => {
     done();
 });
 
+it('throws error if trying to wrap a non-Error', (done) => {
+
+    expect(() => Boom.wrap('foo')).to.throw('Cannot wrap non-Error object');
+    done();
+});
+
 it('throws when statusCode is not a number', (done) => {
 
     expect(() => {
@@ -97,7 +103,7 @@ it('throws when statusCode is not finite', (done) => {
     expect(() => {
 
         Boom.create(1 / 0);
-    }).to.throw('First argument must be a number (400+): null');
+    }).to.throw('First argument must be a number (400+): Infinity');
     done();
 });
 
@@ -204,6 +210,12 @@ describe('unauthorized()', () => {
         expect(err.output.statusCode).to.equal(401);
         expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
         expect(err.output.payload.attributes).to.equal({ a: 1, b: 'something', c: '', d: 0, error: 'boom' });
+        done();
+    });
+
+    it('throws error for invalid attribute value', (done) => {
+
+        expect(() => Boom.unauthorized(null, 'Test', { a: 1, b: '\u1ed2', c: null, d: 0 })).to.throw('Bad attribute value (\u1ed2)');
         done();
     });
 
