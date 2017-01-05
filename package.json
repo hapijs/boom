@@ -12,7 +12,6 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "hoek": "4.x.x"
   },
   "devDependencies": {
     "code": "3.x.x",
