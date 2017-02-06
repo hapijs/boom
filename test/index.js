@@ -748,7 +748,6 @@ describe('method with error object instead of message', () => {
             expect(err.name).to.equal('ValidationError');
             expect(err.message).to.equal('An example mongoose validation error');
             done();
-
         });
 
         // exclude unauthorized
@@ -760,7 +759,6 @@ describe('method with error object instead of message', () => {
                 const err = Boom[name](error, { foo: 'bar' });
                 expect(err.data).to.equal({ foo: 'bar' });
                 done();
-
             });
 
         }
