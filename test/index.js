@@ -759,3 +759,43 @@ describe('stack trace', () => {
         done();
     });
 });
+
+describe('method with error object instead of message', () => {
+
+    ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
+        'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
+        'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
+        'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
+        'badData', 'preconditionRequired', 'tooManyRequests',
+
+        // 500s
+        'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
+        'gatewayTimeout', 'badImplementation'
+    ].forEach((name) => {
+
+        it(`should allow \`Boom${name}(err)\` and preserve the error`, (done) => {
+
+            const error = new Error('An example mongoose validation error');
+            error.name = 'ValidationError';
+            const err = Boom[name](error);
+            expect(err.name).to.equal('ValidationError');
+            expect(err.message).to.equal('An example mongoose validation error');
+            done();
+        });
+
+        // exclude unauthorized
+        if (name !== 'unauthorized') {
+
+            it(`should allow \`Boom.${name}(err, data)\` and preserve the data`, (done) => {
+
+                const error = new Error();
+                const err = Boom[name](error, { foo: 'bar' });
+                expect(err.data).to.equal({ foo: 'bar' });
+                done();
+            });
+
+        }
+
+    });
+
+});
