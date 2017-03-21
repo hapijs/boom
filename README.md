@@ -32,6 +32,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
     - [`Boom.unsupportedMediaType([message], [data])`](#boomunsupportedmediatypemessage-data)
     - [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
     - [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
+    - [`Boom.teapot([message], [data])`](#boomteapotmessage-data)
     - [`Boom.badData([message], [data])`](#boombaddatamessage-data)
     - [`Boom.locked([message], [data])`](#boomlockedmessage-data)
     - [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
@@ -68,7 +69,6 @@ object (instance of `Error`) which includes the following properties:
 
 The `Boom` object also supports the following method:
 - `reformat()` - rebuilds `error.output` using the other object properties.
-
 
 ## Helper Methods
 
@@ -525,6 +525,26 @@ Generates the following response payload:
     "statusCode": 417,
     "error": "Expectation Failed",
     "message": "expected this to work"
+}
+```
+
+### `Boom.teapot([message], [data])`
+
+Returns a 418 I'm a Teapot error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.teapot('sorry, no coffee...');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 418,
+    "error": "I'm a Teapot",
+    "message": "Sorry, no coffee..."
 }
 ```
 

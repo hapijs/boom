@@ -494,6 +494,22 @@ describe('expectationFailed()', () => {
 });
 
 
+describe('teapot()', () => {
+
+    it('returns a 418 error statusCode', (done) => {
+
+        expect(Boom.teapot().output.statusCode).to.equal(418);
+        done();
+    });
+
+    it('sets the message with the passed in message', (done) => {
+
+        expect(Boom.teapot('Sorry, no coffee...').message).to.equal('Sorry, no coffee...');
+        done();
+    });
+});
+
+
 describe('badData()', () => {
 
     it('returns a 422 error statusCode', (done) => {
