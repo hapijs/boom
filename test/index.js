@@ -762,15 +762,33 @@ describe('stack trace', () => {
 
 describe('method with error object instead of message', () => {
 
-    ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
-        'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
-        'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
-        'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
-        'badData', 'preconditionRequired', 'tooManyRequests',
-
-        // 500s
-        'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
-        'gatewayTimeout', 'badImplementation'
+    [
+        'badRequest',
+        'unauthorized',
+        'forbidden',
+        'notFound',
+        'methodNotAllowed',
+        'notAcceptable',
+        'proxyAuthRequired',
+        'clientTimeout',
+        'conflict',
+        'resourceGone',
+        'lengthRequired',
+        'preconditionFailed',
+        'entityTooLarge',
+        'uriTooLong',
+        'unsupportedMediaType',
+        'rangeNotSatisfiable',
+        'expectationFailed',
+        'badData',
+        'preconditionRequired',
+        'tooManyRequests',
+        'internal',
+        'notImplemented',
+        'badGateway',
+        'serverUnavailable',
+        'gatewayTimeout',
+        'badImplementation'
     ].forEach((name) => {
 
         it(`should allow \`Boom${name}(err)\` and preserve the error`, (done) => {
@@ -784,6 +802,7 @@ describe('method with error object instead of message', () => {
         });
 
         // exclude unauthorized
+
         if (name !== 'unauthorized') {
 
             it(`should allow \`Boom.${name}(err, data)\` and preserve the data`, (done) => {
@@ -793,9 +812,6 @@ describe('method with error object instead of message', () => {
                 expect(err.data).to.equal({ foo: 'bar' });
                 done();
             });
-
         }
-
     });
-
 });
