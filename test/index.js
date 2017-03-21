@@ -207,6 +207,15 @@ describe('unauthorized()', () => {
         done();
     });
 
+    it('returns a WWW-Authenticate header from string input instead of object', (done) => {
+
+        const err = Boom.unauthorized(null, 'Negotiate', 'VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
+        expect(err.output.statusCode).to.equal(401);
+        expect(err.output.headers['WWW-Authenticate']).to.equal('Negotiate VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
+        expect(err.output.payload.attributes).to.equal('VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
+        done();
+    });
+
     it('returns a WWW-Authenticate header when passed attributes, missing error', (done) => {
 
         const err = Boom.unauthorized(null, 'Test', { a: 1, b: 'something', c: null, d: 0 });
