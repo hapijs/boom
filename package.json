@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
   "keywords": [
@@ -15,8 +15,8 @@
     "hoek": "4.x.x"
   },
   "devDependencies": {
-    "code": "3.x.x",
-    "lab": "10.x.x",
+    "code": "4.x.x",
+    "lab": "13.x.x",
     "markdown-toc": "0.12.x"
   },
   "scripts": {
