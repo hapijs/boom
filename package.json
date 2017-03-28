@@ -19,6 +19,9 @@
     "lab": "13.x.x",
     "markdown-toc": "0.12.x"
   },
+  "browser": {
+    "http": "./lib/http-browser.js"
+  },
   "scripts": {
     "test": "lab -a code -t 100 -L -v",
     "test-cov-html": "lab -a code -r html -o coverage.html -L",
