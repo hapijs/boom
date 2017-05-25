@@ -122,7 +122,7 @@ describe('create()', () => {
     it('does not sets null message', (done) => {
 
         const error = Boom.unauthorized(null);
-        expect(error.output.payload.message).to.not.exist();
+        expect(error.output.payload.message).to.equal('Unauthorized');
         expect(error.isServer).to.be.false();
         done();
     });
@@ -132,6 +132,17 @@ describe('create()', () => {
         const error = Boom.badRequest('Missing data', { type: 'user' });
         expect(error.data.type).to.equal('user');
         expect(error.output.payload.message).to.equal('Missing data');
+        done();
+    });
+});
+
+describe('initialize()', () => {
+
+    it('does not sets null message', (done) => {
+
+        const err = new Error('some error message');
+        const boom = Boom.wrap(err, 400, 'modified error message');
+        expect(boom.output.payload.message).to.equal('modified error message: some error message');
         done();
     });
 });
