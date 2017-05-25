@@ -695,7 +695,6 @@ describe('notImplemented()', () => {
     });
 });
 
-
 describe('badGateway()', () => {
 
     it('returns a 502 error statusCode', (done) => {
@@ -707,6 +706,15 @@ describe('badGateway()', () => {
     it('sets the message with the passed in message', (done) => {
 
         expect(Boom.badGateway('my message').message).to.equal('my message');
+        done();
+    });
+
+    it('retains source boom error as data when wrapped', (done) => {
+
+        const upstream = Boom.serverUnavailable();
+        const boom = Boom.badGateway('Upstream error', upstream);
+        expect(boom.output.statusCode).to.equal(502);
+        expect(boom.data).to.equal(upstream);
         done();
     });
 });
