@@ -835,3 +835,15 @@ describe('method with error object instead of message', () => {
         }
     });
 });
+
+describe('error.typeOf()', () => {
+
+    it('should support typeOf for boomTypes', (done) => {
+
+        const err = Boom.notFound('Something was not found');
+        expect(err.typeOf).to.exist();
+        expect(err.typeOf(Boom.notFound)).to.be.true();
+        expect(err.typeOf(Boom.badRequest)).to.be.false();
+        done();
+    });
+});
