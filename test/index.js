@@ -866,14 +866,53 @@ describe('method with error object instead of message', () => {
     });
 });
 
-describe('error.typeOf()', () => {
+describe('error.typeof', () => {
 
-    it('should support typeOf for boomTypes', (done) => {
+    const types = [
+        'badRequest',
+        'unauthorized',
+        'forbidden',
+        'notFound',
+        'methodNotAllowed',
+        'notAcceptable',
+        'proxyAuthRequired',
+        'clientTimeout',
+        'conflict',
+        'resourceGone',
+        'lengthRequired',
+        'preconditionFailed',
+        'entityTooLarge',
+        'uriTooLong',
+        'unsupportedMediaType',
+        'rangeNotSatisfiable',
+        'expectationFailed',
+        'badData',
+        'preconditionRequired',
+        'tooManyRequests',
+        'internal',
+        'notImplemented',
+        'badGateway',
+        'serverUnavailable',
+        'gatewayTimeout',
+        'badImplementation'
+    ];
 
-        const err = Boom.notFound('Something was not found');
-        expect(err.typeOf).to.exist();
-        expect(err.typeOf(Boom.notFound)).to.be.true();
-        expect(err.typeOf(Boom.badRequest)).to.be.false();
-        done();
+    types.forEach((name) => {
+
+        it(`matches typeof Boom.${name}`, (done) => {
+
+            const error = Boom[name]();
+            types.forEach((type) => {
+
+                if (type === name) {
+                    expect(error.typeof).to.equal(Boom[name]);
+                }
+                else {
+                    expect(error.typeof).to.not.equal(Boom[type]);
+                }
+            });
+
+            done();
+        });
     });
 });
