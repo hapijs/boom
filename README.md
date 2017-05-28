@@ -55,6 +55,7 @@ object (instance of `Error`) which includes the following properties:
 - `isBoom` - if `true`, indicates this is a `Boom` object instance.
 - `isServer` - convenience bool indicating status code >= 500.
 - `message` - the error message.
+- `typeof` - the contructor used to create the error (e.g. `Boom.badRequest`).
 - `output` - the formatted response. Can be directly manipulated after object construction to return a custom
   error response. Allowed root keys:
     - `statusCode` - the HTTP status code (typically 4xx or 5xx).
