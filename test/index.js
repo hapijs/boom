@@ -755,6 +755,36 @@ describe('badImplementation()', () => {
         expect(err.isServer).to.be.true();
         done();
     });
+
+    it('hides error from user when error data is included', (done) => {
+
+        const err = Boom.badImplementation('Invalid', new Error('kaboom'));
+        expect(err.output).to.equal({
+            headers: {},
+            statusCode: 500,
+            payload: {
+                error: 'Internal Server Error',
+                message: 'An internal server error occurred',
+                statusCode: 500
+            }
+        });
+        done();
+    });
+
+    it('hides error from user when error data is included (boom)', (done) => {
+
+        const err = Boom.badImplementation('Invalid', Boom.badRequest('kaboom'));
+        expect(err.output).to.equal({
+            headers: {},
+            statusCode: 500,
+            payload: {
+                error: 'Internal Server Error',
+                message: 'An internal server error occurred',
+                statusCode: 500
+            }
+        });
+        done();
+    });
 });
 
 describe('stack trace', () => {
