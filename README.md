@@ -50,6 +50,10 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 # Boom
 
+##What to Use boom for and When to Use It
+
+**boom** is a module for the framework [hapi.js](https://github.com/hapi.js) that return HTTP errors. Once returned, **boom** breaks the error messages into objects that can be customized to read in a user-friendly format that are easy to construct. **boom** can be used during testing or production to improve error debugging.  
+
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom` error response
 object (instance of `Error`) which includes the following properties:
 - `isBoom` - if `true`, indicates this is a `Boom` object instance.
@@ -73,6 +77,7 @@ The `Boom` object also supports the following method:
 
 ## Helper Methods
 
+ 
 ### `wrap(error, [statusCode], [message])`
 
 Decorates an error with the **boom** properties where:
