@@ -25,15 +25,8 @@ it('returns the same object when already boom', (done) => {
     const error = Boom.badRequest();
     expect(error).to.equal(Boom.wrap(error));
     expect(error).to.equal(Boom.wrap(error, null, null));
-    done();
-});
-
-it('errors on wrap with boom error and additional arguments', (done) => {
-
-    const error = Boom.badRequest('Something');
-    expect(() => Boom.wrap(error, 401)).to.throw('Cannot provide statusCode or message with boom error');
-    expect(() => Boom.wrap(error, 402, 'Else')).to.throw('Cannot provide statusCode or message with boom error');
-    expect(() => Boom.wrap(error, undefined, 'Else')).to.throw('Cannot provide statusCode or message with boom error');
+    expect(error).to.equal(Boom.wrap(error, 999));
+    expect(error).to.equal(Boom.wrap(error, 999, 'Something'));
     done();
 });
 
