@@ -11,6 +11,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 - [Boom](#boom)
   - [Helper Methods](#helper-methods)
+    - [`boomify(error, [options])`](#boomifyerror-options)
     - [`wrap(error, [statusCode], [message])`](#wraperror-statuscode-message)
     - [`create(statusCode, [message], [data])`](#createstatuscode-message-data)
   - [HTTP 4xx Errors](#http-4xx-errors)
@@ -73,7 +74,29 @@ The `Boom` object also supports the following method:
 
 ## Helper Methods
 
+### `boomify(error, [options])`
+
+Decorates an error with the **boom** properties where:
+- `error` - the `Error` object to decorate.
+- `options` - optional object with the following optional settings:
+	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
+	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
+	  Defaults to no message.
+	- `override` - if `false`, the `error` provided is a **boom** object, and a `statusCode` or `message` are provided,
+	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
+	  regardless of its type, `Error` or **boom** object).
+
+Note: This method replaces the [`wrap()`](#wraperror-statuscode-message) and changes the default behavior to override
+existing **boom** objects with the provided status code and message.
+
+```js
+var error = new Error('Unexpected input');
+Boom.boomify(error, { statusCode: 400 });
+```
+
 ### `wrap(error, [statusCode], [message])`
+
+Note: This method is deprecated.
 
 Decorates an error with the **boom** properties where:
 - `error` - the error object to wrap. If `error` is already a **boom** object, returns back the same object.
