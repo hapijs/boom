@@ -9,14 +9,14 @@
     "http"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.9.0"
   },
   "dependencies": {
     "hoek": "5.x.x"
   },
   "devDependencies": {
     "code": "5.x.x",
-    "lab": "14.x.x",
+    "lab": "15.x.x",
     "markdown-toc": "0.12.x"
   },
   "scripts": {
