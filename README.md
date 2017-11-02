@@ -777,6 +777,10 @@ Generates the following response payload:
 
 ## F.A.Q.
 
+**Q** What versions of Node.js are supported?
+
+**A** Version 6.x of Boom only supports Node.js version 8 and above. For Node v4-6 use Boom version 5.
+
 **Q** How do I include extra information in my responses? `output.payload` is missing `data`, what gives?
 
 **A** There is a reason the values passed back in the response payloads are pretty locked down. It's mostly for security and to not leak any important information back to the client. This means you will need to put in a little more effort to include extra information about your custom error. Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.
