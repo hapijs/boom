@@ -11,7 +11,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 - [Boom](#boom)
   - [Helper Methods](#helper-methods)
-    - [`Boom(message, [options])`](#boommessage-options)
+    - [`new Boom(message, [options])`](#new-boommessage-options)
     - [`boomify(err, [options])`](#boomifyerr-options)
     - [`isBoom(err)`](#isboomerr)
   - [HTTP 4xx Errors](#http-4xx-errors)
@@ -51,9 +51,9 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 # Boom
 
-**boom** provides a set of utilities for returning HTTP errors. Each utility returns a **boom**
-error response object (instance of `Error`, **not** `Boom`) which includes the following properties:
-- `isBoom` - if `true`, indicates this is a **boom** object instance. Note that this boolean should
+**boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom`
+error response object which includes the following properties:
+- `isBoom` - if `true`, indicates this is a `Boom` object instance. Note that this boolean should
   only be used the the error is an instance of `Error`. If it is not certain, use `Boom.isBoom()`
   instead.
 - `isServer` - convenience bool indicating status code >= 500.
@@ -71,16 +71,21 @@ error response object (instance of `Error`, **not** `Boom`) which includes the f
         - `message` - the error message derived from `error.message`.
 - inherited `Error` properties.
 
-The **boom** object also supports the following method:
+The `Boom` object also supports the following method:
 - `reformat()` - rebuilds `error.output` using the other object properties.
+
+Note that `Boom` object will return `true` when used with `instanceof Boom`, but do not use the
+`Boom` prototype (they are either plain `Error` or the error prototype passed in). This means
+`Boom` objects should only be tested using `instaceof Boom` or `Boom.isBoom()` but not by looking
+at the prototype or contructor information. This limitation is to avoid manipulating the prototype
+chain which is very slow.
 
 ## Helper Methods
 
-### `Boom(message, [options])`
+### `new Boom(message, [options])`
 
-Creates a new `Error` object (note that the constructor is going to be `Error`, **not** `Boom`)
-using the provided `message` and then calling [`boomify()`](#boomifyerr-options) to decorate the
-error with the **boom** properties, where:
+Creates a new `Boom` object using the provided `message` and then calling
+[`boomify()`](#boomifyerr-options) to decorate the error with the `Boom` properties, where:
 - `message` - the error message. If `message` is an error, it is the same as calling
   [`boomify()`](#boomifyerr-options) directly.
 - `options` - and optional object where:
@@ -91,21 +96,18 @@ error with the **boom** properties, where:
     - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
       options.
 
-Note: while it is possible to call `new Boom()`, the `new` operator makes no difference since
-`Boom` is not a constructor.
-
 ### `boomify(err, [options])`
 
-Decorates an error with the **boom** properties where:
+Decorates an error with the `Boom` properties where:
 - `err` - the `Error` object to decorate.
 - `options` - optional object with the following optional settings:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
 	  Defaults to no message.
     - `decorate` - an option with extra properties to set on the error object.
-	- `override` - if `false`, the `err` provided is a **boom** object, and a `statusCode` or `message` are provided,
+	- `override` - if `false`, the `err` provided is a `Boom` object, and a `statusCode` or `message` are provided,
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
-	  regardless of its type, `Error` or **boom** object).
+	  regardless of its type, `Error` or `Boom` object).
 
 ```js
 var error = new Error('Unexpected input');
@@ -114,9 +116,7 @@ Boom.boomify(error, { statusCode: 400 });
 
 ### `isBoom(err)`
 
-Identifies whether an error supports the **boom** properties (note that `Boom` is not a constructor
-and calling `err instanceof Boom` will always return `false`).
-
+Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom`.
 
 ## HTTP 4xx Errors
 
@@ -154,7 +154,7 @@ Returns a 401 Unauthorized error where:
   the 'error' segment of the 'WWW-Authenticate' header. If `message` is unset, the 'error' segment of the header
   will not be present and `isMissing` will be true on the error object.
 
-If either `scheme` or `attributes` are set, the resultant **boom** object will have the
+If either `scheme` or `attributes` are set, the resultant `Boom` object will have the
 'WWW-Authenticate' header set for the response.
 
 ```js

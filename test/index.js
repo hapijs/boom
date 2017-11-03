@@ -48,7 +48,7 @@ describe('Boom', () => {
 
         expect(() => {
 
-            Boom('message', { statusCode: 'x' });
+            new Boom('message', { statusCode: 'x' });
         }).to.throw('First argument must be a number (400+): x');
     });
 
@@ -63,7 +63,7 @@ describe('Boom', () => {
 
         for (let i = 0; i < codes.length; ++i) {
             const code = codes[i];
-            const err = Boom('', { statusCode: code.input });
+            const err = new Boom('', { statusCode: code.input });
             expect(err.output.statusCode).to.equal(code.result);
         }
     });
@@ -72,21 +72,32 @@ describe('Boom', () => {
 
         expect(() => {
 
-            Boom('', { statusCode: 1 / 0 });
+            new Boom('', { statusCode: 1 / 0 });
         }).to.throw('First argument must be a number (400+): null');
     });
 
     it('sets error code to unknown', () => {
 
-        const err = Boom('', { statusCode: 999 });
+        const err = new Boom('', { statusCode: 999 });
         expect(err.output.payload.error).to.equal('Unknown');
+    });
+
+    describe('instanceof', () => {
+
+        it('identifies a boom object', () => {
+
+            expect(new Boom('oops') instanceof Boom).to.be.true();
+            expect(new Error('oops') instanceof Boom).to.be.false();
+            expect({ isBoom: true } instanceof Boom).to.be.false();
+            expect(null instanceof Boom).to.be.false();
+        });
     });
 
     describe('isBoom()', () => {
 
         it('identifies a boom object', () => {
 
-            expect(Boom.isBoom(Boom('oops'))).to.be.true();
+            expect(Boom.isBoom(new Boom('oops'))).to.be.true();
             expect(Boom.isBoom(new Error('oops'))).to.be.false();
             expect(Boom.isBoom({ isBoom: true })).to.be.false();
             expect(Boom.isBoom(null)).to.be.false();
