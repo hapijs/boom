@@ -87,7 +87,9 @@ describe('Boom', () => {
         it('identifies a boom object', () => {
 
             expect(new Boom('oops') instanceof Boom).to.be.true();
+            expect(Boom.badRequest('oops') instanceof Boom).to.be.true();
             expect(new Error('oops') instanceof Boom).to.be.false();
+            expect(Boom.boomify(new Error('oops')) instanceof Boom).to.be.true();
             expect({ isBoom: true } instanceof Boom).to.be.false();
             expect(null instanceof Boom).to.be.false();
         });
