@@ -36,6 +36,14 @@ describe('Boom', () => {
         expect(err.output.statusCode).to.equal(400);
     });
 
+    it('decorates error', () => {
+
+        const err = new Boom('oops', { statusCode: 400, decorate: { x: 1 } });
+        expect(err.output.payload.message).to.equal('oops');
+        expect(err.output.statusCode).to.equal(400);
+        expect(err.x).to.equal(1);
+    });
+
     it('throws when statusCode is not a number', () => {
 
         expect(() => {
@@ -92,6 +100,13 @@ describe('Boom', () => {
             const error = Boom.badRequest();
             expect(error).to.equal(Boom.boomify(error));
             expect(error).to.equal(Boom.boomify(error, { statusCode: 444 }));
+        });
+
+        it('decorates error', () => {
+
+            const err = new Error('oops');
+            Boom.boomify(err, { statusCode: 400, decorate: { x: 1 } });
+            expect(err.x).to.equal(1);
         });
 
         it('returns an error with info when constructed using another error', () => {

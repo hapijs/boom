@@ -86,6 +86,7 @@ error with the **boom** properties, where:
 - `options` - and optional object where:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
     - `data` - additional error information (assigned to `error.data`).
+    - `decorate` - an option with extra properties to set on the error object.
     - `cotr` - constructor reference used to crop the exception call stack output.
     - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
       options.
@@ -101,6 +102,7 @@ Decorates an error with the **boom** properties where:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
 	  Defaults to no message.
+    - `decorate` - an option with extra properties to set on the error object.
 	- `override` - if `false`, the `err` provided is a **boom** object, and a `statusCode` or `message` are provided,
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
 	  regardless of its type, `Error` or **boom** object).
