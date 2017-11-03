@@ -20,60 +20,27 @@ const expect = Code.expect;
 
 describe('Boom', () => {
 
-    it('returns the same object when already boom', () => {
+    it('constructs error object (new)', () => {
 
-        const error = Boom.badRequest();
-        expect(error).to.equal(Boom.wrap(error));
-        expect(error).to.equal(Boom.wrap(error, null, null));
+        const err = new Boom('oops', { statusCode: 400 });
+        expect(err.output.payload.message).to.equal('oops');
+        expect(err.output.statusCode).to.equal(400);
     });
 
-    it('errors on wrap with boom error and additional arguments', () => {
+    it('clones error object', () => {
 
-        const error = Boom.badRequest('Something');
-        expect(() => Boom.wrap(error, 401)).to.throw('Cannot provide statusCode or message with boom error');
-        expect(() => Boom.wrap(error, 402, 'Else')).to.throw('Cannot provide statusCode or message with boom error');
-        expect(() => Boom.wrap(error, undefined, 'Else')).to.throw('Cannot provide statusCode or message with boom error');
-    });
-
-    it('returns an error with info when constructed using another error', () => {
-
-        const error = new Error('ka-boom');
-        error.xyz = 123;
-        const err = Boom.wrap(error);
-        expect(err.xyz).to.equal(123);
-        expect(err.message).to.equal('ka-boom');
-        expect(err.output).to.equal({
-            statusCode: 500,
-            payload: {
-                statusCode: 500,
-                error: 'Internal Server Error',
-                message: 'An internal server error occurred'
-            },
-            headers: {}
-        });
-        expect(err.data).to.equal(null);
-    });
-
-    it('does not override data when constructed using another error', () => {
-
-        const error = new Error('ka-boom');
-        error.data = { useful: 'data' };
-        const err = Boom.wrap(error);
-        expect(err.data).to.equal(error.data);
-    });
-
-    it('sets new message when none exists', () => {
-
-        const error = new Error();
-        const wrapped = Boom.wrap(error, 400, 'something bad');
-        expect(wrapped.message).to.equal('something bad');
+        const oops = new Error('oops');
+        const err = new Boom(oops, { statusCode: 400 });
+        expect(err).to.not.shallow.equal(oops);
+        expect(err.output.payload.message).to.equal('oops');
+        expect(err.output.statusCode).to.equal(400);
     });
 
     it('throws when statusCode is not a number', () => {
 
         expect(() => {
 
-            Boom.create('x');
+            Boom('message', { statusCode: 'x' });
         }).to.throw('First argument must be a number (400+): x');
     });
 
@@ -88,7 +55,7 @@ describe('Boom', () => {
 
         for (let i = 0; i < codes.length; ++i) {
             const code = codes[i];
-            const err = Boom.create(code.input);
+            const err = Boom('', { statusCode: code.input });
             expect(err.output.statusCode).to.equal(code.result);
         }
     });
@@ -97,17 +64,69 @@ describe('Boom', () => {
 
         expect(() => {
 
-            Boom.create(1 / 0);
+            Boom('', { statusCode: 1 / 0 });
         }).to.throw('First argument must be a number (400+): null');
     });
 
     it('sets error code to unknown', () => {
 
-        const err = Boom.create(999);
+        const err = Boom('', { statusCode: 999 });
         expect(err.output.payload.error).to.equal('Unknown');
     });
 
+    describe('isBoom()', () => {
+
+        it('identifies a boom object', () => {
+
+            expect(Boom.isBoom(Boom('oops'))).to.be.true();
+            expect(Boom.isBoom(new Error('oops'))).to.be.false();
+            expect(Boom.isBoom({ isBoom: true })).to.be.false();
+            expect(Boom.isBoom(null)).to.be.false();
+        });
+    });
+
     describe('boomify()', () => {
+
+        it('returns the same object when already boom', () => {
+
+            const error = Boom.badRequest();
+            expect(error).to.equal(Boom.boomify(error));
+            expect(error).to.equal(Boom.boomify(error, { statusCode: 444 }));
+        });
+
+        it('returns an error with info when constructed using another error', () => {
+
+            const error = new Error('ka-boom');
+            error.xyz = 123;
+            const err = Boom.boomify(error);
+            expect(err.xyz).to.equal(123);
+            expect(err.message).to.equal('ka-boom');
+            expect(err.output).to.equal({
+                statusCode: 500,
+                payload: {
+                    statusCode: 500,
+                    error: 'Internal Server Error',
+                    message: 'An internal server error occurred'
+                },
+                headers: {}
+            });
+            expect(err.data).to.equal(null);
+        });
+
+        it('does not override data when constructed using another error', () => {
+
+            const error = new Error('ka-boom');
+            error.data = { useful: 'data' };
+            const err = Boom.boomify(error);
+            expect(err.data).to.equal(error.data);
+        });
+
+        it('sets new message when none exists', () => {
+
+            const error = new Error();
+            const wrapped = Boom.boomify(error, { statusCode: 400, message: 'something bad' });
+            expect(wrapped.message).to.equal('something bad');
+        });
 
         it('returns boom error unchanged', () => {
 
@@ -207,7 +226,7 @@ describe('Boom', () => {
         it('does not sets null message', () => {
 
             const err = new Error('some error message');
-            const boom = Boom.wrap(err, 400, 'modified error message');
+            const boom = Boom.boomify(err, { statusCode: 400, message: 'modified error message' });
             expect(boom.output.payload.message).to.equal('modified error message: some error message');
         });
     });

@@ -11,9 +11,9 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 - [Boom](#boom)
   - [Helper Methods](#helper-methods)
-    - [`boomify(error, [options])`](#boomifyerror-options)
-    - [`wrap(error, [statusCode], [message])`](#wraperror-statuscode-message)
-    - [`create(statusCode, [message], [data])`](#createstatuscode-message-data)
+    - [`Boom(message, [options])`](#boommessage-options)
+    - [`boomify(err, [options])`](#boomifyerr-options)
+    - [`isBoom(err)`](#isboomerr)
   - [HTTP 4xx Errors](#http-4xx-errors)
     - [`Boom.badRequest([message], [data])`](#boombadrequestmessage-data)
     - [`Boom.unauthorized([message], [scheme], [attributes])`](#boomunauthorizedmessage-scheme-attributes)
@@ -74,15 +74,29 @@ The `Boom` object also supports the following method:
 
 ## Helper Methods
 
-### `boomify(error, [options])`
+### `Boom(message, [options])`
+
+Creates a new `Error` object (note that the constructor is going to be `Error`, **not** `Boom`)
+using the provided `message` and then calling [`boomify()`](#boomifyerr-options) to decorate the
+error with the **boom** properties, where:
+- `message` - the error message. If `message` is an error, it is the same as calling
+  [`boomify()`](#boomifyerr-options) directly.
+- `options` - and optional object where:
+	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
+    - `data` - additional error information (assigned to `error.data`).
+    - `cotr` - constructor reference used to crop the exception call stack output.
+    - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
+      options.
+
+### `boomify(err, [options])`
 
 Decorates an error with the **boom** properties where:
-- `error` - the `Error` object to decorate.
+- `err` - the `Error` object to decorate.
 - `options` - optional object with the following optional settings:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
 	  Defaults to no message.
-	- `override` - if `false`, the `error` provided is a **boom** object, and a `statusCode` or `message` are provided,
+	- `override` - if `false`, the `err` provided is a **boom** object, and a `statusCode` or `message` are provided,
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
 	  regardless of its type, `Error` or **boom** object).
 
@@ -94,31 +108,11 @@ var error = new Error('Unexpected input');
 Boom.boomify(error, { statusCode: 400 });
 ```
 
-### `wrap(error, [statusCode], [message])`
+### `isBoom(err)`
 
-Note: This method is deprecated.
+Identifies whether an error supports the **boom** properties (note that `Boom` is not a constructor
+and calling `err instanceof Boom` will always return `false`).
 
-Decorates an error with the **boom** properties where:
-- `error` - the error object to wrap. If `error` is already a **boom** object, returns back the same object.
-- `statusCode` - optional HTTP status code. Defaults to `500`.
-- `message` - optional message string. If the error already has a message, it adds the message as a prefix.
-  Defaults to no message.
-
-```js
-var error = new Error('Unexpected input');
-Boom.wrap(error, 400);
-```
-
-### `create(statusCode, [message], [data])`
-
-Generates an `Error` object with the **boom** decorations where:
-- `statusCode` - an HTTP error code number. Must be greater or equal 400.
-- `message` - optional message string.
-- `data` - additional error data set to `error.data` property.
-
-```js
-var error = Boom.create(400, 'Bad request', { timestamp: Date.now() });
-```
 
 ## HTTP 4xx Errors
 
