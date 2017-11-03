@@ -100,9 +100,6 @@ Decorates an error with the **boom** properties where:
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
 	  regardless of its type, `Error` or **boom** object).
 
-Note: This method replaces the [`wrap()`](#wraperror-statuscode-message) and changes the default behavior to override
-existing **boom** objects with the provided status code and message.
-
 ```js
 var error = new Error('Unexpected input');
 Boom.boomify(error, { statusCode: 400 });
