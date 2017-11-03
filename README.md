@@ -90,6 +90,9 @@ error with the **boom** properties, where:
     - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
       options.
 
+Note: while it is possible to call `new Boom()`, the `new` operator makes no difference since
+`Boom` is not a constructor.
+
 ### `boomify(err, [options])`
 
 Decorates an error with the **boom** properties where:
