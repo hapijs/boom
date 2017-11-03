@@ -783,6 +783,7 @@ describe('Boom', () => {
         it('hides error from user when error data is included (boom)', () => {
 
             const err = Boom.badImplementation('Invalid', Boom.badRequest('kaboom'));
+            expect(err.isDeveloperError).to.equal(true);
             expect(err.output).to.equal({
                 headers: {},
                 statusCode: 500,
