@@ -51,9 +51,11 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 
 # Boom
 
-**boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom` error response
-object (instance of `Error`) which includes the following properties:
-- `isBoom` - if `true`, indicates this is a `Boom` object instance.
+**boom** provides a set of utilities for returning HTTP errors. Each utility returns a **boom**
+error response object (instance of `Error`, **not** `Boom`) which includes the following properties:
+- `isBoom` - if `true`, indicates this is a **boom** object instance. Note that this boolean should
+  only be used the the error is an instance of `Error`. If it is not certain, use `Boom.isBoom()`
+  instead.
 - `isServer` - convenience bool indicating status code >= 500.
 - `message` - the error message.
 - `typeof` - the constructor used to create the error (e.g. `Boom.badRequest`).
@@ -69,7 +71,7 @@ object (instance of `Error`) which includes the following properties:
         - `message` - the error message derived from `error.message`.
 - inherited `Error` properties.
 
-The `Boom` object also supports the following method:
+The **boom** object also supports the following method:
 - `reformat()` - rebuilds `error.output` using the other object properties.
 
 ## Helper Methods
@@ -147,7 +149,8 @@ Returns a 401 Unauthorized error where:
   the 'error' segment of the 'WWW-Authenticate' header. If `message` is unset, the 'error' segment of the header
   will not be present and `isMissing` will be true on the error object.
 
-If either `scheme` or `attributes` are set, the resultant `Boom` object will have the 'WWW-Authenticate' header set for the response.
+If either `scheme` or `attributes` are set, the resultant **boom** object will have the
+'WWW-Authenticate' header set for the response.
 
 ```js
 Boom.unauthorized('invalid password');
