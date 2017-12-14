@@ -76,7 +76,7 @@ The `Boom` object also supports the following method:
 
 Note that `Boom` object will return `true` when used with `instanceof Boom`, but do not use the
 `Boom` prototype (they are either plain `Error` or the error prototype passed in). This means
-`Boom` objects should only be tested using `instaceof Boom` or `Boom.isBoom()` but not by looking
+`Boom` objects should only be tested using `instanceof Boom` or `Boom.isBoom()` but not by looking
 at the prototype or contructor information. This limitation is to avoid manipulating the prototype
 chain which is very slow.
 
