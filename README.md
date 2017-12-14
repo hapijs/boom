@@ -116,8 +116,7 @@ Boom.boomify(error, { statusCode: 400 });
 
 ### `isBoom(err)`
 
-Identifies whether an error is a `Boom` object. Same as calling `
-nceof Boom`.
+Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom`.
 
 ## HTTP 4xx Errors
 
