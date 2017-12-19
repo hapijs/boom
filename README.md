@@ -54,7 +54,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom`
 error response object which includes the following properties:
 - `isBoom` - if `true`, indicates this is a `Boom` object instance. Note that this boolean should
-  only be used the the error is an instance of `Error`. If it is not certain, use `Boom.isBoom()`
+  only be used if the error is an instance of `Error`. If it is not certain, use `Boom.isBoom()`
   instead.
 - `isServer` - convenience bool indicating status code >= 500.
 - `message` - the error message.
