@@ -92,7 +92,7 @@ Creates a new `Boom` object using the provided `message` and then calling
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
     - `data` - additional error information (assigned to `error.data`).
     - `decorate` - an option with extra properties to set on the error object.
-    - `cotr` - constructor reference used to crop the exception call stack output.
+    - `ctor` - constructor reference used to crop the exception call stack output.
     - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
       options.
 
