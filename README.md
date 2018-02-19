@@ -101,7 +101,7 @@ Creates a new `Boom` object using the provided `message` and then calling
 Decorates an error with the `Boom` properties where:
 - `err` - the `Error` object to decorate.
 - `options` - optional object with the following optional settings:
-	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
+	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set and `err` is not a `Boom` object.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
 	  Defaults to no message.
     - `decorate` - an option with extra properties to set on the error object.
