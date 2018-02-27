@@ -621,6 +621,19 @@ describe('Boom', () => {
         });
     });
 
+    describe('failedDependency()', () => {
+
+        it('returns a 424 error statusCode', () => {
+
+            expect(Boom.failedDependency().output.statusCode).to.equal(424);
+        });
+
+        it('sets the message with the passed in message', () => {
+
+            expect(Boom.failedDependency('my message').message).to.equal('my message');
+        });
+    });
+
 
     describe('preconditionRequired()', () => {
 
