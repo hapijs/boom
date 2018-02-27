@@ -36,6 +36,7 @@ Lead Maintainer: [Adam Bretz](https://github.com/arb)
     - [`Boom.teapot([message], [data])`](#boomteapotmessage-data)
     - [`Boom.badData([message], [data])`](#boombaddatamessage-data)
     - [`Boom.locked([message], [data])`](#boomlockedmessage-data)
+    - [`Boom.failedDependency([message], [data])`](#boomfaileddependencymessage-data)
     - [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
     - [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
     - [`Boom.illegal([message], [data])`](#boomillegalmessage-data)
@@ -608,6 +609,26 @@ Generates the following response payload:
     "statusCode": 423,
     "error": "Locked",
     "message": "this resource has been locked"
+}
+```
+
+### `Boom.failedDependency([message], [data])`
+
+Returns a 424 Failed Dependency error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.failedDependency('an external resource failed');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 424,
+    "error": "Failed Dependency",
+    "message": "an external resource failed"
 }
 ```
 
