@@ -611,6 +611,26 @@ Generates the following response payload:
 }
 ```
 
+### `Boom.failedDependency([message], [data])`
+
+Returns a 424 Failed Dependency error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.failedDependency('an external resource failed');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 424,
+    "error": "Failed Dependency",
+    "message": "an external resource failed"
+}
+```
+
 ### `Boom.preconditionRequired([message], [data])`
 
 Returns a 428 Precondition Required error where:
