@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "7.1.1",
+  "version": "7.2.0",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
   "keywords": [
