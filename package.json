@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "code": "5.x.x",
+    "husky": "^0.15.0-rc.9",
     "lab": "15.x.x",
     "markdown-toc": "0.12.x"
   },
@@ -24,6 +25,11 @@
     "test-cov-html": "lab -a code -r html -o coverage.html -L",
     "toc": "node generate-toc.js",
     "version": "npm run toc && git add README.md"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
   },
   "license": "BSD-3-Clause"
 }
