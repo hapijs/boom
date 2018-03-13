@@ -27,6 +27,24 @@ describe('Boom', () => {
         expect(err.output.statusCode).to.equal(400);
     });
 
+    it('constructs wrapper object', () => {
+
+        const oops = { oops: 'error' };
+        const err = new Boom(oops, { statusCode: 400 });
+        expect(err.output.payload.message).to.equal(oops);
+        expect(err.output.statusCode).to.equal(400);
+    });
+
+    it('constructs array object', () => {
+
+        const oops = ['error'];
+        const err = new Boom(oops, { statusCode: 400 });
+        expect(Array.isArray(err.output.payload.message)).to.equal(true);
+        expect(err.output.payload.message[0]).to.equal(oops[0]);
+        expect(err.output.statusCode).to.equal(400);
+    });
+
+
     it('clones error object', () => {
 
         const oops = new Error('oops');
