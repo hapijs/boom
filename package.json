@@ -12,7 +12,7 @@
     "node": ">=8.9.0"
   },
   "dependencies": {
-    "hoek": "5.x.x"
+    "hoek": ">=5.0.3"
   },
   "devDependencies": {
     "code": "5.x.x",
