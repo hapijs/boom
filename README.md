@@ -88,7 +88,7 @@ chain which is very slow.
 Creates a new `Boom` object using the provided `message` and then calling
 [`boomify()`](#boomifyerr-options) to decorate the error with the `Boom` properties, where:
 - `message` - the error message. If `message` is an error, it is the same as calling
-  [`boomify()`](#boomifyerr-options) directly.
+  [`boomify()`](#boomifyerr-options) directly and the returned output will also have a stack trace.
 - `options` - and optional object where:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
     - `data` - additional error information (assigned to `error.data`).
