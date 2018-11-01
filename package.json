@@ -12,7 +12,7 @@
     "node": ">=8.12.0"
   },
   "dependencies": {
-    "hoek": "5.x.x"
+    "hoek": "6.x.x"
   },
   "devDependencies": {
     "code": "5.x.x",
@@ -20,7 +20,7 @@
     "markdown-toc": "0.12.x"
   },
   "scripts": {
-    "test": "lab -a code -t 100 -L -v",
+    "test": "lab -a code -t 100 -L",
     "test-cov-html": "lab -a code -r html -o coverage.html -L",
     "toc": "node generate-toc.js",
     "version": "npm run toc && git add README.md"
