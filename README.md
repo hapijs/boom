@@ -5,7 +5,7 @@ HTTP-friendly error objects
 [![Build Status](https://secure.travis-ci.org/hapijs/boom.svg)](http://travis-ci.org/hapijs/boom)
 [![Current Version](https://img.shields.io/npm/v/boom.svg)](https://www.npmjs.com/package/boom)
 
-Lead Maintainer: [Adam Bretz](https://github.com/arb)
+Lead Maintainer: [Eran Hammer](https://github.com/hueniverse)
 
 <!-- toc -->
 
