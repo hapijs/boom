@@ -10,6 +10,7 @@ Lead Maintainer: [Eran Hammer](https://github.com/hueniverse)
 <!-- toc -->
 
 - [Boom](#boom)
+    - [`reformat(debug)`](#reformatdebug)
   - [Helper Methods](#helper-methods)
     - [`new Boom(message, [options])`](#new-boommessage-options)
     - [`boomify(err, [options])`](#boomifyerr-options)
