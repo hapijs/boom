@@ -960,4 +960,35 @@ describe('Boom', () => {
             });
         });
     });
+
+    describe('reformat()', () => {
+
+        it('displays internal server error messages in debug mode', () => {
+
+            const error = new Error('ka-boom');
+            const err = Boom.boomify(error, { statusCode: 500 });
+
+            err.reformat(false);
+            expect(err.output).to.equal({
+                statusCode: 500,
+                payload: {
+                    statusCode: 500,
+                    error: 'Internal Server Error',
+                    message: 'An internal server error occurred'
+                },
+                headers: {}
+            });
+
+            err.reformat(true);
+            expect(err.output).to.equal({
+                statusCode: 500,
+                payload: {
+                    statusCode: 500,
+                    error: 'Internal Server Error',
+                    message: 'ka-boom'
+                },
+                headers: {}
+            });
+        });
+    });
 });
