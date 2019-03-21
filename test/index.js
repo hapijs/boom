@@ -1,18 +1,12 @@
 'use strict';
 
-// Load modules
-
 const Code = require('code');
 const Boom = require('../lib');
 const Lab = require('lab');
 
 
-// Declare internals
-
 const internals = {};
 
-
-// Test shortcuts
 
 const lab = exports.lab = Lab.script();
 const describe = lab.describe;
@@ -767,7 +761,7 @@ describe('Boom', () => {
         it('returns an error with composite message', (done) => {
 
             try {
-                x.foo();
+                x.foo();        // eslint-disable-line no-undef
             }
             catch (err) {
                 const boom = Boom.internal('Someting bad', err);
