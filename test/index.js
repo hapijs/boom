@@ -339,9 +339,9 @@ describe('Boom', () => {
 
         it('returns a WWW-Authenticate header when passed attributes, missing error', () => {
 
-            const err = Boom.unauthorized(null, 'Test', { a: 1, b: 'something', c: null, d: 0 });
+            const err = Boom.unauthorized(null, 'Test', { a: 1, b: 'something', c: null, d: 0, e: undefined });
             expect(err.output.statusCode).to.equal(401);
-            expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0"');
+            expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", e=""');
             expect(err.isMissing).to.equal(true);
         });
 
