@@ -4,10 +4,7 @@
   "version": "7.4.2",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
-  "keywords": [
-    "error",
-    "http"
-  ],
+  "keywords": ["error", "http"],
   "dependencies": {
     "@hapi/hoek": "6.x.x"
   },
