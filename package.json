@@ -4,16 +4,13 @@
   "version": "7.4.0",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
-  "keywords": [
-    "error",
-    "http"
-  ],
+  "keywords": ["error", "http"],
   "dependencies": {
     "@hapi/hoek": "6.x.x"
   },
   "devDependencies": {
     "code": "5.x.x",
-    "lab": "18.x.x"
+    "@hapi/lab": "18.x.x"
   },
   "scripts": {
     "test": "lab -a code -t 100 -L",
