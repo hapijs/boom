@@ -53,6 +53,7 @@ error response object which includes the following properties:
 - `isServer` - convenience bool indicating status code >= 500.
 - `message` - the error message.
 - `typeof` - the constructor used to create the error (e.g. `Boom.badRequest`).
+  - Not available in `typescript` at this time. It will be revised later.
 - `output` - the formatted response. Can be directly manipulated after object construction to return a custom
   error response. Allowed root keys:
     - `statusCode` - the HTTP status code (typically 4xx or 5xx).
