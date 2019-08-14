@@ -1,10 +1,13 @@
 {
   "name": "@hapi/boom",
   "description": "HTTP-friendly error objects",
-  "version": "7.4.2",
+  "version": "7.4.3",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
-  "keywords": ["error", "http"],
+  "keywords": [
+    "error",
+    "http"
+  ],
   "dependencies": {
     "@hapi/hoek": "8.x.x"
   },
