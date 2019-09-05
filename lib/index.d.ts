@@ -72,7 +72,7 @@ export interface Options<T> {
 }
 
 
-export class Boom<T> extends Error {
+export class Boom<T = any> extends Error {
 
   constructor(message?: string | Error, options?: Options<T>)
 
@@ -123,7 +123,7 @@ export class Boom<T> extends Error {
 * 
 * @returns A decorated boom object
 */
-  boomify(err: Error, options: Options<T>): Boom<T>  
+  boomify(err: Error, options?: Options<T>): Boom<T>  
 
   
 // 4xx Errors
@@ -148,7 +148,7 @@ export class Boom<T> extends Error {
 * 
 * @returns A 401 Unauthorized error
 */
-  unauthorized(message?: string, scheme?: string | Array<string>, attributes?: object | string): Boom<T>
+  unauthorized(message?: string | null, scheme?: string | Array<string>, attributes?: object | string): Boom<T>
 
 
 /**
@@ -463,6 +463,6 @@ export class Boom<T> extends Error {
 
 }
 
-
+export default Boom
 
 
