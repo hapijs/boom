@@ -1,8 +1,5 @@
-# Table of Contents
 
-## boom
-
-- [Boom](#boom)
+- [boom](#boom)
   - [`reformat(debug)`](#reformatdebug)
   - [Helper Methods](#helper-methods)
     - [`new Boom(message, [options])`](#new-boommessage-options)
@@ -43,7 +40,7 @@
   - [F.A.Q.](#faq)
 
 
-### Boom
+## boom
 
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom`
 error response object which includes the following properties:
