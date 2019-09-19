@@ -49,6 +49,27 @@ describe('Boom', () => {
         }).to.throw('First argument must be a number (400+): x');
     });
 
+    it('errors on incompatible message property (prototype)', () => {
+
+        const Err = class extends Error {
+
+            get message() {
+
+                return 'x';
+            }
+        };
+
+        const err = new Err();
+        expect(() => Boom.boomify(err, { message: 'override' })).to.throw('The error is not compatible with boom');
+    });
+
+    it('errors on incompatible message property (own)', () => {
+
+        const err = new Error();
+        Object.defineProperty(err, 'message', { get: function () { } });
+        expect(() => Boom.boomify(err, { message: 'override' })).to.throw('The error is not compatible with boom');
+    });
+
     it('will cast a number-string to an integer', () => {
 
         const codes = [
