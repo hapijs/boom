@@ -19,6 +19,9 @@ describe('Boom', () => {
         const err = new Boom('oops', { statusCode: 400 });
         expect(err.output.payload.message).to.equal('oops');
         expect(err.output.statusCode).to.equal(400);
+
+        expect(Object.keys(err)).to.equal(['data', 'isBoom', 'isServer', 'output']);
+        expect(JSON.stringify(err)).to.equal('{"data":null,"isBoom":true,"isServer":false,"output":{"statusCode":400,"payload":{"statusCode":400,"error":"Bad Request","message":"oops"},"headers":{}}}');
     });
 
     it('clones error object', () => {
