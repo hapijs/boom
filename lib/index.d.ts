@@ -1,4 +1,3 @@
-
 export interface Payload {
 /**
 * The HTTP status code derived from error.output.statuscode
@@ -464,5 +463,3 @@ export class Boom<T = any> extends Error {
 }
 
 export default Boom
-
-
