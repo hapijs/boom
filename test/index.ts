@@ -7,6 +7,7 @@ const { expect } = Lab.types;
 // new Boom()
 
 expect.type<Boom>(new Boom());
+expect.type<Error>(new Boom());
 
 
 class X {
@@ -20,8 +21,10 @@ class X {
 };
 
 const decorate = new X(1);
-//expect.type<number>(new Boom('error', { decorate }).x);
 
+expect.type<number>(new Boom('error', { decorate }).x);
+
+expect.error(new Boom('error', { decorate }).y);
 
 // boomify()
 
@@ -36,6 +39,7 @@ expect.error(Boom.boomify('error'));
 expect.error(Boom.boomify(error, { statusCode: 400, message: true }));
 expect.error(Boom.boomify(error, { statusCode: 400, override: 'false' }));
 expect.error(Boom.boomify());
+expect.error(Boom.boomify(error, { decorate }).y);
 
 
 // isBoom()
