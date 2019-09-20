@@ -90,7 +90,7 @@ export interface Boom<Data = any> extends Error {
     /**
     Custom error data with additional information specific to the error type
     */
-    data: Data
+    data?: Data
 
     /** isBoom - if true, indicates this is a Boom object instance. */
     isBoom: boolean;
