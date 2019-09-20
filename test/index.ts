@@ -28,7 +28,7 @@ expect.error(new Boom('error', { decorate }).y);
 
 // boomify()
 
-const error = new Error('Unexpected input')
+const error = new Error('Unexpected input');
 
 expect.type<Boom>(Boom.boomify(error, { statusCode: 400 }));
 expect.type<Boom>(Boom.boomify(error, { statusCode: 400, message: 'Unexpected Input', override: false }));
@@ -42,9 +42,14 @@ expect.error(Boom.boomify());
 expect.error(Boom.boomify(error, { decorate }).y);
 
 
+// isBoom
+
+expect.type<boolean>(Boom.boomify(error).isBoom);
+
 // isBoom()
 
 expect.type<boolean>(Boom.isBoom(error));
+expect.type<boolean>(Boom.isBoom(Boom.boomify(error)));
 
 expect.error(Boom.isBoom('error'));
 expect.error(Boom.isBoom({ foo: 'bar' }));
