@@ -81,15 +81,16 @@ declare namespace boom {
     }
 }
 
+interface BoomConstructor {
+    new <Data = any, Decoration extends object = object>(message?: string | Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration;
+}
 
-export class Boom<Data = any, Decoration = object> extends Error {
-
-    constructor(message?: string | Error, options?: boom.Options<Data, Decoration>)
+export interface Boom<Data = any> extends Error {
 
     /**
     Custom error data with additional information specific to the error type
     */
-    data: Data;
+    data?: Data;
 
     /** isBoom - if true, indicates this is a Boom object instance. */
     isBoom: boolean;
@@ -120,6 +121,9 @@ export class Boom<Data = any, Decoration = object> extends Error {
     @param debug - A boolean that, when true, does not hide the original 500 error message. Defaults to false.
     */
     reformat(debug?: boolean): string
+}
+
+interface BoomStatic {
 
     /**
     Specifies if an error object is a valid boom object
@@ -128,7 +132,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns Returns a boolean stating if the error object is a valid boom object
     */
-    static isBoom(err: Error): err is Boom
+    isBoom(err: Error): err is Boom
 
     /**
     Specifies if an error object is a valid boom object
@@ -138,7 +142,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A decorated boom object
     */
-    static boomify<Data, Decoration>(err: Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration
+    boomify<Data, Decoration>(err: Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration
 
     // 4xx Errors
 
@@ -150,7 +154,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 400 bad request error
     */
-    static badRequest<Data>(message?: string, data?: Data): Boom<Data>
+    badRequest<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 401 Unauthorized error
@@ -161,7 +165,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 401 Unauthorized error
     */
-    static unauthorized<Data>(message?: string | null, scheme?: string, attributes?: object | string): Boom<Data> & boom.MissingAuth
+    unauthorized<Data>(message?: string | null, scheme?: string, attributes?: object | string): Boom<Data> & boom.MissingAuth
 
     /**
     Returns a 401 Unauthorized error
@@ -171,7 +175,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 401 Unauthorized error
     */
-    static unauthorized<Data>(message: string | null, wwwAuthenticate: Array<string>): Boom<Data>
+    unauthorized<Data>(message: string | null, wwwAuthenticate: Array<string>): Boom<Data>
 
     /**
     Returns a 402 Payment Required error
@@ -181,7 +185,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 402 Payment Required error
     */
-    static paymentRequired<Data>(message?: string, data?: Data): Boom<Data>
+    paymentRequired<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 403 Forbidden error
@@ -191,7 +195,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 403 Forbidden error
     */
-    static forbidden<Data>(message?: string, data?: Data): Boom<Data>
+    forbidden<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 404 Not Found error
@@ -201,7 +205,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 404 Not Found error
     */
-    static notFound<Data>(message?: string, data?: Data): Boom<Data>
+    notFound<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 405 Method Not Allowed error
@@ -212,7 +216,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 405 Method Not Allowed error
     */
-    static methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | Array<string>): Boom<Data>
+    methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | Array<string>): Boom<Data>
 
     /**
     Returns a 406 Not Acceptable error
@@ -222,7 +226,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 406 Not Acceptable error
     */
-    static notAcceptable<Data>(message?: string, data?: Data): Boom<Data>
+    notAcceptable<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 407 Proxy Authentication error
@@ -232,7 +236,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 407 Proxy Authentication error
     */
-    static proxyAuthRequired<Data>(message?: string, data?: Data): Boom<Data>
+    proxyAuthRequired<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 408 Request Time-out error
@@ -242,7 +246,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 408 Request Time-out error
     */
-    static clientTimeout<Data>(message?: string, data?: Data): Boom<Data>
+    clientTimeout<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 409 Conflict error
@@ -252,7 +256,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 409 Conflict error
     */
-    static conflict<Data>(message?: string, data?: Data): Boom<Data>
+    conflict<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 410 Gone error
@@ -262,7 +266,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 410 gone error
     */
-    static resourceGone<Data>(message?: string, data?: Data): Boom<Data>
+    resourceGone<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 411 Length Required error
@@ -272,7 +276,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 411 Length Required error
     */
-    static lengthRequired<Data>(message?: string, data?: Data): Boom<Data>
+    lengthRequired<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 412 Precondition Failed error
@@ -282,7 +286,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 412 Precondition Failed error
     */
-    static preconditionFailed<Data>(message?: string, data?: Data): Boom<Data>
+    preconditionFailed<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 413 Request Entity Too Large error
@@ -292,7 +296,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 413 Request Entity Too Large error
     */
-    static entityTooLarge<Data>(message?: string, data?: Data): Boom<Data>
+    entityTooLarge<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 414 Request-URI Too Large error
@@ -302,7 +306,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 414 Request-URI Too Large error
     */
-    static uriTooLong<Data>(message?: string, data?: Data): Boom<Data>
+    uriTooLong<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 415 Unsupported Media Type error
@@ -312,7 +316,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 415 Unsupported Media Type error
     */
-    static unsupportedMediaType<Data>(message?: string, data?: Data): Boom<Data>
+    unsupportedMediaType<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 416 Request Range Not Satisfiable error
@@ -322,7 +326,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 416 Request Range Not Satisfiable error
     */
-    static rangeNotSatisfiable<Data>(message?: string, data?: Data): Boom<Data>
+    rangeNotSatisfiable<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 417 Expectation Failed error
@@ -332,7 +336,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 417 Expectation Failed error
     */
-    static expectationFailed<Data>(message?: string, data?: Data): Boom<Data>
+    expectationFailed<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 418 I'm a Teapot error
@@ -342,7 +346,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 418 I'm a Teapot error
     */
-    static teapot<Data>(message?: string, data?: Data): Boom<Data>
+    teapot<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 422 Unprocessable Entity error
@@ -352,7 +356,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 422 Unprocessable Entity error
     */
-    static badData<Data>(message?: string, data?: Data): Boom<Data>
+    badData<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 423 Locked error
@@ -362,7 +366,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 423 Locked error
     */
-    static locked<Data>(message?: string, data?: Data): Boom<Data>
+    locked<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 424 Failed Dependency error
@@ -372,7 +376,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 424 Failed Dependency error
     */
-    static failedDependency<Data>(message?: string, data?: Data): Boom<Data>
+    failedDependency<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 428 Precondition Required error
@@ -382,7 +386,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 428 Precondition Required error
     */
-    static preconditionRequired<Data>(message?: string, data?: Data): Boom<Data>
+    preconditionRequired<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 429 Too Many Requests error
@@ -392,7 +396,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 429 Too Many Requests error
     */
-    static tooManyRequests<Data>(message?: string, data?: Data): Boom<Data>
+    tooManyRequests<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 451 Unavailable For Legal Reasons error
@@ -402,7 +406,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 451 Unavailable for Legal Reasons error
     */
-    static illegal<Data>(message?: string, data?: Data): Boom<Data>
+    illegal<Data>(message?: string, data?: Data): Boom<Data>
 
     // 5xx Errors
 
@@ -414,7 +418,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 500 Internal Server error
     */
-    static badImplementation<Data>(message?: string, data?: Data): Boom<Data>
+    badImplementation<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 501 Not Implemented error
@@ -424,7 +428,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 501 Not Implemented error
     */
-    static notImplemented<Data>(message?: string, data?: Data): Boom<Data>
+    notImplemented<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 502 Bad Gateway error
@@ -434,7 +438,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 502 Bad Gateway error
     */
-    static badGateway<Data>(message?: string, data?: Data): Boom<Data>
+    badGateway<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 503 Service Unavailable error
@@ -444,7 +448,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 503 Service Unavailable error
     */
-    static serverUnavailable<Data>(message?: string, data?: Data): Boom<Data>
+    serverUnavailable<Data>(message?: string, data?: Data): Boom<Data>
 
     /**
     Returns a 504 Gateway Time-out error
@@ -454,7 +458,9 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns A 504 Gateway Time-out error
     */
-    static gatewayTimeout<Data>(message?: string, data?: Data): Boom<Data>
+    gatewayTimeout<Data>(message?: string, data?: Data): Boom<Data>
 }
+
+export const Boom: BoomConstructor & BoomStatic;
 
 export default Boom
