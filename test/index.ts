@@ -9,12 +9,27 @@ const { expect } = Lab.types;
 expect.type<Boom>(new Boom());
 
 
+class X {
+
+    x: number;
+
+    constructor(value: number) {
+
+        this.x = value;
+    }
+};
+
+const decorate = new X(1);
+//expect.type<number>(new Boom('error', { decorate }).x);
+
+
 // boomify()
 
 const error = new Error('Unexpected input')
 
 expect.type<Boom>(Boom.boomify(error, { statusCode: 400 }));
 expect.type<Boom>(Boom.boomify(error, { statusCode: 400, message: 'Unexpected Input', override: false }));
+expect.type<number>(Boom.boomify(error, { decorate }).x);
 
 expect.error(Boom.boomify(error, { statusCode: '400' }));
 expect.error(Boom.boomify('error'));
@@ -54,6 +69,7 @@ expect.type<Boom>(Boom.unauthorized(null, 'Negotiate', 'VGhpcyBpcyBhIHRlc3QgdG9r
 expect.type<Boom>(Boom.unauthorized('invalid password', 'sample', { ttl: 0, cache: null, foo: 'bar' }));
 expect.type<Boom>(Boom.unauthorized());
 expect.type<Boom>(Boom.unauthorized('basic', ['a', 'b', 'c']));
+expect.type<boolean>(Boom.unauthorized().isMissing);
 
 expect.error(Boom.unauthorized(401))
 expect.error(Boom.unauthorized('invalid password', 500))
