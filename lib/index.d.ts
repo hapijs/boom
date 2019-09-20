@@ -4,34 +4,34 @@ declare namespace boom {
         /**
         The HTTP status code derived from error.output.statusCode
         */
-        statusCode: number
+        statusCode: number;
 
         /**
         The HTTP status message derived from statusCode
         */
-        error: string
+        error: string;
 
         /**
         The error message derived from error.message
         */
-        message: string
+        message: string;
     }
 
     interface Output {
         /**
         The HTTP status code
         */
-        statusCode: number
+        statusCode: number;
 
         /**
         An object containing any HTTP headers where each key is a header name and value is the header content
         */
-        headers: object
+        headers: object;
 
         /**
         The formatted object used as the response payload (stringified)
         */
-        payload: Payload
+        payload: Payload;
     }
 
     interface Options<Data, Decoration> {
@@ -40,36 +40,36 @@ declare namespace boom {
 
         @default 500
         */
-        statusCode?: number
+        statusCode?: number;
 
         /**
         Additional error information
         */
-        data?: Data
+        data?: Data;
 
         /**
         An option with extra properties to set on the error object
         */
-        decorate?: Decoration
+        decorate?: Decoration;
 
         /**
         Constructor reference used to crop the exception call stack output
         */
-        ctor?: any
+        ctor?: any;
 
         /**
         Error message string
 
         @default none
         */
-        message?: string
+        message?: string;
 
         /**
         If false, the err provided is a Boom object, and a statusCode or message are provided, the values are ignored
 
         @default true
         */
-        override?: boolean
+        override?: boolean;
     }
 
     interface MissingAuth {
@@ -77,13 +77,15 @@ declare namespace boom {
         /**
         Indicate whether the 401 unauthorized error is due to missing credentials (vs. invalid)
         */
-        isMissing: boolean
+        isMissing: boolean;
     }
 }
+
 
 interface BoomConstructor {
     new <Data = any, Decoration extends object = object>(message?: string | Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration;
 }
+
 
 export interface Boom<Data = any> extends Error {
 
@@ -120,8 +122,9 @@ export interface Boom<Data = any> extends Error {
 
     @param debug - A boolean that, when true, does not hide the original 500 error message. Defaults to false.
     */
-    reformat(debug?: boolean): string
+    reformat(debug?: boolean): string;
 }
+
 
 interface BoomStatic {
 
@@ -132,7 +135,7 @@ interface BoomStatic {
 
     @returns Returns a boolean stating if the error object is a valid boom object
     */
-    isBoom(err: Error): err is Boom
+    isBoom(err: Error): err is Boom;
 
     /**
     Specifies if an error object is a valid boom object
@@ -142,7 +145,7 @@ interface BoomStatic {
 
     @returns A decorated boom object
     */
-    boomify<Data, Decoration>(err: Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration
+    boomify<Data, Decoration>(err: Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration;
 
     // 4xx Errors
 
@@ -154,7 +157,7 @@ interface BoomStatic {
 
     @returns A 400 bad request error
     */
-    badRequest<Data>(message?: string, data?: Data): Boom<Data>
+    badRequest<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 401 Unauthorized error
@@ -165,7 +168,7 @@ interface BoomStatic {
 
     @returns A 401 Unauthorized error
     */
-    unauthorized<Data>(message?: string | null, scheme?: string, attributes?: object | string): Boom<Data> & boom.MissingAuth
+    unauthorized<Data>(message?: string | null, scheme?: string, attributes?: object | string): Boom<Data> & boom.MissingAuth;
 
     /**
     Returns a 401 Unauthorized error
@@ -175,7 +178,7 @@ interface BoomStatic {
 
     @returns A 401 Unauthorized error
     */
-    unauthorized<Data>(message: string | null, wwwAuthenticate: Array<string>): Boom<Data>
+    unauthorized<Data>(message: string | null, wwwAuthenticate: Array<string>): Boom<Data>;
 
     /**
     Returns a 402 Payment Required error
@@ -185,7 +188,7 @@ interface BoomStatic {
 
     @returns A 402 Payment Required error
     */
-    paymentRequired<Data>(message?: string, data?: Data): Boom<Data>
+    paymentRequired<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 403 Forbidden error
@@ -195,7 +198,7 @@ interface BoomStatic {
 
     @returns A 403 Forbidden error
     */
-    forbidden<Data>(message?: string, data?: Data): Boom<Data>
+    forbidden<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 404 Not Found error
@@ -205,7 +208,7 @@ interface BoomStatic {
 
     @returns A 404 Not Found error
     */
-    notFound<Data>(message?: string, data?: Data): Boom<Data>
+    notFound<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 405 Method Not Allowed error
@@ -216,7 +219,7 @@ interface BoomStatic {
 
     @returns A 405 Method Not Allowed error
     */
-    methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | Array<string>): Boom<Data>
+    methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | Array<string>): Boom<Data>;
 
     /**
     Returns a 406 Not Acceptable error
@@ -226,7 +229,7 @@ interface BoomStatic {
 
     @returns A 406 Not Acceptable error
     */
-    notAcceptable<Data>(message?: string, data?: Data): Boom<Data>
+    notAcceptable<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 407 Proxy Authentication error
@@ -236,7 +239,7 @@ interface BoomStatic {
 
     @returns A 407 Proxy Authentication error
     */
-    proxyAuthRequired<Data>(message?: string, data?: Data): Boom<Data>
+    proxyAuthRequired<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 408 Request Time-out error
@@ -246,7 +249,7 @@ interface BoomStatic {
 
     @returns A 408 Request Time-out error
     */
-    clientTimeout<Data>(message?: string, data?: Data): Boom<Data>
+    clientTimeout<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 409 Conflict error
@@ -256,7 +259,7 @@ interface BoomStatic {
 
     @returns A 409 Conflict error
     */
-    conflict<Data>(message?: string, data?: Data): Boom<Data>
+    conflict<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 410 Gone error
@@ -266,7 +269,7 @@ interface BoomStatic {
 
     @returns A 410 gone error
     */
-    resourceGone<Data>(message?: string, data?: Data): Boom<Data>
+    resourceGone<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 411 Length Required error
@@ -276,7 +279,7 @@ interface BoomStatic {
 
     @returns A 411 Length Required error
     */
-    lengthRequired<Data>(message?: string, data?: Data): Boom<Data>
+    lengthRequired<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 412 Precondition Failed error
@@ -286,7 +289,7 @@ interface BoomStatic {
 
     @returns A 412 Precondition Failed error
     */
-    preconditionFailed<Data>(message?: string, data?: Data): Boom<Data>
+    preconditionFailed<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 413 Request Entity Too Large error
@@ -296,7 +299,7 @@ interface BoomStatic {
 
     @returns A 413 Request Entity Too Large error
     */
-    entityTooLarge<Data>(message?: string, data?: Data): Boom<Data>
+    entityTooLarge<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 414 Request-URI Too Large error
@@ -306,7 +309,7 @@ interface BoomStatic {
 
     @returns A 414 Request-URI Too Large error
     */
-    uriTooLong<Data>(message?: string, data?: Data): Boom<Data>
+    uriTooLong<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 415 Unsupported Media Type error
@@ -316,7 +319,7 @@ interface BoomStatic {
 
     @returns A 415 Unsupported Media Type error
     */
-    unsupportedMediaType<Data>(message?: string, data?: Data): Boom<Data>
+    unsupportedMediaType<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 416 Request Range Not Satisfiable error
@@ -326,7 +329,7 @@ interface BoomStatic {
 
     @returns A 416 Request Range Not Satisfiable error
     */
-    rangeNotSatisfiable<Data>(message?: string, data?: Data): Boom<Data>
+    rangeNotSatisfiable<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 417 Expectation Failed error
@@ -336,7 +339,7 @@ interface BoomStatic {
 
     @returns A 417 Expectation Failed error
     */
-    expectationFailed<Data>(message?: string, data?: Data): Boom<Data>
+    expectationFailed<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 418 I'm a Teapot error
@@ -346,7 +349,7 @@ interface BoomStatic {
 
     @returns A 418 I'm a Teapot error
     */
-    teapot<Data>(message?: string, data?: Data): Boom<Data>
+    teapot<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 422 Unprocessable Entity error
@@ -356,7 +359,7 @@ interface BoomStatic {
 
     @returns A 422 Unprocessable Entity error
     */
-    badData<Data>(message?: string, data?: Data): Boom<Data>
+    badData<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 423 Locked error
@@ -366,7 +369,7 @@ interface BoomStatic {
 
     @returns A 423 Locked error
     */
-    locked<Data>(message?: string, data?: Data): Boom<Data>
+    locked<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 424 Failed Dependency error
@@ -376,7 +379,7 @@ interface BoomStatic {
 
     @returns A 424 Failed Dependency error
     */
-    failedDependency<Data>(message?: string, data?: Data): Boom<Data>
+    failedDependency<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 428 Precondition Required error
@@ -386,7 +389,7 @@ interface BoomStatic {
 
     @returns A 428 Precondition Required error
     */
-    preconditionRequired<Data>(message?: string, data?: Data): Boom<Data>
+    preconditionRequired<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 429 Too Many Requests error
@@ -396,7 +399,7 @@ interface BoomStatic {
 
     @returns A 429 Too Many Requests error
     */
-    tooManyRequests<Data>(message?: string, data?: Data): Boom<Data>
+    tooManyRequests<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 451 Unavailable For Legal Reasons error
@@ -406,9 +409,20 @@ interface BoomStatic {
 
     @returns A 451 Unavailable for Legal Reasons error
     */
-    illegal<Data>(message?: string, data?: Data): Boom<Data>
+    illegal<Data>(message?: string, data?: Data): Boom<Data>;
 
     // 5xx Errors
+
+    /**
+    Returns a internal error (defaults to 500)
+
+    @param message - Optional message
+    @param data - Optional additional error data
+    @param statusCode - Optional status code override. Defaults to 500.
+
+    @returns A 500 Internal Server error
+    */
+    internal<Data>(message?: string, data?: Data, statusCode?: number): Boom<Data>;
 
     /**
     Returns a 500 Internal Server Error error
@@ -418,7 +432,7 @@ interface BoomStatic {
 
     @returns A 500 Internal Server error
     */
-    badImplementation<Data>(message?: string, data?: Data): Boom<Data>
+    badImplementation<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 501 Not Implemented error
@@ -428,7 +442,7 @@ interface BoomStatic {
 
     @returns A 501 Not Implemented error
     */
-    notImplemented<Data>(message?: string, data?: Data): Boom<Data>
+    notImplemented<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 502 Bad Gateway error
@@ -438,7 +452,7 @@ interface BoomStatic {
 
     @returns A 502 Bad Gateway error
     */
-    badGateway<Data>(message?: string, data?: Data): Boom<Data>
+    badGateway<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 503 Service Unavailable error
@@ -448,7 +462,7 @@ interface BoomStatic {
 
     @returns A 503 Service Unavailable error
     */
-    serverUnavailable<Data>(message?: string, data?: Data): Boom<Data>
+    serverUnavailable<Data>(message?: string, data?: Data): Boom<Data>;
 
     /**
     Returns a 504 Gateway Time-out error
@@ -458,9 +472,9 @@ interface BoomStatic {
 
     @returns A 504 Gateway Time-out error
     */
-    gatewayTimeout<Data>(message?: string, data?: Data): Boom<Data>
+    gatewayTimeout<Data>(message?: string, data?: Data): Boom<Data>;
 }
 
 export const Boom: BoomConstructor & BoomStatic;
 
-export default Boom
+export default Boom;

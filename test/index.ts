@@ -341,6 +341,17 @@ expect.error(Boom.illegal({ foo: 'bar' }));
 
 // 5xx Errors
 
+// internal()
+
+expect.type<Boom>(Boom.internal('terrible implementation', 'some data', 599));
+expect.type<Boom>(Boom.internal('terrible implementation', { foo: 'bar' }));
+expect.type<Boom>(Boom.internal('terrible implementation'));
+expect.type<Boom>(Boom.internal());
+
+expect.error(Boom.internal(500));
+expect.error(Boom.internal({ foo: 'bar' }));
+
+
 // badImplementation()
 
 expect.type<Boom>(Boom.badImplementation('terrible implementation', 'some data'));
