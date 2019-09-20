@@ -25,7 +25,7 @@ const decorate = new X(1);
 
 // boomify()
 
-const error = new Error('Unexpected input')
+const error = new Error('Unexpected input');
 
 expect.type<Boom>(Boom.boomify(error, { statusCode: 400 }));
 expect.type<Boom>(Boom.boomify(error, { statusCode: 400, message: 'Unexpected Input', override: false }));
@@ -38,9 +38,14 @@ expect.error(Boom.boomify(error, { statusCode: 400, override: 'false' }));
 expect.error(Boom.boomify());
 
 
+// isBoom
+
+expect.type<boolean>(Boom.boomify(error).isBoom);
+
 // isBoom()
 
 expect.type<boolean>(Boom.isBoom(error));
+expect.type<boolean>(Boom.isBoom(Boom.boomify(error)));
 
 expect.error(Boom.isBoom('error'));
 expect.error(Boom.isBoom({ foo: 'bar' }));

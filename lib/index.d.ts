@@ -2,7 +2,7 @@ declare namespace boom {
 
     interface Payload {
         /**
-        The HTTP status code derived from error.output.statuscode
+        The HTTP status code derived from error.output.statusCode
         */
         statusCode: number
 
@@ -37,7 +37,7 @@ declare namespace boom {
     interface Options<Data, Decoration> {
         /**
         The HTTP status code
-    
+
         @default 500
         */
         statusCode?: number
@@ -59,14 +59,14 @@ declare namespace boom {
 
         /**
         Error message string
-    
+
         @default none
         */
         message?: string
 
         /**
         If false, the err provided is a Boom object, and a statusCode or message are provided, the values are ignored
-    
+
         @default true
         */
         override?: boolean
@@ -89,7 +89,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
     /**
     Custom error data with additional information specific to the error type
     */
-    data: Data
+    data: Data;
 
     /** isBoom - if true, indicates this is a Boom object instance. */
     isBoom: boolean;
@@ -105,7 +105,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
     message: string;
 
     /**
-    The formated response
+    The formatted response
     */
     output: boom.Output;
 
@@ -128,7 +128,7 @@ export class Boom<Data = any, Decoration = object> extends Error {
 
     @returns Returns a boolean stating if the error object is a valid boom object
     */
-    static isBoom(err: Error): boolean
+    static isBoom(err: Error): err is Boom
 
     /**
     Specifies if an error object is a valid boom object
