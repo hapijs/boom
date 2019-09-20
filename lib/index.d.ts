@@ -427,7 +427,7 @@ export class Boom<T = any> extends Error {
 
     @returns A 503 Service Unavailable error
     */
-    static serviceUnavailable<T>(message?: string, data?: T): Boom<T>
+    static serverUnavailable<T>(message?: string, data?: T): Boom<T>
 
     /**
     Returns a 504 Gateway Time-out error

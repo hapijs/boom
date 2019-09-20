@@ -351,13 +351,13 @@ expect.error(Boom.badGateway({ foo: 'bar' }));
 
 // serverUnavailable()
 
-expect.type<Boom>(Boom.serviceUnavailable('unavailable', 'some data'));
-expect.type<Boom>(Boom.serviceUnavailable('unavailable', { foo: 'bar' }));
-expect.type<Boom>(Boom.serviceUnavailable('unavailable'));
-expect.type<Boom>(Boom.serviceUnavailable());
+expect.type<Boom>(Boom.serverUnavailable('unavailable', 'some data'));
+expect.type<Boom>(Boom.serverUnavailable('unavailable', { foo: 'bar' }));
+expect.type<Boom>(Boom.serverUnavailable('unavailable'));
+expect.type<Boom>(Boom.serverUnavailable());
 
-expect.error(Boom.serviceUnavailable(503));
-expect.error(Boom.serviceUnavailable({ foo: 'bar' }));
+expect.error(Boom.serverUnavailable(503));
+expect.error(Boom.serverUnavailable({ foo: 'bar' }));
 
 
 // gatewayTimeout()
