@@ -1,4 +1,4 @@
-declare namespace boom {
+export namespace Boom {
 
     interface Payload {
         /**
@@ -72,18 +72,25 @@ declare namespace boom {
         override?: boolean;
     }
 
-    interface MissingAuth {
+    namespace unauthorized {
 
-        /**
-        Indicate whether the 401 unauthorized error is due to missing credentials (vs. invalid)
-        */
-        isMissing: boolean;
+        interface Attributes {
+            [index: string]: number | string | null | undefined;
+        }
+
+        interface MissingAuth {
+
+            /**
+            Indicate whether the 401 unauthorized error is due to missing credentials (vs. invalid)
+            */
+            isMissing: boolean;
+        }
     }
 }
 
 
 interface BoomConstructor {
-    new <Data = any, Decoration extends object = object>(message?: string | Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration;
+    new <Data = any, Decoration extends object = object>(message?: string | Error, options?: Boom.Options<Data, Decoration>): Boom<Data> & Decoration;
 }
 
 
@@ -110,7 +117,7 @@ export interface Boom<Data = any> extends Error {
     /**
     The formatted response
     */
-    output: boom.Output;
+    output: Boom.Output;
 
     /**
     The constructor used to create the error
@@ -145,7 +152,7 @@ interface BoomStatic {
 
     @returns A decorated boom object
     */
-    boomify<Data, Decoration>(err: Error, options?: boom.Options<Data, Decoration>): Boom<Data> & Decoration;
+    boomify<Data, Decoration>(err: Error, options?: Boom.Options<Data, Decoration>): Boom<Data> & Decoration;
 
     // 4xx Errors
 
@@ -168,7 +175,9 @@ interface BoomStatic {
 
     @returns A 401 Unauthorized error
     */
-    unauthorized<Data>(message?: string | null, scheme?: string, attributes?: object | string): Boom<Data> & boom.MissingAuth;
+    unauthorized<Data>(message?: string | null): Boom<Data>;
+    unauthorized<Data>(message: '' | null, scheme: string, attributes?: string | Boom.unauthorized.Attributes): Boom<Data> & Boom.unauthorized.MissingAuth;
+    unauthorized<Data>(message: string | null, scheme: string, attributes?: string | Boom.unauthorized.Attributes): Boom<Data>;
 
     /**
     Returns a 401 Unauthorized error
@@ -178,7 +187,7 @@ interface BoomStatic {
 
     @returns A 401 Unauthorized error
     */
-    unauthorized<Data>(message: string | null, wwwAuthenticate: Array<string>): Boom<Data>;
+    unauthorized<Data>(message: string | null, wwwAuthenticate: string[]): Boom<Data>;
 
     /**
     Returns a 402 Payment Required error
@@ -219,7 +228,7 @@ interface BoomStatic {
 
     @returns A 405 Method Not Allowed error
     */
-    methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | Array<string>): Boom<Data>;
+    methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | string[]): Boom<Data>;
 
     /**
     Returns a 406 Not Acceptable error

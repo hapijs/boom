@@ -75,15 +75,17 @@ expect.error(Boom.badRequest({ foo: 'bar' }));
 expect.type<Boom>(Boom.unauthorized('invalid password'));
 expect.type<Boom>(Boom.unauthorized('invalid password', 'simple'));
 expect.type<Boom>(Boom.unauthorized(null, 'Negotiate', 'VGhpcyBpcyBhIHRlc3QgdG9rZW4='));
-expect.type<Boom>(Boom.unauthorized('invalid password', 'sample', { ttl: 0, cache: null, foo: 'bar' }));
+expect.type<Boom>(Boom.unauthorized('invalid password', 'sample', { ttl: 0, cache: null, foo: 'bar' } as Boom.unauthorized.Attributes));
 expect.type<Boom>(Boom.unauthorized());
 expect.type<Boom>(Boom.unauthorized('basic', ['a', 'b', 'c']));
-expect.type<boolean>(Boom.unauthorized().isMissing);
+expect.type<boolean>(Boom.unauthorized('', 'basic').isMissing);
+expect.type<boolean>(Boom.unauthorized(null, 'basic').isMissing);
 
 expect.error(Boom.unauthorized(401))
 expect.error(Boom.unauthorized('invalid password', 500))
 expect.error(Boom.unauthorized('invalid password', 'sample', 500))
 expect.error(Boom.unauthorized('basic', ['a', 'b', 'c'], 'test'));
+expect.error(Boom.unauthorized('message', 'basic').isMissing);
 
 
 // paymentRequired()
