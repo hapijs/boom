@@ -1,4 +1,4 @@
-import { Boom } from '..';
+import Boom from '..';
 import * as Lab from '@hapi/lab';
 
 const { expect } = Lab.types;
