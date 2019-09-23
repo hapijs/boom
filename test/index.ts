@@ -9,7 +9,6 @@ const { expect } = Lab.types;
 expect.type<Boom>(new Boom());
 expect.type<Error>(new Boom());
 
-
 class X {
 
     x: number;
@@ -25,6 +24,11 @@ const decorate = new X(1);
 expect.type<number>(new Boom('error', { decorate }).x);
 
 expect.error(new Boom('error', { decorate }).y);
+
+
+class CustomError extends Boom {}
+new CustomError('Some error');
+
 
 // boomify()
 
