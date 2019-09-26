@@ -1,48 +1,5 @@
-## Usage
 
-<!-- toc -->
-
-- [Boom](#boom)
-  - [Helper Methods](#helper-methods)
-    - [`boomify(error, [options])`](#boomifyerror-options)
-    - [`wrap(error, [statusCode], [message])`](#wraperror-statuscode-message)
-    - [`create(statusCode, [message], [data])`](#createstatuscode-message-data)
-  - [HTTP 4xx Errors](#http-4xx-errors)
-    - [`Boom.badRequest([message], [data])`](#boombadrequestmessage-data)
-    - [`Boom.unauthorized([message], [scheme], [attributes])`](#boomunauthorizedmessage-scheme-attributes)
-    - [`Boom.paymentRequired([message], [data])`](#boompaymentrequiredmessage-data)
-    - [`Boom.forbidden([message], [data])`](#boomforbiddenmessage-data)
-    - [`Boom.notFound([message], [data])`](#boomnotfoundmessage-data)
-    - [`Boom.methodNotAllowed([message], [data], [allow])`](#boommethodnotallowedmessage-data-allow)
-    - [`Boom.notAcceptable([message], [data])`](#boomnotacceptablemessage-data)
-    - [`Boom.proxyAuthRequired([message], [data])`](#boomproxyauthrequiredmessage-data)
-    - [`Boom.clientTimeout([message], [data])`](#boomclienttimeoutmessage-data)
-    - [`Boom.conflict([message], [data])`](#boomconflictmessage-data)
-    - [`Boom.resourceGone([message], [data])`](#boomresourcegonemessage-data)
-    - [`Boom.lengthRequired([message], [data])`](#boomlengthrequiredmessage-data)
-    - [`Boom.preconditionFailed([message], [data])`](#boompreconditionfailedmessage-data)
-    - [`Boom.entityTooLarge([message], [data])`](#boomentitytoolargemessage-data)
-    - [`Boom.uriTooLong([message], [data])`](#boomuritoolongmessage-data)
-    - [`Boom.unsupportedMediaType([message], [data])`](#boomunsupportedmediatypemessage-data)
-    - [`Boom.rangeNotSatisfiable([message], [data])`](#boomrangenotsatisfiablemessage-data)
-    - [`Boom.expectationFailed([message], [data])`](#boomexpectationfailedmessage-data)
-    - [`Boom.teapot([message], [data])`](#boomteapotmessage-data)
-    - [`Boom.badData([message], [data])`](#boombaddatamessage-data)
-    - [`Boom.locked([message], [data])`](#boomlockedmessage-data)
-    - [`Boom.preconditionRequired([message], [data])`](#boompreconditionrequiredmessage-data)
-    - [`Boom.tooManyRequests([message], [data])`](#boomtoomanyrequestsmessage-data)
-    - [`Boom.illegal([message], [data])`](#boomillegalmessage-data)
-  - [HTTP 5xx Errors](#http-5xx-errors)
-    - [`Boom.badImplementation([message], [data])` - (*alias: `internal`*)](#boombadimplementationmessage-data---alias-internal)
-    - [`Boom.notImplemented([message], [data])`](#boomnotimplementedmessage-data)
-    - [`Boom.badGateway([message], [data])`](#boombadgatewaymessage-data)
-    - [`Boom.serverUnavailable([message], [data])`](#boomserverunavailablemessage-data)
-    - [`Boom.gatewayTimeout([message], [data])`](#boomgatewaytimeoutmessage-data)
-  - [F.A.Q.](#faq)
-
-<!-- tocstop -->
-
-# Boom
+# boom
 
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom` error response
 object (instance of `Error`) which includes the following properties:
