@@ -4,11 +4,6 @@ import * as Lab from '@hapi/lab';
 const { expect } = Lab.types;
 
 
-// new Boom()
-
-expect.type<Boom>(new Boom());
-expect.type<Error>(new Boom());
-
 class X {
 
     x: number;
@@ -21,13 +16,23 @@ class X {
 
 const decorate = new X(1);
 
-expect.type<number>(new Boom('error', { decorate }).x);
 
-expect.error(new Boom('error', { decorate }).y);
+// new Boom()
+
+expect.type<Boom>(new Boom());
+expect.type<Error>(new Boom());
+expect.type<Boom>(new Boom('error'));
+
+expect.error(new Boom('error', { decorate }));
 
 
 class CustomError extends Boom {}
-new CustomError('Some error');
+expect.type<Boom>(new CustomError('Some error'));
+
+
+const boom = new Boom('some error');
+expect.type<Boom.Output>(boom.output);
+expect.type<Boom.Payload>(boom.output.payload);
 
 
 // boomify()
@@ -79,7 +84,7 @@ expect.error(Boom.badRequest({ foo: 'bar' }));
 expect.type<Boom>(Boom.unauthorized('invalid password'));
 expect.type<Boom>(Boom.unauthorized('invalid password', 'simple'));
 expect.type<Boom>(Boom.unauthorized(null, 'Negotiate', 'VGhpcyBpcyBhIHRlc3QgdG9rZW4='));
-expect.type<Boom>(Boom.unauthorized('invalid password', 'sample', { ttl: 0, cache: null, foo: 'bar' } as Boom.unauthorized.Attributes));
+expect.type<Boom>(Boom.unauthorized('invalid password', 'sample', { ttl: 0, cache: null, foo: 'bar' }));
 expect.type<Boom>(Boom.unauthorized());
 expect.type<Boom>(Boom.unauthorized('basic', ['a', 'b', 'c']));
 expect.type<boolean>(Boom.unauthorized('', 'basic').isMissing);
