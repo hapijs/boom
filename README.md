@@ -11,6 +11,6 @@
 ## Useful resources
 
 - [Documentation and API](https://hapi.dev/family/boom/)
-- [Versions status](https://hapi.dev/resources/status/#boom)
+- [Version status](https://hapi.dev/resources/status/#boom) (builds, dependencies, node versions, licenses, eol)
 - [Project policies](https://hapi.dev/policies/)
 - [Free and commercial support options](https://hapi.dev/support/)
