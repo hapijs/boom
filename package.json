@@ -4,7 +4,6 @@
   "version": "7.4.10",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "keywords": [
     "error",
     "http"
@@ -20,7 +19,7 @@
     "@hapi/lab": "20.x.x"
   },
   "scripts": {
-    "test": "lab -a @hapi/code -t 100 -L -Y",
+    "test": "lab -a @hapi/code -t 100 -L",
     "test-cov-html": "lab -a @hapi/code -t 100 -L -r html -o coverage.html"
   },
   "license": "BSD-3-Clause"
