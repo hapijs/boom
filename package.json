@@ -1,7 +1,7 @@
 {
   "name": "@hapi/boom",
   "description": "HTTP-friendly error objects",
-  "version": "7.4.10",
+  "version": "8.0.0",
   "repository": "git://github.com/hapijs/boom",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
