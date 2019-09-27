@@ -41,6 +41,29 @@ describe('Boom', () => {
         expect(err.x).to.equal(1);
     });
 
+    it('handles missing message', () => {
+
+        const err = new Error();
+        Boom.boomify(err);
+
+        expect(Boom.isBoom(err)).to.be.true();
+    });
+
+    it('handles missing message (class)', () => {
+
+        const Example = class extends Error {
+
+            constructor(message) {
+
+                super(message);
+                Boom.boomify(this);
+            }
+        };
+
+        const err = new Example();
+        expect(Boom.isBoom(err)).to.be.true();
+    });
+
     it('throws when statusCode is not a number', () => {
 
         expect(() => {
