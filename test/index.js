@@ -16,7 +16,7 @@ describe('Boom', () => {
 
     it('constructs error object (new)', () => {
 
-        const err = new Boom('oops', { statusCode: 400 });
+        const err = new Boom.Boom('oops', { statusCode: 400 });
         expect(err.output.payload.message).to.equal('oops');
         expect(err.output.statusCode).to.equal(400);
 
@@ -27,7 +27,7 @@ describe('Boom', () => {
     it('clones error object', () => {
 
         const oops = new Error('oops');
-        const err = new Boom(oops, { statusCode: 400 });
+        const err = new Boom.Boom(oops, { statusCode: 400 });
         expect(err).to.not.shallow.equal(oops);
         expect(err.output.payload.message).to.equal('oops');
         expect(err.output.statusCode).to.equal(400);
@@ -35,7 +35,7 @@ describe('Boom', () => {
 
     it('decorates error', () => {
 
-        const err = new Boom('oops', { statusCode: 400, decorate: { x: 1 } });
+        const err = new Boom.Boom('oops', { statusCode: 400, decorate: { x: 1 } });
         expect(err.output.payload.message).to.equal('oops');
         expect(err.output.statusCode).to.equal(400);
         expect(err.x).to.equal(1);
@@ -68,7 +68,7 @@ describe('Boom', () => {
 
         expect(() => {
 
-            new Boom('message', { statusCode: 'x' });
+            new Boom.Boom('message', { statusCode: 'x' });
         }).to.throw('First argument must be a number (400+): x');
     });
 
@@ -104,7 +104,7 @@ describe('Boom', () => {
 
         for (let i = 0; i < codes.length; ++i) {
             const code = codes[i];
-            const err = new Boom('', { statusCode: code.input });
+            const err = new Boom.Boom('', { statusCode: code.input });
             expect(err.output.statusCode).to.equal(code.result);
         }
     });
@@ -113,13 +113,13 @@ describe('Boom', () => {
 
         expect(() => {
 
-            new Boom('', { statusCode: 1 / 0 });
+            new Boom.Boom('', { statusCode: 1 / 0 });
         }).to.throw('First argument must be a number (400+): null');
     });
 
     it('sets error code to unknown', () => {
 
-        const err = new Boom('', { statusCode: 999 });
+        const err = new Boom.Boom('', { statusCode: 999 });
         expect(err.output.payload.error).to.equal('Unknown');
     });
 
@@ -127,12 +127,12 @@ describe('Boom', () => {
 
         it('identifies a boom object', () => {
 
-            expect(new Boom('oops') instanceof Boom).to.be.true();
-            expect(Boom.badRequest('oops') instanceof Boom).to.be.true();
-            expect(new Error('oops') instanceof Boom).to.be.false();
-            expect(Boom.boomify(new Error('oops')) instanceof Boom).to.be.true();
-            expect({ isBoom: true } instanceof Boom).to.be.false();
-            expect(null instanceof Boom).to.be.false();
+            expect(new Boom.Boom('oops') instanceof Boom.Boom).to.be.true();
+            expect(Boom.badRequest('oops') instanceof Boom.Boom).to.be.true();
+            expect(new Error('oops') instanceof Boom.Boom).to.be.false();
+            expect(Boom.boomify(new Error('oops')) instanceof Boom.Boom).to.be.true();
+            expect({ isBoom: true } instanceof Boom.Boom).to.be.false();
+            expect(null instanceof Boom.Boom).to.be.false();
         });
     });
 
@@ -140,7 +140,7 @@ describe('Boom', () => {
 
         it('identifies a boom object', () => {
 
-            expect(Boom.isBoom(new Boom('oops'))).to.be.true();
+            expect(Boom.isBoom(new Boom.Boom('oops'))).to.be.true();
             expect(Boom.isBoom(new Error('oops'))).to.be.false();
             expect(Boom.isBoom({ isBoom: true })).to.be.false();
             expect(Boom.isBoom(null)).to.be.false();
