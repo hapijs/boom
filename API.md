@@ -1,6 +1,4 @@
 
-## boom
-
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom`
 error response object which includes the following properties:
 - `isBoom` - if `true`, indicates this is a `Boom` object instance. Note that this boolean should
