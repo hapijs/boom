@@ -646,7 +646,7 @@ Generates the following response payload:
 
 #### HTTP 5xx Errors
 
-All 500 errors hide your message from the end user. Your message is recorded in the server log.
+All 500 errors hide your message from the end user.
 
 ##### `Boom.badImplementation([message], [data])` - (*alias: `internal`*)
 
