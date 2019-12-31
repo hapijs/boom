@@ -584,6 +584,26 @@ Generates the following response payload:
 }
 ```
 
+##### `Boom.tooEarly([message], [data])`
+
+Returns a 425 Too Early error where:
+- `message` - optional message.
+- `data` - optional additional error data.
+
+```js
+Boom.tooEarly('the server is unwilling to risk processing the request');
+```
+
+Generates the following response payload:
+
+```json
+{
+    "statusCode": 425,
+    "error": "Too Early",
+    "message": "the server is unwilling to risk processing the request"
+}
+```
+
 ##### `Boom.preconditionRequired([message], [data])`
 
 Returns a 428 Precondition Required error where:

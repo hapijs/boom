@@ -430,6 +430,16 @@ export function locked<Data>(message?: string, data?: Data): Boom<Data>;
 */
 export function failedDependency<Data>(message?: string, data?: Data): Boom<Data>;
 
+/**
+* Returns a 425 Too Early error
+*
+* @param message - Optional message
+* @param data - Optional additional error data
+*
+* @returns A 425 Too Early error
+*/
+export function tooEarly<Data>(message?: string, data?: Data): Boom<Data>;
+
 
 /**
 * Returns a 428 Precondition Required error
