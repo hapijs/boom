@@ -675,6 +675,19 @@ describe('Boom', () => {
         });
     });
 
+    describe('tooEarly()', () => {
+
+        it('returns a 425 error statusCode', () => {
+
+            expect(Boom.tooEarly().output.statusCode).to.equal(425);
+        });
+
+        it('sets the message with the passed in message', () => {
+
+            expect(Boom.tooEarly('my message').message).to.equal('my message');
+        });
+    });
+
 
     describe('preconditionRequired()', () => {
 

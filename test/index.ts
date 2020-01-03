@@ -319,6 +319,15 @@ expect.type<Boom.Boom>(Boom.failedDependency());
 expect.error(Boom.failedDependency(424));
 expect.error(Boom.failedDependency({ foo: 'bar' }));
 
+// tooEarly()
+
+expect.type<Boom.Boom>(Boom.tooEarly('won\'t process your request', 'some data'));
+expect.type<Boom.Boom>(Boom.tooEarly('won\'t process your request', { foo: 'bar' }));
+expect.type<Boom.Boom>(Boom.tooEarly('won\'t process your request'));
+expect.type<Boom.Boom>(Boom.tooEarly());
+
+expect.error(Boom.tooEarly(425));
+expect.error(Boom.tooEarly({ foo: 'bar' }));
 
 // preconditionRequired()
 
