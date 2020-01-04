@@ -355,6 +355,13 @@ describe('Boom', () => {
             expect(err.output.headers['WWW-Authenticate']).to.equal('Test error="boom"');
         });
 
+        it('returns a WWW-Authenticate header when passed a scheme (no message)', () => {
+
+            const err = Boom.unauthorized(null, 'Test');
+            expect(err.output.statusCode).to.equal(401);
+            expect(err.output.headers['WWW-Authenticate']).to.equal('Test');
+        });
+
         it('returns a WWW-Authenticate header set to the schema array value', () => {
 
             const err = Boom.unauthorized(null, ['Test', 'one', 'two']);
