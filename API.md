@@ -675,7 +675,7 @@ Returns a 500 Internal Server Error error where:
 - `data` - optional additional error data.
 
 ```js
-Boom.badImplementation('terrible implementation');
+Boom.badImplementation('An internal server error occurred');
 ```
 
 Generates the following response payload:
