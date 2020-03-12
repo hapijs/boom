@@ -130,10 +130,11 @@ export interface Output {
 * Specifies if an error object is a valid boom object
 *
 * @param err - The error object
+* @param statusCode - Optional status code
 *
-* @returns Returns a boolean stating if the error object is a valid boom object
+* @returns Returns a boolean stating if the error object is a valid boom object and it has the provided statusCode (if present)
 */
-export function isBoom(err: Error): err is Boom;
+export function isBoom(err: Error, statusCode?: number): err is Boom;
 
 
 /**

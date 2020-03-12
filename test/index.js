@@ -145,6 +145,16 @@ describe('Boom', () => {
             expect(Boom.isBoom({ isBoom: true })).to.be.false();
             expect(Boom.isBoom(null)).to.be.false();
         });
+
+        it('returns true for valid boom object and valid status code', () => {
+
+            expect(Boom.isBoom(Boom.notFound(),404)).to.be.true();
+        });
+
+        it('returns false for valid boom object and wrong status code', () => {
+
+            expect(Boom.isBoom(Boom.notFound(),503)).to.be.false();
+        });
     });
 
     describe('boomify()', () => {
