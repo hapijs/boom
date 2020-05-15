@@ -35,7 +35,7 @@ chain which is very slow.
 
 #### Helper Methods
 
-##### `new Boom(message, [options])`
+##### `new Boom.Boom(message, [options])`
 
 Creates a new `Boom` object using the provided `message` and then calling
 [`boomify()`](#boomifyerr-options) to decorate the error with the `Boom` properties, where:
@@ -69,7 +69,7 @@ Boom.boomify(error, { statusCode: 400 });
 
 ##### `isBoom(err, statusCode)`
 
-Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom`. 
+Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom`.
 - `err` - Error object.
 - `statusCode` - optional status code.
 
