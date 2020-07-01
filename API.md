@@ -69,7 +69,7 @@ Boom.boomify(error, { statusCode: 400 });
 
 ##### `isBoom(err, statusCode)`
 
-Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom`.
+Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom.Boom`.
 - `err` - Error object.
 - `statusCode` - optional status code.
 
