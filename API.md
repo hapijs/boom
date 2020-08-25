@@ -67,7 +67,7 @@ var error = new Error('Unexpected input');
 Boom.boomify(error, { statusCode: 400 });
 ```
 
-##### `isBoom(err, statusCode)`
+##### `isBoom(err, [statusCode])`
 
 Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom.Boom`.
 - `err` - Error object.
