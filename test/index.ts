@@ -60,11 +60,11 @@ expect.type<boolean>(Boom.boomify(error).isBoom);
 expect.type<boolean>(Boom.isBoom(error));
 expect.type<boolean>(Boom.isBoom(error, 404));
 expect.type<boolean>(Boom.isBoom(Boom.boomify(error)));
+expect.type<boolean>(Boom.isBoom('error'));
+expect.type<boolean>(Boom.isBoom({ foo: 'bar' }));
+expect.type<boolean>(Boom.isBoom({ error: true }));
 
 expect.error(Boom.isBoom(error, 'test'));
-expect.error(Boom.isBoom('error'));
-expect.error(Boom.isBoom({ foo: 'bar' }));
-expect.error(Boom.isBoom({ error: true }));
 expect.error(Boom.isBoom());
 
 
