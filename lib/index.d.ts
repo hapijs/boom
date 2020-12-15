@@ -102,8 +102,8 @@ export interface Payload {
     error: string;
 
     /**
-    The error message derived from error.message
-    */
+     * The error message derived from error.message
+     */
     message: string;
 }
 
