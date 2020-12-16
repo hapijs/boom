@@ -105,6 +105,11 @@ export interface Payload {
     The error message derived from error.message
     */
     message: string;
+
+    /**
+     * Custom properties
+     */
+    [key: string]: unknown;
 }
 
 
