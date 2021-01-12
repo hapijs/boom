@@ -128,7 +128,7 @@ Generates the following response:
     "error": "Unauthorized",
     "message": "invalid password"
 },
-"headers" {}
+"headers": {}
 ```
 
 ```js
@@ -146,7 +146,7 @@ Generates the following response:
         "error": "invalid password"
     }
 },
-"headers" {
+"headers": {
   "WWW-Authenticate": "sample error=\"invalid password\""
 }
 ```
@@ -163,7 +163,7 @@ Generates the following response:
     "error": "Unauthorized",
     "attributes": "VGhpcyBpcyBhIHRlc3QgdG9rZW4="
 },
-"headers" {
+"headers": {
   "WWW-Authenticate": "Negotiate VGhpcyBpcyBhIHRlc3QgdG9rZW4="
 }
 ```
@@ -186,7 +186,7 @@ Generates the following response:
         "foo": "bar"
     }
 },
-"headers" {
+"headers": {
   "WWW-Authenticate": "sample ttl=\"0\", cache=\"\", foo=\"bar\", error=\"invalid password\""
 }
 ```
