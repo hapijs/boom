@@ -122,7 +122,7 @@ export interface Output {
     /**
      * An object containing any HTTP headers where each key is a header name and value is the header content
      */
-    headers: object;
+    headers: { [header: string]: string | string[] | number | undefined };
 
     /**
      * The formatted object used as the response payload (stringified)
