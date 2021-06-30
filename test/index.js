@@ -127,12 +127,25 @@ describe('Boom', () => {
 
         it('identifies a boom object', () => {
 
+            const BadaBoom = class extends Boom.Boom { };
+
             expect(new Boom.Boom('oops') instanceof Boom.Boom).to.be.true();
+            expect(new BadaBoom('oops') instanceof Boom.Boom).to.be.true();
             expect(Boom.badRequest('oops') instanceof Boom.Boom).to.be.true();
             expect(new Error('oops') instanceof Boom.Boom).to.be.false();
             expect(Boom.boomify(new Error('oops')) instanceof Boom.Boom).to.be.true();
             expect({ isBoom: true } instanceof Boom.Boom).to.be.false();
             expect(null instanceof Boom.Boom).to.be.false();
+        });
+
+        it('returns false when called on sub-class', () => {
+
+            const BadaBoom = class extends Boom.Boom {};
+
+            expect(new Boom.Boom('oops') instanceof BadaBoom).to.be.false();
+            expect(new BadaBoom('oops') instanceof BadaBoom).to.be.false();
+            expect(Boom.badRequest('oops') instanceof BadaBoom).to.be.false();
+            expect(Boom.boomify(new Error('oops')) instanceof BadaBoom).to.be.false();
         });
     });
 
