@@ -127,12 +127,32 @@ describe('Boom', () => {
 
         it('identifies a boom object', () => {
 
-            expect(new Boom.Boom('oops') instanceof Boom.Boom).to.be.true();
-            expect(Boom.badRequest('oops') instanceof Boom.Boom).to.be.true();
-            expect(new Error('oops') instanceof Boom.Boom).to.be.false();
-            expect(Boom.boomify(new Error('oops')) instanceof Boom.Boom).to.be.true();
-            expect({ isBoom: true } instanceof Boom.Boom).to.be.false();
-            expect(null instanceof Boom.Boom).to.be.false();
+            const BadaBoom = class extends Boom.Boom { };
+
+            expect(new Boom.Boom('oops')).to.be.instanceOf(Boom.Boom);
+            expect(new BadaBoom('oops')).to.be.instanceOf(Boom.Boom);
+            expect(Boom.badRequest('oops')).to.be.instanceOf(Boom.Boom);
+            expect(new Error('oops')).to.not.be.instanceOf(Boom.Boom);
+            expect(Boom.boomify(new Error('oops'))).to.be.instanceOf(Boom.Boom);
+            expect({ isBoom: true }).to.not.be.instanceOf(Boom.Boom);
+            expect(null).to.not.be.instanceOf(Boom.Boom);
+        });
+
+        it('returns false when called on sub-class', () => {
+
+            const BadaBoom = class extends Boom.Boom {};
+
+            expect(new Boom.Boom('oops')).to.not.be.instanceOf(BadaBoom);
+            expect(new BadaBoom('oops')).to.not.be.instanceOf(BadaBoom);
+            expect(Boom.badRequest('oops')).to.not.be.instanceOf(BadaBoom);
+            expect(Boom.boomify(new Error('oops'))).to.not.be.instanceOf(BadaBoom);
+        });
+
+        it('handles actual sub-class instances when called on sub-class', () => {
+
+            const BadaBoom = class extends Boom.Boom { };
+
+            expect(Object.create(BadaBoom.prototype)).to.be.instanceOf(BadaBoom);
         });
     });
 
