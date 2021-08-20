@@ -1081,5 +1081,10 @@ describe('Boom', () => {
                 headers: {}
             });
         });
+
+        it('is redefinable', () => {
+
+            Object.defineProperty(new Boom.Boom('oops'), 'reformat', { value: true });
+        });
     });
 });
