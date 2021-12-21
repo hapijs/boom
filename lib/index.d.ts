@@ -153,6 +153,17 @@ export function isBoom(obj: unknown, statusCode?: number): obj is Boom;
 export function boomify<Data, Decoration>(err: Error, options?: Options<Data> & Decorate<Decoration>): Boom<Data> & Decoration;
 
 
+/**
+* Specifies if an error object is a valid boom object
+*
+* @param err - The error object to decorate
+* @param options - Options object
+*
+* @returns A decorated boom object
+*/
+export function boomifyAny<Data, Decoration>(err: unknown, options?: Options<Data> & Decorate<Decoration>): Boom<Data> & Decoration;
+
+
 // 4xx Errors
 
 /**
