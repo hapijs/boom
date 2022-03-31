@@ -24,6 +24,13 @@ export class Boom<Data = any> extends Error {
     isServer: boolean;
 
     /**
+     * if true, indicates that auth is missing credentials and triggers a try on the next
+     * auth strategy. See https://github.com/hapijs/boom/blob/master/API.md#boomunauthorizedmessage-scheme-attributes
+     * 
+     */
+    isMissing?: boolean;
+
+    /**
      * The error message
      */
     message: string;
