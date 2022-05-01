@@ -24,6 +24,7 @@
     "@hapi/code": "8.x.x",
     "@hapi/eslint-plugin": "*",
     "@hapi/lab": "24.x.x",
+    "@types/node": "^17.0.31",
     "typescript": "~4.0.2"
   },
   "scripts": {
