@@ -4,7 +4,7 @@
 export class Boom<Data = any> extends Error {
 
     /**
-     * Creates a new Boom object using the provided message
+     * Creates a new Boom object using the provided message or Error
      */
     constructor(message?: string | Error, options?: Options<Data>);
 
@@ -158,22 +158,22 @@ export function boomify<Data, Decoration>(err: Error, options?: Options<Data> & 
 /**
 * Returns a 400 Bad Request error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 400 bad request error
 */
-export function badRequest<Data>(message?: string, data?: Data): Boom<Data>;
+export function badRequest<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 401 Unauthorized error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 *
 * @returns A 401 Unauthorized error
 */
-export function unauthorized<Data>(message?: string | null): Boom<Data>;
+export function unauthorized<Data>(messageOrError?: string | Error | null): Boom<Data>;
 
 
 /**
@@ -219,265 +219,265 @@ export function unauthorized<Data>(message: string | null, wwwAuthenticate: stri
 /**
 * Returns a 402 Payment Required error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 402 Payment Required error
 */
-export function paymentRequired<Data>(message?: string, data?: Data): Boom<Data>;
+export function paymentRequired<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 403 Forbidden error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 403 Forbidden error
 */
-export function forbidden<Data>(message?: string, data?: Data): Boom<Data>;
+export function forbidden<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 404 Not Found error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 404 Not Found error
 */
-export function notFound<Data>(message?: string, data?: Data): Boom<Data>;
+export function notFound<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 405 Method Not Allowed error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 * @param allow - Optional string or array of strings which is used to set the 'Allow' header
 *
 * @returns A 405 Method Not Allowed error
 */
-export function methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | string[]): Boom<Data>;
+export function methodNotAllowed<Data>(messageOrError?: string | Error, data?: Data, allow?: string | string[]): Boom<Data>;
 
 
 /**
 * Returns a 406 Not Acceptable error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 406 Not Acceptable error
 */
-export function notAcceptable<Data>(message?: string, data?: Data): Boom<Data>;
+export function notAcceptable<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 407 Proxy Authentication error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 407 Proxy Authentication error
 */
-export function proxyAuthRequired<Data>(message?: string, data?: Data): Boom<Data>;
+export function proxyAuthRequired<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 408 Request Time-out error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 408 Request Time-out error
 */
-export function clientTimeout<Data>(message?: string, data?: Data): Boom<Data>;
+export function clientTimeout<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 409 Conflict error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 409 Conflict error
 */
-export function conflict<Data>(message?: string, data?: Data): Boom<Data>;
+export function conflict<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 410 Gone error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 410 gone error
 */
-export function resourceGone<Data>(message?: string, data?: Data): Boom<Data>;
+export function resourceGone<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 411 Length Required error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 411 Length Required error
 */
-export function lengthRequired<Data>(message?: string, data?: Data): Boom<Data>;
+export function lengthRequired<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 412 Precondition Failed error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 412 Precondition Failed error
 */
-export function preconditionFailed<Data>(message?: string, data?: Data): Boom<Data>;
+export function preconditionFailed<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 413 Request Entity Too Large error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 413 Request Entity Too Large error
 */
-export function entityTooLarge<Data>(message?: string, data?: Data): Boom<Data>;
+export function entityTooLarge<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 414 Request-URI Too Large error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 414 Request-URI Too Large error
 */
-export function uriTooLong<Data>(message?: string, data?: Data): Boom<Data>;
+export function uriTooLong<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 415 Unsupported Media Type error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 415 Unsupported Media Type error
 */
-export function unsupportedMediaType<Data>(message?: string, data?: Data): Boom<Data>;
+export function unsupportedMediaType<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 416 Request Range Not Satisfiable error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 416 Request Range Not Satisfiable error
 */
-export function rangeNotSatisfiable<Data>(message?: string, data?: Data): Boom<Data>;
+export function rangeNotSatisfiable<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 417 Expectation Failed error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 417 Expectation Failed error
 */
-export function expectationFailed<Data>(message?: string, data?: Data): Boom<Data>;
+export function expectationFailed<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 418 I'm a Teapot error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 418 I'm a Teapot error
 */
-export function teapot<Data>(message?: string, data?: Data): Boom<Data>;
+export function teapot<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 422 Unprocessable Entity error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 422 Unprocessable Entity error
 */
-export function badData<Data>(message?: string, data?: Data): Boom<Data>;
+export function badData<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 423 Locked error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 423 Locked error
 */
-export function locked<Data>(message?: string, data?: Data): Boom<Data>;
+export function locked<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 424 Failed Dependency error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 424 Failed Dependency error
 */
-export function failedDependency<Data>(message?: string, data?: Data): Boom<Data>;
+export function failedDependency<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 /**
 * Returns a 425 Too Early error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 425 Too Early error
 */
-export function tooEarly<Data>(message?: string, data?: Data): Boom<Data>;
+export function tooEarly<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 428 Precondition Required error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 428 Precondition Required error
 */
-export function preconditionRequired<Data>(message?: string, data?: Data): Boom<Data>;
+export function preconditionRequired<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 429 Too Many Requests error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 429 Too Many Requests error
 */
-export function tooManyRequests<Data>(message?: string, data?: Data): Boom<Data>;
+export function tooManyRequests<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 451 Unavailable For Legal Reasons error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 451 Unavailable for Legal Reasons error
 */
-export function illegal<Data>(message?: string, data?: Data): Boom<Data>;
+export function illegal<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 // 5xx Errors
@@ -485,65 +485,65 @@ export function illegal<Data>(message?: string, data?: Data): Boom<Data>;
 /**
 * Returns a internal error (defaults to 500)
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 * @param statusCode - Optional status code override. Defaults to 500.
 *
 * @returns A 500 Internal Server error
 */
-export function internal<Data>(message?: string, data?: Data, statusCode?: number): Boom<Data>;
+export function internal<Data>(messageOrError?: string | Error, data?: Data, statusCode?: number): Boom<Data>;
 
 
 /**
 * Returns a 500 Internal Server Error error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 500 Internal Server error
 */
-export function badImplementation<Data>(message?: string, data?: Data): Boom<Data>;
+export function badImplementation<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 501 Not Implemented error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 501 Not Implemented error
 */
-export function notImplemented<Data>(message?: string, data?: Data): Boom<Data>;
+export function notImplemented<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 502 Bad Gateway error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 502 Bad Gateway error
 */
-export function badGateway<Data>(message?: string, data?: Data): Boom<Data>;
+export function badGateway<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 503 Service Unavailable error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 503 Service Unavailable error
 */
-export function serverUnavailable<Data>(message?: string, data?: Data): Boom<Data>;
+export function serverUnavailable<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
 
 
 /**
 * Returns a 504 Gateway Time-out error
 *
-* @param message - Optional message
+* @param messageOrError - Optional message or Error
 * @param data - Optional additional error data
 *
 * @returns A 504 Gateway Time-out error
 */
-export function gatewayTimeout<Data>(message?: string, data?: Data): Boom<Data>;
+export function gatewayTimeout<Data>(messageOrError?: string | Error, data?: Data): Boom<Data>;
