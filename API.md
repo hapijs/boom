@@ -27,12 +27,6 @@ Rebuilds `error.output` using the other object properties where:
 
 - `debug` - a Boolean that, when `true`, causes Internal Server Error messages to be left in tact. Defaults to `false`, meaning that Internal Server Error messages are redacted.
 
-Note that `Boom` object will return `true` when used with `instanceof Boom`, but do not use the
-`Boom` prototype (they are either plain `Error` or the error prototype passed in). This means
-`Boom` objects should only be tested using `instanceof Boom` or `Boom.isBoom()` but not by looking
-at the prototype or contructor information. This limitation is to avoid manipulating the prototype
-chain which is very slow.
-
 #### Helper Methods
 
 ##### `new Boom.Boom(message, [options])`
