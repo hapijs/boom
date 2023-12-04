@@ -249,6 +249,15 @@ describe('Boom', () => {
             expect(boom.output.payload.message).to.equal('Override message: Missing data');
             expect(boom.output.statusCode).to.equal(599);
         });
+
+        it('handles non-Error errors', () => {
+
+            const boom = Boom.boomify(123, { message: 'Hello', statusCode: 400 });
+
+            expect(boom.cause).to.equal(123);
+            expect(boom.output.payload.message).to.equal('Hello: 123');
+            expect(boom.output.statusCode).to.equal(400);
+        });
     });
 
     describe('create()', () => {
