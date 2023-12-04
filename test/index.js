@@ -21,8 +21,8 @@ describe('Boom', () => {
         expect(err.output.statusCode).to.equal(400);
 
         expect(err.name).to.equal('Boom');
-        expect(Object.keys(err)).to.equal(['isServer', 'data', 'output']);
-        expect(JSON.stringify(err)).to.equal('{"isServer":false,"data":null,"output":{"statusCode":400,"payload":{"statusCode":400,"error":"Bad Request","message":"oops"},"headers":{}}}');
+        expect(Object.keys(err)).to.equal(['data', 'output']);
+        expect(JSON.stringify(err)).to.equal('{"data":null,"output":{"statusCode":400,"payload":{"statusCode":400,"error":"Bad Request","message":"oops"},"headers":{}}}');
     });
 
     it('handles missing message', () => {
