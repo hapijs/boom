@@ -34,7 +34,7 @@ describe('Boom', () => {
 
     it('handles missing message', () => {
 
-        const err = new Boom.Boom(new Error());
+        const err = new Boom.Boom();
 
         expect(Boom.isBoom(err)).to.be.true();
         expect(err.message).to.equal('Internal Server Error');
@@ -42,7 +42,7 @@ describe('Boom', () => {
 
     it('handles missing message with unknown statusCode', () => {
 
-        const err = new Boom.Boom(new Error(), { statusCode: 999 });
+        const err = new Boom.Boom(null, { statusCode: 999 });
 
         expect(Boom.isBoom(err)).to.be.true();
         expect(err.message).to.equal('Unknown');
@@ -62,21 +62,6 @@ describe('Boom', () => {
 
             new Boom.Boom('message', { statusCode: 'x' });
         }).to.throw('statusCode must be a number (400+): x');
-    });
-
-    it('handles readonly error message property', () => {
-
-        const Err = class extends Error {
-
-            get message() {
-
-                return 'x';
-            }
-        };
-
-        const err = new Boom.Boom(new Err(), { message: 'override' });
-        expect(Boom.isBoom(err)).to.be.true();
-        expect(err.message).to.equal('override');
     });
 
     it('will cast a statusCode number-string to an integer', () => {
@@ -283,7 +268,7 @@ describe('Boom', () => {
 
     describe('create()', () => {
 
-        it('does not sets null message', () => {
+        it('does not set null message', () => {
 
             const error = Boom.unauthorized(null);
             expect(error.output.payload.message).to.equal('Unauthorized');
@@ -300,11 +285,11 @@ describe('Boom', () => {
 
     describe('initialize()', () => {
 
-        it('does not sets null message', () => {
+        it('does not set null message', () => {
 
-            const err = new Error('some error message');
-            const boom = new Boom.Boom(err, { statusCode: 400, message: 'modified error message' });
-            expect(boom.output.payload.message).to.equal('modified error message: some error message');
+            const err = new Error('some error');
+            const boom = new Boom.Boom('prepended error message', { statusCode: 400, cause: err });
+            expect(boom.output.payload.message).to.equal('prepended error message: some error');
         });
     });
 
@@ -956,26 +941,14 @@ describe('Boom', () => {
             'badImplementation'
         ].forEach((name) => {
 
-            it(`should allow \`Boom.${name}(err)\` and preserve the error`, () => {
+            it(`uses stringified error as message`, () => {
 
                 const error = new Error('An example mongoose validation error');
                 error.name = 'ValidationError';
                 const err = Boom[name](error);
-                expect(err.cause.name).to.equal('ValidationError');
-                expect(err.cause.message).to.equal('An example mongoose validation error');
+                expect(err.cause).to.not.exist();
+                expect(err.message).to.equal(error.toString());
             });
-
-            // exclude unauthorized
-
-            if (name !== 'unauthorized') {
-
-                it(`should allow \`Boom.${name}(err, data)\` and preserve the data`, () => {
-
-                    const error = new Error();
-                    const err = Boom[name](error, { foo: 'bar' });
-                    expect(err.data).to.equal({ foo: 'bar' });
-                });
-            }
         });
     });
 
@@ -1033,7 +1006,7 @@ describe('Boom', () => {
         it('displays internal server error messages in debug mode', () => {
 
             const error = new Error('ka-boom');
-            const err = new Boom.Boom(error, { statusCode: 500 });
+            const err = new Boom.Boom(null, { statusCode: 500, cause: error });
 
             err.reformat(false);
             expect(err.output).to.equal({
