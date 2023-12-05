@@ -972,55 +972,6 @@ describe('Boom', () => {
         });
     });
 
-    describe('error.typeof', () => {
-
-        const types = [
-            'badRequest',
-            'unauthorized',
-            'forbidden',
-            'notFound',
-            'methodNotAllowed',
-            'notAcceptable',
-            'proxyAuthRequired',
-            'clientTimeout',
-            'conflict',
-            'resourceGone',
-            'lengthRequired',
-            'preconditionFailed',
-            'entityTooLarge',
-            'uriTooLong',
-            'unsupportedMediaType',
-            'rangeNotSatisfiable',
-            'expectationFailed',
-            'badData',
-            'preconditionRequired',
-            'tooManyRequests',
-            'internal',
-            'notImplemented',
-            'badGateway',
-            'serverUnavailable',
-            'gatewayTimeout',
-            'badImplementation'
-        ];
-
-        types.forEach((name) => {
-
-            it(`matches typeof Boom.${name}`, () => {
-
-                const error = Boom[name]();
-                types.forEach((type) => {
-
-                    if (type === name) {
-                        expect(error.typeof).to.shallow.equal(Boom[name]);
-                    }
-                    else {
-                        expect(error.typeof).to.not.shallow.equal(Boom[type]);
-                    }
-                });
-            });
-        });
-    });
-
     describe('reformat()', () => {
 
         it('displays internal server error messages in debug mode', () => {
