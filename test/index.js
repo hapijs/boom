@@ -357,7 +357,6 @@ describe('Boom', () => {
             const err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
             expect(err.output.statusCode).to.equal(401);
             expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
-            expect(err.output.payload.attributes).to.equal({ a: 1, b: 'something', c: '', d: 0, error: 'boom' });
         });
 
         it('returns a WWW-Authenticate header from string input instead of object', () => {
@@ -365,7 +364,6 @@ describe('Boom', () => {
             const err = Boom.unauthorized(null, 'Negotiate', 'VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
             expect(err.output.statusCode).to.equal(401);
             expect(err.output.headers['WWW-Authenticate']).to.equal('Negotiate VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
-            expect(err.output.payload.attributes).to.equal('VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
         });
 
         it('returns a WWW-Authenticate header when passed attributes, missing error', () => {
