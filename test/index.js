@@ -49,6 +49,14 @@ describe('Boom', () => {
         expect(Boom.isBoom(err)).to.be.true();
     });
 
+    it('handles headers option', () => {
+
+        const err = new Boom.Boom('fail', { statusCode: 400, headers: { custom: 'yes' } });
+        expect(err.output.payload.message).to.equal('fail');
+        expect(err.output.statusCode).to.equal(400);
+        expect(err.output.headers).to.equal({ custom: 'yes' });
+    });
+
     it('throws when statusCode is not a number', () => {
 
         expect(() => {
