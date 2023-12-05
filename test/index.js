@@ -991,10 +991,10 @@ describe('Boom', () => {
                 types.forEach((type) => {
 
                     if (type === name) {
-                        expect(error.typeof).to.equal(Boom[name]);
+                        expect(error.typeof).to.shallow.equal(Boom[name]);
                     }
                     else {
-                        expect(error.typeof).to.not.equal(Boom[type]);
+                        expect(error.typeof).to.not.shallow.equal(Boom[type]);
                     }
                 });
             });
