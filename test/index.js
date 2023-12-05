@@ -57,12 +57,17 @@ describe('Boom', () => {
         expect(err.output.headers).to.equal({ custom: 'yes' });
     });
 
-    it('throws when statusCode is not a number', () => {
+    it('throws when statusCode is invalid', () => {
 
         expect(() => {
 
             new Boom.Boom('message', { statusCode: 'x' });
         }).to.throw('statusCode must be a number (400+): x');
+
+        expect(() => {
+
+            new Boom.Boom('message', { statusCode: '200' });
+        }).to.throw('statusCode must be a number (400+): 200');
     });
 
     it('will cast a statusCode number-string to an integer', () => {
@@ -81,12 +86,12 @@ describe('Boom', () => {
         }
     });
 
-    it('throws when statusCode is not finite', () => {
+    it('throws TypeError when statusCode is not finite', () => {
 
         expect(() => {
 
             new Boom.Boom('', { statusCode: 1 / 0 });
-        }).to.throw('statusCode must be a number (400+): null');
+        }).to.throw(TypeError, 'statusCode must be a number (400+): Infinity');
     });
 
     it('sets error code to unknown', () => {
