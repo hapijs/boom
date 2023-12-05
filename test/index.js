@@ -779,6 +779,13 @@ describe('Boom', () => {
             expect(Boom.internal().output.statusCode).to.equal(500);
         });
 
+        it('handles a custom error statusCode', () => {
+
+            const err = Boom.internal(null, null, 507);
+            expect(err.output.statusCode).to.equal(507);
+            expect(err.message).to.equal('Insufficient Storage');
+        });
+
         it('sets the message with the passed in message', () => {
 
             const err = Boom.internal('my message');
