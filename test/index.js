@@ -1,6 +1,7 @@
 'use strict';
 
 const Boom = require('..');
+const Boom10 = require('@hapi/boom10');
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
 
@@ -107,6 +108,7 @@ describe('Boom', () => {
             const BadaBoom = class extends Boom.Boom {};
 
             expect(new Boom.Boom('oops')).to.be.instanceOf(Boom.Boom);
+            expect(new Boom10.Boom('oops')).to.be.instanceOf(Boom.Boom);
             expect(new BadaBoom('oops')).to.be.instanceOf(Boom.Boom);
             expect(Boom.badRequest('oops')).to.be.instanceOf(Boom.Boom);
             expect(new Error('oops')).to.not.be.instanceOf(Boom.Boom);
@@ -128,6 +130,12 @@ describe('Boom', () => {
             expect(new Boom.Boom('oops')).to.not.be.instanceOf(BadaBoom);
             expect(Boom.badRequest('oops')).to.not.be.instanceOf(BadaBoom);
         });
+
+        it('works from legacy boom', () => {
+
+            expect(new Boom.Boom('oops')).to.be.instanceOf(Boom10.Boom);
+            expect(new Boom10.Boom('oops')).to.be.instanceOf(Boom10.Boom);
+        });
     });
 
     describe('isBoom()', () => {
@@ -137,6 +145,7 @@ describe('Boom', () => {
             // Success
 
             expect(Boom.isBoom(new Boom.Boom('oops'))).to.be.true();
+            expect(Boom.isBoom(new Boom10.Boom('oops'))).to.be.true();
 
             // Fail
 
@@ -148,11 +157,19 @@ describe('Boom', () => {
         it('returns true for valid boom object and valid status code', () => {
 
             expect(Boom.isBoom(Boom.notFound(),404)).to.be.true();
+            expect(Boom.isBoom(Boom10.notFound(), 404)).to.be.true();
         });
 
         it('returns false for valid boom object and wrong status code', () => {
 
-            expect(Boom.isBoom(Boom.notFound(),503)).to.be.false();
+            expect(Boom.isBoom(Boom.notFound(), 503)).to.be.false();
+            expect(Boom.isBoom(Boom10.notFound(), 503)).to.be.false();
+        });
+
+        it('works from legacy boom', () => {
+
+            expect(Boom10.isBoom(new Boom.Boom('oops'))).to.be.true();
+            expect(Boom10.isBoom(new Boom10.Boom('oops'))).to.be.true();
         });
     });
 
@@ -271,6 +288,23 @@ describe('Boom', () => {
             expect(boom.cause).to.equal(123);
             expect(boom.output.payload.message).to.equal('Hello: 123');
             expect(boom.output.statusCode).to.equal(400);
+        });
+
+        it('works with legacy boom', () => {
+
+            const boom = Boom.boomify(new Boom10.Boom(null, { statusCode: 404 }), { statusCode: 501, message: 'Override' });
+
+            expect(boom.cause).to.be.undefined();
+            expect(boom.message).to.equal('Override: Not Found');
+            expect(boom.isServer).to.be.true();
+            expect(boom.output.statusCode).to.equal(501);
+
+            const boom10 = Boom10.boomify(new Boom.Boom(null, { statusCode: 404 }), { statusCode: 501, message: 'Override' });
+
+            expect(boom10.cause).to.be.undefined();
+            expect(boom10.message).to.equal('Override: Not Found');
+            expect(boom10.isServer).to.be.true();
+            expect(boom10.output.statusCode).to.equal(501);
         });
     });
 

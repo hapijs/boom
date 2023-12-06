@@ -25,10 +25,11 @@
     "@hapi/eslint-plugin": "^7.0.0",
     "@hapi/lab": "^26.0.0",
     "@types/node": "^17.0.31",
-    "typescript": "~4.6.4"
+    "typescript": "~4.6.4",
+    "@hapi/boom10": "npm:@hapi/boom@^10.0.1"
   },
   "scripts": {
-    "test": "lab -a @hapi/code -t 100 -L -Y",
+    "test": "lab -a @hapi/code -t 100 -L",
     "test-cov-html": "lab -a @hapi/code -t 100 -L -r html -o coverage.html"
   },
   "license": "BSD-3-Clause"
