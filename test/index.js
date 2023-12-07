@@ -122,6 +122,27 @@ describe('Boom', () => {
         expect(err.output.payload.error).to.equal('Unknown');
     });
 
+    it('assigns a .cause property if Error does not support it', (flags) => {
+
+        const proto = Object.getPrototypeOf(Boom.Boom);
+        Object.setPrototypeOf(Boom.Boom, class extends Error {
+
+            constructor(message, _options) {
+
+                super(message);
+            }
+        });
+
+        flags.onCleanup = () => {
+
+            Object.setPrototypeOf(Boom.Boom, proto);
+        };
+
+        const err = new Boom.Boom('fail', { cause: 0 });
+        expect(err.cause).to.exist();
+        expect(err.cause).to.equal(0);
+    });
+
     describe('instanceof', () => {
 
         it('identifies a boom object', () => {
