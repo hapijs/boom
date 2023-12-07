@@ -63,7 +63,7 @@ export interface Options<Data> {
     /**
      * An object containing any HTTP headers where each key is a header name and value is the header content
      */
-    readonly headers?: { [header: string]: string | string[] | number };
+    readonly headers?: { [header: string]: string | readonly string[] | number };
 
     /**
      * Constructor reference used to crop the exception call stack output
@@ -116,17 +116,17 @@ export interface Output {
     /**
      * The HTTP status code
      */
-    readonly statusCode: number;
+    statusCode: number;
 
     /**
      * An object containing any HTTP headers where each key is a header name and value is the header content
      */
-    readonly headers: { [header: string]: string | string[] | number | undefined };
+    headers: { [header: string]: string | string[] | number | undefined };
 
     /**
      * The formatted object used as the response payload (stringified)
      */
-    readonly payload: Payload;
+    payload: Payload & { [key: string]: unknown };
 }
 
 
@@ -213,7 +213,7 @@ export namespace unauthorized {
 *
 * @returns A 401 Unauthorized error
 */
-export function unauthorized(message: string | null | undefined, wwwAuthenticate: string[]): Boom<null>;
+export function unauthorized(message: string | null | undefined, wwwAuthenticate: readonly string[]): Boom<null>;
 
 
 /**
@@ -258,7 +258,7 @@ export function notFound<Data>(message?: string, data?: Data): Boom<Data>;
 *
 * @returns A 405 Method Not Allowed error
 */
-export function methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | string[]): Boom<Data>;
+export function methodNotAllowed<Data>(message?: string, data?: Data, allow?: string | readonly string[]): Boom<Data>;
 
 
 /**
