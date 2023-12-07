@@ -1126,5 +1126,45 @@ describe('Boom', () => {
 
             Object.defineProperty(new Boom.Boom('oops'), 'reformat', { value: true });
         });
+
+        it('can be implemented by subclasses to apply custom formatting', () => {
+
+            class MyBoom extends Boom.Boom {
+
+                reformat(...args) {
+
+                    super.reformat(...args);
+
+                    this.output.payload.custom = true;
+                }
+            }
+
+            const err = new MyBoom('boom', { statusCode: 400 });
+            expect(err.output.statusCode).to.equal(400);
+            expect(err.output.payload.message).to.equal('boom');
+            expect(err.output.payload.custom).to.be.true();
+
+            err.output.statusCode = 500;
+            err.reformat();
+            expect(err.output.statusCode).to.equal(500);
+            expect(err.output.payload.message).to.equal('An internal server error occurred');
+            expect(err.output.payload.custom).to.be.true();
+        });
+
+        it('prototype can be changed to always debug', (flags) => {
+
+            const proto = Boom.Boom.prototype.reformat;
+            flags.onCleanup = () => {
+
+                Boom.Boom.prototype.reformat = proto;
+            };
+
+            Boom.Boom.prototype.reformat = function () {
+
+                return proto.call(this, true);
+            };
+
+            expect(Boom.internal('DEBUG').output.payload.message).to.equal('DEBUG');
+        });
     });
 });
