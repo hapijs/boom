@@ -31,6 +31,11 @@ expect.type<Boom.Boom>(new CustomError('Some error'));
 
 const boom = new Boom.Boom('some error');
 expect.type<Boom.Output>(boom.output);
+boom.output.payload.custom_null = null;
+boom.output.payload.custom_number = 42;
+boom.output.payload.custom_string = 'foo';
+boom.output.payload.custom_boolean = true;
+boom.output.payload.custom_object = { bar: 42 };
 boom.output.headers['header1'] = 'foo';
 boom.output.headers['header2'] = ['foo', 'bar'];
 boom.output.headers['header3'] = 42;
