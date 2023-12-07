@@ -26,6 +26,27 @@ describe('Boom', () => {
         expect(JSON.stringify(err)).to.equal('{"data":null,"output":{"statusCode":400,"payload":{"statusCode":400,"error":"Bad Request","message":"oops"},"headers":{}}}');
     });
 
+    it('instances has .name "Boom"', () => {
+
+        class SubBoom extends Boom.Boom {}
+
+        expect(new Boom.Boom().name).to.equal('Boom');
+        expect(new SubBoom().name).to.equal('Boom');
+    });
+
+    it('instances .name can be changed', () => {
+
+        class SubBoom extends Boom.Boom {
+            name = 'BadaBoom';
+        }
+
+        const err = new Boom.Boom();
+        err.name = 'MyBoom';
+
+        expect(err.name).to.equal('MyBoom');
+        expect(new SubBoom().name).to.equal('BadaBoom');
+    });
+
     it('handles missing message', () => {
 
         const err = new Boom.Boom();
