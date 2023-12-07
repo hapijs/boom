@@ -79,6 +79,17 @@ describe('Boom', () => {
         expect(err.output.headers).to.equal({ custom: 'yes' });
     });
 
+    it('clones headers object', () => {
+
+        const headers = { custom: ['yes'] };
+        const err = new Boom.Boom('fail', { statusCode: 400, headers });
+        err.output.headers.custom.push('more');
+        err.output.headers.extra = 'added';
+
+        expect(err.output.headers).to.equal({ custom: ['yes', 'more'], extra: 'added' });
+        expect(headers).to.equal({ custom: ['yes'] });
+    });
+
     it('throws when statusCode is invalid', () => {
 
         expect(() => {
