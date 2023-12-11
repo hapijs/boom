@@ -63,7 +63,7 @@ export interface Options<Data> {
     /**
      * An object containing any HTTP headers where each key is a header name and value is the header content
      */
-    readonly headers?: { [header: string]: string | readonly string[] | number };
+    readonly headers?: { readonly [header: string]: string | readonly string[] | number };
 
     /**
      * Constructor reference used to crop the exception call stack output
