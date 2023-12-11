@@ -27,12 +27,6 @@ Rebuilds `error.output` using the other object properties where:
 
 - `debug` - a Boolean that, when `true`, causes Internal Server Error messages to be left in tact. Defaults to `false`, meaning that Internal Server Error messages are redacted.
 
-Note that `Boom` object will return `true` when used with `instanceof Boom`, but do not use the
-`Boom` prototype (they are either plain `Error` or the error prototype passed in). This means
-`Boom` objects should only be tested using `instanceof Boom` or `Boom.isBoom()` but not by looking
-at the prototype or contructor information. This limitation is to avoid manipulating the prototype
-chain which is very slow.
-
 #### Helper Methods
 
 ##### `new Boom.Boom(message, [options])`
@@ -108,7 +102,8 @@ Returns a 401 Unauthorized error where:
   - an array of string values. These values will be separated by ', ' and set to the 'WWW-Authenticate' header.
 - `attributes` - an object of values to use while setting the 'WWW-Authenticate' header. This value is only used
   when `scheme` is a string, otherwise it is ignored. Every key/value pair will be included in the
-  'WWW-Authenticate' in the format of 'key="value"' as well as in the response payload under the `attributes` key.  Alternatively value can be a string which is use to set the value of the scheme, for example setting the token value for negotiate header.  If string is used message parameter must be null.
+  'WWW-Authenticate' in the format of 'key="value"'. Alternatively value can be a string which is used to set the
+  value of the scheme, for example setting the token value for negotiate header.  If string is used message parameter must be null.
   `null` and `undefined` will be replaced with an empty string. If `attributes` is set, `message` will be used as
   the 'error' segment of the 'WWW-Authenticate' header. If `message` is unset, the 'error' segment of the header
   will not be present and `isMissing` will be true on the error object.
@@ -141,10 +136,7 @@ Generates the following response:
 "payload": {
     "statusCode": 401,
     "error": "Unauthorized",
-    "message": "invalid password",
-    "attributes": {
-        "error": "invalid password"
-    }
+    "message": "invalid password"
 },
 "headers": {
   "WWW-Authenticate": "sample error=\"invalid password\""
@@ -160,8 +152,7 @@ Generates the following response:
 ```json
 "payload": {
     "statusCode": 401,
-    "error": "Unauthorized",
-    "attributes": "VGhpcyBpcyBhIHRlc3QgdG9rZW4="
+    "error": "Unauthorized"
 },
 "headers": {
   "WWW-Authenticate": "Negotiate VGhpcyBpcyBhIHRlc3QgdG9rZW4="
@@ -178,13 +169,7 @@ Generates the following response:
 "payload": {
     "statusCode": 401,
     "error": "Unauthorized",
-    "message": "invalid password",
-    "attributes": {
-        "error": "invalid password",
-        "ttl": 0,
-        "cache": "",
-        "foo": "bar"
-    }
+    "message": "invalid password"
 },
 "headers": {
   "WWW-Authenticate": "sample ttl=\"0\", cache=\"\", foo=\"bar\", error=\"invalid password\""
