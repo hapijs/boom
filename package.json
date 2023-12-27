@@ -1,7 +1,7 @@
 {
   "name": "boom",
   "description": "HTTP-friendly error objects",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "repository": "git://github.com/hapijs/boom",
   "engines": {
     "node": ">=6.0.0"
