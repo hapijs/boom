@@ -31,34 +31,33 @@ Rebuilds `error.output` using the other object properties where:
 
 ##### `new Boom.Boom(message, [options])`
 
-Creates a new `Boom` object using the provided `message` and then calling
-[`boomify()`](#boomifyerr-options) to decorate the error with the `Boom` properties, where:
-- `message` - the error message. If `message` is an error, it is the same as calling
-  [`boomify()`](#boomifyerr-options) directly.
+Creates a new `Boom` object, where:
+- `message` - the error message.
 - `options` - and optional object where:
-	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
+	- `statusCode` - the HTTP status code. Defaults to `500`.
+ 	- `cause` - The error that caused the boom error.
     - `data` - additional error information (assigned to `error.data`).
     - `decorate` - an option with extra properties to set on the error object.
     - `ctor` - constructor reference used to crop the exception call stack output.
-    - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
-      options.
 
 ##### `boomify(err, [options])`
 
-Decorates an error with the `Boom` properties where:
+This works as [`new Boom.Boom()`](#new-boomboommessage-options), except when the `err` argument is a boom error.
+In that case, it will apply the options to the existing error, instead of wrapping it in a new boom error.
+Decorates a boom object with the `Boom` properties where:
 - `err` - the `Error` object to decorate.
 - `options` - optional object with the following optional settings:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set and `err` is not a `Boom` object.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
-	  Defaults to no message.
     - `decorate` - an option with extra properties to set on the error object.
 	- `override` - if `false`, the `err` provided is a `Boom` object, and a `statusCode` or `message` are provided,
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
 	  regardless of its type, `Error` or `Boom` object).
+- it returns the boomified error
 
 ```js
-var error = new Error('Unexpected input');
-Boom.boomify(error, { statusCode: 400 });
+const error = new Error('Unexpected input');
+const boomified = Boom.boomify(error, { statusCode: 400 });
 ```
 
 ##### `isBoom(err, [statusCode])`
