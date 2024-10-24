@@ -1,6 +1,7 @@
 'use strict';
 
 const Boom = require('..');
+const Boom10 = require('@hapi/boom10');
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
 
@@ -20,17 +21,30 @@ describe('Boom', () => {
         expect(err.output.payload.message).to.equal('oops');
         expect(err.output.statusCode).to.equal(400);
 
-        expect(Object.keys(err)).to.equal(['data', 'isBoom', 'isServer', 'output']);
-        expect(JSON.stringify(err)).to.equal('{"data":null,"isBoom":true,"isServer":false,"output":{"statusCode":400,"payload":{"statusCode":400,"error":"Bad Request","message":"oops"},"headers":{}}}');
+        expect(err.name).to.equal('Boom');
+        expect(Object.keys(err)).to.equal(['data', 'output']);
+        expect(JSON.stringify(err)).to.equal('{"data":null,"output":{"statusCode":400,"payload":{"statusCode":400,"error":"Bad Request","message":"oops"},"headers":{}}}');
     });
 
-    it('clones error object', () => {
+    it('instances has .name "Boom"', () => {
 
-        const oops = new Error('oops');
-        const err = new Boom.Boom(oops, { statusCode: 400 });
-        expect(err).to.not.shallow.equal(oops);
-        expect(err.output.payload.message).to.equal('oops');
-        expect(err.output.statusCode).to.equal(400);
+        class SubBoom extends Boom.Boom {}
+
+        expect(new Boom.Boom().name).to.equal('Boom');
+        expect(new SubBoom().name).to.equal('Boom');
+    });
+
+    it('instances .name can be changed', () => {
+
+        class SubBoom extends Boom.Boom {
+            name = 'BadaBoom';
+        }
+
+        const err = new Boom.Boom();
+        err.name = 'MyBoom';
+
+        expect(err.name).to.equal('MyBoom');
+        expect(new SubBoom().name).to.equal('BadaBoom');
     });
 
     it('decorates error', () => {
@@ -43,57 +57,61 @@ describe('Boom', () => {
 
     it('handles missing message', () => {
 
-        const err = new Error();
-        Boom.boomify(err);
+        const err = new Boom.Boom();
 
         expect(Boom.isBoom(err)).to.be.true();
+        expect(err.message).to.equal('Internal Server Error');
     });
 
-    it('handles missing message (class)', () => {
+    it('handles missing message with unknown statusCode', () => {
 
-        const Example = class extends Error {
+        const err = new Boom.Boom(null, { statusCode: 999 });
 
-            constructor(message) {
+        expect(Boom.isBoom(err)).to.be.true();
+        expect(err.message).to.equal('Unknown');
+    });
 
-                super(message);
-                Boom.boomify(this);
-            }
-        };
+    it('handles missing message (subclass)', () => {
+
+        const Example = class extends Boom.Boom {};
 
         const err = new Example();
         expect(Boom.isBoom(err)).to.be.true();
     });
 
-    it('throws when statusCode is not a number', () => {
+    it('handles headers option', () => {
+
+        const err = new Boom.Boom('fail', { statusCode: 400, headers: { custom: 'yes' } });
+        expect(err.output.payload.message).to.equal('fail');
+        expect(err.output.statusCode).to.equal(400);
+        expect(err.output.headers).to.equal({ custom: 'yes' });
+    });
+
+    it('clones headers object', () => {
+
+        const headers = { custom: ['yes'] };
+        const err = new Boom.Boom('fail', { statusCode: 400, headers });
+        err.output.headers.custom.push('more');
+        err.output.headers.extra = 'added';
+
+        expect(err.output.headers).to.equal({ custom: ['yes', 'more'], extra: 'added' });
+        expect(headers).to.equal({ custom: ['yes'] });
+    });
+
+    it('throws when statusCode is invalid', () => {
 
         expect(() => {
 
             new Boom.Boom('message', { statusCode: 'x' });
-        }).to.throw('First argument must be a number (400+): x');
+        }).to.throw('statusCode must be a number (400+): x');
+
+        expect(() => {
+
+            new Boom.Boom('message', { statusCode: '200' });
+        }).to.throw('statusCode must be a number (400+): 200');
     });
 
-    it('errors on incompatible message property (prototype)', () => {
-
-        const Err = class extends Error {
-
-            get message() {
-
-                return 'x';
-            }
-        };
-
-        const err = new Err();
-        expect(() => Boom.boomify(err, { message: 'override' })).to.throw('The error is not compatible with boom');
-    });
-
-    it('errors on incompatible message property (own)', () => {
-
-        const err = new Error();
-        Object.defineProperty(err, 'message', { get: function () { } });
-        expect(() => Boom.boomify(err, { message: 'override' })).to.throw('The error is not compatible with boom');
-    });
-
-    it('will cast a number-string to an integer', () => {
+    it('will cast a statusCode number-string to an integer', () => {
 
         const codes = [
             { input: '404', result: 404 },
@@ -109,12 +127,12 @@ describe('Boom', () => {
         }
     });
 
-    it('throws when statusCode is not finite', () => {
+    it('throws TypeError when statusCode is not finite', () => {
 
         expect(() => {
 
             new Boom.Boom('', { statusCode: 1 / 0 });
-        }).to.throw('First argument must be a number (400+): null');
+        }).to.throw(TypeError, 'statusCode must be a number (400+): Infinity');
     });
 
     it('sets error code to unknown', () => {
@@ -123,36 +141,61 @@ describe('Boom', () => {
         expect(err.output.payload.error).to.equal('Unknown');
     });
 
+    it('assigns a .cause property if Error does not support it', (flags) => {
+
+        const proto = Object.getPrototypeOf(Boom.Boom);
+        Object.setPrototypeOf(Boom.Boom, class extends Error {
+
+            constructor(message, _options) {
+
+                super(message);
+            }
+        });
+
+        flags.onCleanup = () => {
+
+            Object.setPrototypeOf(Boom.Boom, proto);
+        };
+
+        const err = new Boom.Boom('fail', { cause: 0 });
+        expect(err.cause).to.exist();
+        expect(err.cause).to.equal(0);
+    });
+
     describe('instanceof', () => {
 
         it('identifies a boom object', () => {
 
-            const BadaBoom = class extends Boom.Boom { };
+            const BadaBoom = class extends Boom.Boom {};
 
             expect(new Boom.Boom('oops')).to.be.instanceOf(Boom.Boom);
+            expect(new Boom10.Boom('oops')).to.be.instanceOf(Boom.Boom);
             expect(new BadaBoom('oops')).to.be.instanceOf(Boom.Boom);
             expect(Boom.badRequest('oops')).to.be.instanceOf(Boom.Boom);
             expect(new Error('oops')).to.not.be.instanceOf(Boom.Boom);
-            expect(Boom.boomify(new Error('oops'))).to.be.instanceOf(Boom.Boom);
             expect({ isBoom: true }).to.not.be.instanceOf(Boom.Boom);
             expect(null).to.not.be.instanceOf(Boom.Boom);
         });
 
-        it('returns false when called on sub-class', () => {
+        it('can be called on a sub-class', () => {
 
             const BadaBoom = class extends Boom.Boom {};
 
+            // Success
+
+            expect(new BadaBoom('oops')).to.be.instanceOf(BadaBoom);
+            expect(Object.create(BadaBoom.prototype)).to.be.instanceOf(BadaBoom);
+
+            // Fail
+
             expect(new Boom.Boom('oops')).to.not.be.instanceOf(BadaBoom);
-            expect(new BadaBoom('oops')).to.not.be.instanceOf(BadaBoom);
             expect(Boom.badRequest('oops')).to.not.be.instanceOf(BadaBoom);
-            expect(Boom.boomify(new Error('oops'))).to.not.be.instanceOf(BadaBoom);
         });
 
-        it('handles actual sub-class instances when called on sub-class', () => {
+        it('works from legacy boom', () => {
 
-            const BadaBoom = class extends Boom.Boom { };
-
-            expect(Object.create(BadaBoom.prototype)).to.be.instanceOf(BadaBoom);
+            expect(new Boom.Boom('oops')).to.be.instanceOf(Boom10.Boom);
+            expect(new Boom10.Boom('oops')).to.be.instanceOf(Boom10.Boom);
         });
     });
 
@@ -160,7 +203,13 @@ describe('Boom', () => {
 
         it('identifies a boom object', () => {
 
+            // Success
+
             expect(Boom.isBoom(new Boom.Boom('oops'))).to.be.true();
+            expect(Boom.isBoom(new Boom10.Boom('oops'))).to.be.true();
+
+            // Fail
+
             expect(Boom.isBoom(new Error('oops'))).to.be.false();
             expect(Boom.isBoom({ isBoom: true })).to.be.false();
             expect(Boom.isBoom(null)).to.be.false();
@@ -169,11 +218,19 @@ describe('Boom', () => {
         it('returns true for valid boom object and valid status code', () => {
 
             expect(Boom.isBoom(Boom.notFound(),404)).to.be.true();
+            expect(Boom.isBoom(Boom10.notFound(), 404)).to.be.true();
         });
 
         it('returns false for valid boom object and wrong status code', () => {
 
-            expect(Boom.isBoom(Boom.notFound(),503)).to.be.false();
+            expect(Boom.isBoom(Boom.notFound(), 503)).to.be.false();
+            expect(Boom.isBoom(Boom10.notFound(), 503)).to.be.false();
+        });
+
+        it('works from legacy boom', () => {
+
+            expect(Boom10.isBoom(new Boom.Boom('oops'))).to.be.true();
+            expect(Boom10.isBoom(new Boom10.Boom('oops'))).to.be.true();
         });
     });
 
@@ -182,24 +239,22 @@ describe('Boom', () => {
         it('returns the same object when already boom', () => {
 
             const error = Boom.badRequest();
-            expect(error).to.equal(Boom.boomify(error));
-            expect(error).to.equal(Boom.boomify(error, { statusCode: 444 }));
+            expect(error).to.shallow.equal(Boom.boomify(error));
+            expect(error).to.shallow.equal(Boom.boomify(error, { statusCode: 444 }));
         });
 
         it('decorates error', () => {
 
-            const err = new Error('oops');
-            Boom.boomify(err, { statusCode: 400, decorate: { x: 1 } });
+            const error = new Error('oops');
+            const err = Boom.boomify(error, { statusCode: 400, decorate: { x: 1 } });
             expect(err.x).to.equal(1);
         });
 
         it('returns an error with info when constructed using another error', () => {
 
             const error = new Error('ka-boom');
-            error.xyz = 123;
             const err = Boom.boomify(error);
-            expect(err.xyz).to.equal(123);
-            expect(err.message).to.equal('ka-boom');
+            expect(err.cause).to.shallow.equal(error);
             expect(err.output).to.equal({
                 statusCode: 500,
                 payload: {
@@ -210,14 +265,6 @@ describe('Boom', () => {
                 headers: {}
             });
             expect(err.data).to.equal(null);
-        });
-
-        it('does not override data when constructed using another error', () => {
-
-            const error = new Error('ka-boom');
-            error.data = { useful: 'data' };
-            const err = Boom.boomify(error);
-            expect(err.data).to.equal(error.data);
         });
 
         it('sets new message when none exists', () => {
@@ -243,9 +290,9 @@ describe('Boom', () => {
             const error = new Error('Missing data');
             const boom = Boom.boomify(error);
 
-            expect(boom).to.shallow.equal(error);
-            expect(error.output.payload.message).to.equal('An internal server error occurred');
-            expect(error.output.statusCode).to.equal(500);
+            expect(boom.cause).to.shallow.equal(error);
+            expect(boom.output.payload.message).to.equal('An internal server error occurred');
+            expect(boom.output.statusCode).to.equal(500);
         });
 
         it('overrides message and statusCode', () => {
@@ -297,15 +344,41 @@ describe('Boom', () => {
             const error = new Error('Missing data');
             const boom = Boom.boomify(error, { message: 'Override message', statusCode: 599, override: false });
 
-            expect(boom).to.shallow.equal(error);
-            expect(error.output.payload.message).to.equal('Override message: Missing data');
-            expect(error.output.statusCode).to.equal(599);
+            expect(boom.cause).to.shallow.equal(error);
+            expect(boom.output.payload.message).to.equal('Override message: Missing data');
+            expect(boom.output.statusCode).to.equal(599);
+        });
+
+        it('handles non-Error errors', () => {
+
+            const boom = Boom.boomify(123, { message: 'Hello', statusCode: 400 });
+
+            expect(boom.cause).to.equal(123);
+            expect(boom.output.payload.message).to.equal('Hello: 123');
+            expect(boom.output.statusCode).to.equal(400);
+        });
+
+        it('works with legacy boom', () => {
+
+            const boom = Boom.boomify(new Boom10.Boom(null, { statusCode: 404 }), { statusCode: 501, message: 'Override' });
+
+            expect(boom.cause).to.be.undefined();
+            expect(boom.message).to.equal('Override: Not Found');
+            expect(boom.isServer).to.be.true();
+            expect(boom.output.statusCode).to.equal(501);
+
+            const boom10 = Boom10.boomify(new Boom.Boom(null, { statusCode: 404 }), { statusCode: 501, message: 'Override' });
+
+            expect(boom10.cause).to.be.undefined();
+            expect(boom10.message).to.equal('Override: Not Found');
+            expect(boom10.isServer).to.be.true();
+            expect(boom10.output.statusCode).to.equal(501);
         });
     });
 
     describe('create()', () => {
 
-        it('does not sets null message', () => {
+        it('does not set null message', () => {
 
             const error = Boom.unauthorized(null);
             expect(error.output.payload.message).to.equal('Unauthorized');
@@ -322,24 +395,19 @@ describe('Boom', () => {
 
     describe('initialize()', () => {
 
-        it('does not sets null message', () => {
+        it('does not set null message', () => {
 
-            const err = new Error('some error message');
-            const boom = Boom.boomify(err, { statusCode: 400, message: 'modified error message' });
-            expect(boom.output.payload.message).to.equal('modified error message: some error message');
+            const err = new Error('some error');
+            const boom = new Boom.Boom('prepended error message', { statusCode: 400, cause: err });
+            expect(boom.output.payload.message).to.equal('prepended error message: some error');
         });
     });
 
-    describe('isBoom()', () => {
+    describe('isBoom', () => {
 
-        it('returns true for Boom object', () => {
+        it('is true for Boom object', () => {
 
-            expect(Boom.badRequest().isBoom).to.equal(true);
-        });
-
-        it('returns false for Error object', () => {
-
-            expect((new Error()).isBoom).to.not.exist();
+            expect(Boom.badRequest().isBoom).to.be.true();
         });
     });
 
@@ -404,7 +472,13 @@ describe('Boom', () => {
             const err = Boom.unauthorized('boom', 'Test', { a: 1, b: 'something', c: null, d: 0 });
             expect(err.output.statusCode).to.equal(401);
             expect(err.output.headers['WWW-Authenticate']).to.equal('Test a="1", b="something", c="", d="0", error="boom"');
-            expect(err.output.payload.attributes).to.equal({ a: 1, b: 'something', c: '', d: 0, error: 'boom' });
+        });
+
+        it('returns a WWW-Authenticate header when passed a scheme and empty attributes', () => {
+
+            const err = Boom.unauthorized('boom', 'Test', {});
+            expect(err.output.statusCode).to.equal(401);
+            expect(err.output.headers['WWW-Authenticate']).to.equal('Test error="boom"');
         });
 
         it('returns a WWW-Authenticate header from string input instead of object', () => {
@@ -412,7 +486,6 @@ describe('Boom', () => {
             const err = Boom.unauthorized(null, 'Negotiate', 'VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
             expect(err.output.statusCode).to.equal(401);
             expect(err.output.headers['WWW-Authenticate']).to.equal('Negotiate VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
-            expect(err.output.payload.attributes).to.equal('VGhpcyBpcyBhIHRlc3QgdG9rZW4=');
         });
 
         it('returns a WWW-Authenticate header when passed attributes, missing error', () => {
@@ -813,6 +886,13 @@ describe('Boom', () => {
             expect(Boom.internal().output.statusCode).to.equal(500);
         });
 
+        it('handles a custom error statusCode', () => {
+
+            const err = Boom.internal(null, null, 507);
+            expect(err.output.statusCode).to.equal(507);
+            expect(err.message).to.equal('Insufficient Storage');
+        });
+
         it('sets the message with the passed in message', () => {
 
             const err = Boom.internal('my message');
@@ -834,8 +914,11 @@ describe('Boom', () => {
                 x.foo();
             }
             catch (err) {
-                const boom = Boom.internal('Someting bad', err);
-                expect(boom.message).to.equal('Someting bad: x.foo is not a function');
+                const boom = Boom.internal('Something bad', err);
+                boom.reformat(true);
+                expect(boom.message).to.equal('Something bad');
+                expect(boom.cause).to.be.an.error(TypeError, 'x.foo is not a function');
+                expect(boom.output.payload.message).to.equal('Something bad: x.foo is not a function');
                 expect(boom.isServer).to.be.true();
             }
         });
@@ -930,22 +1013,40 @@ describe('Boom', () => {
 
     describe('stack trace', () => {
 
+        const helpers = ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
+            'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
+            'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
+            'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
+            'badData', 'preconditionRequired', 'tooManyRequests',
+
+            // 500s
+            'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
+            'gatewayTimeout', 'badImplementation'
+        ];
+
         it('should omit lib', () => {
 
-            ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
-                'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
-                'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
-                'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
-                'badData', 'preconditionRequired', 'tooManyRequests',
+            for (const helper of helpers) {
+                const err = Boom[helper]();
+                expect(err.stack).to.not.match(/(\/|\\)lib(\/|\\)index\.js/);
+            }
+        });
 
-                // 500s
-                'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
-                'gatewayTimeout', 'badImplementation'
-            ].forEach((name) => {
+        it('should not crash when Error.captureStackTrace is missing', (flags) => {
 
-                const err = Boom[name]();
-                expect(err.stack).to.not.match(/\/lib\/index\.js/);
-            });
+            const captureStackTrace = Error.captureStackTrace;
+
+            for (const helper of helpers) {
+                try {
+                    Error.captureStackTrace = undefined;
+                    var err = Boom[helper]();
+                }
+                finally {
+                    Error.captureStackTrace = captureStackTrace;
+                }
+
+                expect(err.stack).to.match(/(\/|\\)lib(\/|\\)index\.js/);
+            }
         });
     });
 
@@ -980,74 +1081,13 @@ describe('Boom', () => {
             'badImplementation'
         ].forEach((name) => {
 
-            it(`should allow \`Boom${name}(err)\` and preserve the error`, () => {
+            it(`uses stringified error as message`, () => {
 
                 const error = new Error('An example mongoose validation error');
                 error.name = 'ValidationError';
                 const err = Boom[name](error);
-                expect(err.name).to.equal('ValidationError');
-                expect(err.message).to.equal('An example mongoose validation error');
-            });
-
-            // exclude unauthorized
-
-            if (name !== 'unauthorized') {
-
-                it(`should allow \`Boom.${name}(err, data)\` and preserve the data`, () => {
-
-                    const error = new Error();
-                    const err = Boom[name](error, { foo: 'bar' });
-                    expect(err.data).to.equal({ foo: 'bar' });
-                });
-            }
-        });
-    });
-
-    describe('error.typeof', () => {
-
-        const types = [
-            'badRequest',
-            'unauthorized',
-            'forbidden',
-            'notFound',
-            'methodNotAllowed',
-            'notAcceptable',
-            'proxyAuthRequired',
-            'clientTimeout',
-            'conflict',
-            'resourceGone',
-            'lengthRequired',
-            'preconditionFailed',
-            'entityTooLarge',
-            'uriTooLong',
-            'unsupportedMediaType',
-            'rangeNotSatisfiable',
-            'expectationFailed',
-            'badData',
-            'preconditionRequired',
-            'tooManyRequests',
-            'internal',
-            'notImplemented',
-            'badGateway',
-            'serverUnavailable',
-            'gatewayTimeout',
-            'badImplementation'
-        ];
-
-        types.forEach((name) => {
-
-            it(`matches typeof Boom.${name}`, () => {
-
-                const error = Boom[name]();
-                types.forEach((type) => {
-
-                    if (type === name) {
-                        expect(error.typeof).to.equal(Boom[name]);
-                    }
-                    else {
-                        expect(error.typeof).to.not.equal(Boom[type]);
-                    }
-                });
+                expect(err.cause).to.not.exist();
+                expect(err.message).to.equal(error.toString());
             });
         });
     });
@@ -1057,7 +1097,7 @@ describe('Boom', () => {
         it('displays internal server error messages in debug mode', () => {
 
             const error = new Error('ka-boom');
-            const err = Boom.boomify(error, { statusCode: 500 });
+            const err = new Boom.Boom(null, { statusCode: 500, cause: error });
 
             err.reformat(false);
             expect(err.output).to.equal({
@@ -1085,6 +1125,46 @@ describe('Boom', () => {
         it('is redefinable', () => {
 
             Object.defineProperty(new Boom.Boom('oops'), 'reformat', { value: true });
+        });
+
+        it('can be implemented by subclasses to apply custom formatting', () => {
+
+            class MyBoom extends Boom.Boom {
+
+                reformat(...args) {
+
+                    super.reformat(...args);
+
+                    this.output.payload.custom = true;
+                }
+            }
+
+            const err = new MyBoom('boom', { statusCode: 400 });
+            expect(err.output.statusCode).to.equal(400);
+            expect(err.output.payload.message).to.equal('boom');
+            expect(err.output.payload.custom).to.be.true();
+
+            err.output.statusCode = 500;
+            err.reformat();
+            expect(err.output.statusCode).to.equal(500);
+            expect(err.output.payload.message).to.equal('An internal server error occurred');
+            expect(err.output.payload.custom).to.be.true();
+        });
+
+        it('prototype can be changed to always debug', (flags) => {
+
+            const proto = Boom.Boom.prototype.reformat;
+            flags.onCleanup = () => {
+
+                Boom.Boom.prototype.reformat = proto;
+            };
+
+            Boom.Boom.prototype.reformat = function () {
+
+                return proto.call(this, true);
+            };
+
+            expect(Boom.internal('DEBUG').output.payload.message).to.equal('DEBUG');
         });
     });
 });
