@@ -61,6 +61,11 @@ export interface Options<Data> {
     readonly data?: Data;
 
     /**
+     * An object with extra properties to set on the error object
+     */
+    readonly decorate?: { [key: string]: any };
+
+    /**
      * An object containing any HTTP headers where each key is a header name and value is the header content
      */
     readonly headers?: { readonly [header: string]: string | readonly string[] | number };
@@ -149,9 +154,10 @@ export function isBoom(obj: unknown, statusCode?: number): obj is Boom;
 *
 * @returns A boom object
 */
-export function boomify<Data>(err: Boom<Data>, options?: BoomifyOptions<Data>): Boom<Data>;
+export function boomify<Data, Decoration>(err: Boom<Data>, options?: BoomifyOptions<Data> & { decorate: Decoration }): Boom<Data> & Decoration;
+export function boomify<Data, Decoration>(err: unknown, options?: BoomifyOptions<Data> & { decorate: Decoration }): Boom<Data> & Decoration;
+export function boomify<Data extends object>(err: Boom<Data>, options?: BoomifyOptions<Data>): Boom<Data>;
 export function boomify<Data>(err: unknown, options?: BoomifyOptions<Data>): Boom<Data>;
-
 
 // 4xx Errors
 

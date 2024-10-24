@@ -15,14 +15,17 @@ class X {
 };
 
 
+const decorate = new X(1);
+
 // new Boom.Boom()
 
 expect.type<Boom.Boom>(new Boom.Boom());
 expect.type<Error>(new Boom.Boom());
 expect.type<Boom.Boom>(new Boom.Boom('error'));
+expect.type<Boom.Boom>(new Boom.Boom('error', { decorate }));
 
-expect.error<Boom.Boom>(null);
-expect.error<Boom.Boom>(new Boom.Boom(new Error('error')));
+expect.error(new Boom.Boom(null));
+expect.error(new Boom.Boom(new Error('error')));
 
 
 class CustomError extends Boom.Boom {}
@@ -50,6 +53,7 @@ const error = new Error('Unexpected input');
 
 expect.type<Boom.Boom>(Boom.boomify(error, { statusCode: 400 }));
 expect.type<Boom.Boom>(Boom.boomify(error, { statusCode: 400, message: 'Unexpected Input', override: false }));
+expect.type<number>(Boom.boomify(error, { decorate }).x);
 expect.type<Boom.Boom>(Boom.boomify('error'));
 expect.type<Boom.Boom<{ foo: 'bar' }>>(Boom.boomify(new Boom.Boom<{ foo: 'bar' }>()));
 
@@ -57,7 +61,8 @@ expect.error(Boom.boomify(error, { statusCode: '400' }));
 expect.error(Boom.boomify(error, { statusCode: 400, message: true }));
 expect.error(Boom.boomify(error, { statusCode: 400, override: 'false' }));
 expect.error(Boom.boomify());
-
+expect.error(Boom.boomify(error, { decorate: true }));
+expect.error(Boom.boomify(error, { decorate }).y);
 
 // isBoom
 
