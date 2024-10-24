@@ -1028,7 +1028,7 @@ describe('Boom', () => {
 
             for (const helper of helpers) {
                 const err = Boom[helper]();
-                expect(err.stack).to.not.match(/\/lib\/index\.js/);
+                expect(err.stack).to.not.match(/(\/|\\)lib(\/|\\)index\.js/);
             }
         });
 
@@ -1045,7 +1045,7 @@ describe('Boom', () => {
                     Error.captureStackTrace = captureStackTrace;
                 }
 
-                expect(err.stack).to.match(/\/lib\/index\.js/);
+                expect(err.stack).to.match(/(\/|\\)lib(\/|\\)index\.js/);
             }
         });
     });
