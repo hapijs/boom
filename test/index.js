@@ -1013,22 +1013,40 @@ describe('Boom', () => {
 
     describe('stack trace', () => {
 
+        const helpers = ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
+            'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
+            'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
+            'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
+            'badData', 'preconditionRequired', 'tooManyRequests',
+
+            // 500s
+            'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
+            'gatewayTimeout', 'badImplementation'
+        ];
+
         it('should omit lib', () => {
 
-            ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
-                'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
-                'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
-                'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
-                'badData', 'preconditionRequired', 'tooManyRequests',
-
-                // 500s
-                'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
-                'gatewayTimeout', 'badImplementation'
-            ].forEach((name) => {
-
-                const err = Boom[name]();
+            for (const helper of helpers) {
+                const err = Boom[helper]();
                 expect(err.stack).to.not.match(/\/lib\/index\.js/);
-            });
+            }
+        });
+
+        it('should not crash when Error.captureStackTrace is missing', (flags) => {
+
+            const captureStackTrace = Error.captureStackTrace;
+
+            for (const helper of helpers) {
+                try {
+                    Error.captureStackTrace = undefined;
+                    var err = Boom[helper]();
+                }
+                finally {
+                    Error.captureStackTrace = captureStackTrace;
+                }
+
+                expect(err.stack).to.match(/\/lib\/index\.js/);
+            }
         });
     });
 
