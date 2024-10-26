@@ -156,10 +156,9 @@ export function isBoom(obj: unknown, statusCode?: number): obj is Boom;
 *
 * @returns A boom object
 */
-export function boomify<Data, Decoration>(err: Boom<Data>, options?: BoomifyOptions<Data> & { decorate: Decoration }): Boom<Data> & Decoration;
-export function boomify<Data, Decoration>(err: unknown, options?: BoomifyOptions<Data> & { decorate: Decoration }): Boom<Data> & Decoration;
-export function boomify<Data extends object>(err: Boom<Data>, options?: BoomifyOptions<Data>): Boom<Data>;
-export function boomify<Data>(err: unknown, options?: BoomifyOptions<Data>): Boom<Data>;
+export function boomify<Terr, Data, Decoration>(err: Terr, options: BoomifyOptions<Data> & { decorate: Decoration, data: Data }): (Terr extends Boom ? Terr : Boom<Data>) & Omit<Decoration, 'data'>;
+export function boomify<Terr, Data, Decoration>(err: Terr, options: BoomifyOptions<Data> & { decorate: Decoration }): (Terr extends Boom ? Terr : Boom<Data>) & Decoration;
+export function boomify<Terr, Data = any>(err: Terr, options?: BoomifyOptions<Data>): Terr extends Boom ? Terr : Boom<Data>;
 
 // 4xx Errors
 
