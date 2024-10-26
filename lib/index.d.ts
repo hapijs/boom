@@ -78,7 +78,7 @@ export interface Options<Data> {
     /**
      * An underlying cause for the Boom error
      */
-    readonly cause?: Error | unknown;
+    readonly cause?: Error | unknown | undefined;
 }
 
 
