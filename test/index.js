@@ -141,6 +141,17 @@ describe('Boom', () => {
         expect(err.output.payload.error).to.equal('Unknown');
     });
 
+    it('only sets cause when part of options', () => {
+
+        const err1 = new Boom.Boom('fail', { cause: undefined });
+        expect(err1).to.include('cause');
+        expect(err1.cause).to.equal(undefined);
+
+        const err2 = new Boom.Boom('fail', {});
+        expect(err2).to.not.include('cause');
+        expect(err2.cause).to.equal(undefined);
+    });
+
     it('assigns a .cause property if Error does not support it', (flags) => {
 
         const proto = Object.getPrototypeOf(Boom.Boom);
