@@ -369,6 +369,22 @@ describe('Boom', () => {
             expect(boom.output.statusCode).to.equal(400);
         });
 
+        it('only sets isServer when it is an own property', () => {
+
+            const boom = Boom.boomify(new Boom.Boom());
+            expect(boom.isServer).to.be.true();
+            expect(boom.hasOwnProperty('isServer')).to.be.false();
+
+            const Boom2 = class extends Boom.Boom {
+
+                isServer = undefined;
+            };
+
+            const boom2 = Boom.boomify(new Boom2());
+            expect(boom2.isServer).to.be.true();
+            expect(boom2.hasOwnProperty('isServer')).to.be.true();
+        });
+
         it('works with legacy boom', () => {
 
             const boom = Boom.boomify(new Boom10.Boom(null, { statusCode: 404 }), { statusCode: 501, message: 'Override' });
@@ -376,6 +392,7 @@ describe('Boom', () => {
             expect(boom.cause).to.be.undefined();
             expect(boom.message).to.equal('Override: Not Found');
             expect(boom.isServer).to.be.true();
+            expect(boom.hasOwnProperty('isServer')).to.be.true();
             expect(boom.output.statusCode).to.equal(501);
 
             const boom10 = Boom10.boomify(new Boom.Boom(null, { statusCode: 404 }), { statusCode: 501, message: 'Override' });
@@ -383,6 +400,7 @@ describe('Boom', () => {
             expect(boom10.cause).to.be.undefined();
             expect(boom10.message).to.equal('Override: Not Found');
             expect(boom10.isServer).to.be.true();
+            expect(boom10.hasOwnProperty('isServer')).to.be.true();
             expect(boom10.output.statusCode).to.equal(501);
         });
     });
