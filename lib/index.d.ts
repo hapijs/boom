@@ -46,8 +46,7 @@ export class Boom<Data = any> extends Error {
     reformat(debug?: boolean): void;
 }
 
-
-export interface Options<Data> {
+export interface BaseOptions<Data> {
     /**
      * The HTTP status code
      *
@@ -64,7 +63,10 @@ export interface Options<Data> {
      * An object with extra properties to set on the error object
      */
     readonly decorate?: { [key: string]: any };
+}
 
+
+export interface Options<Data> extends BaseOptions<Data> {
     /**
      * An object containing any HTTP headers where each key is a header name and value is the header content
      */
@@ -82,7 +84,7 @@ export interface Options<Data> {
 }
 
 
-export interface BoomifyOptions<Data> extends Options<Data> {
+export interface BoomifyOptions<Data> extends BaseOptions<Data> {
     /**
      * Error message string
      *
