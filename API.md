@@ -38,6 +38,7 @@ Creates a new `Boom` object, where:
  	- `cause` - The error that caused the boom error.
     - `data` - additional error information (assigned to `error.data`).
     - `decorate` - an option with extra properties to set on the error object.
+    - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
     - `ctor` - constructor reference used to crop the exception call stack output.
 
 ##### `boomify(err, [options])`
