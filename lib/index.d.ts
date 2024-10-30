@@ -65,11 +65,6 @@ export interface BaseOptions<Data> {
      * Additional error information
      */
     readonly data?: Data;
-
-    /**
-     * An object with extra properties to set on the error object
-     */
-    readonly decorate?: { [key: string]: any };
 }
 
 
@@ -163,8 +158,6 @@ export function isBoom(obj: unknown, statusCode?: number): obj is Boom;
 *
 * @returns A boom object
 */
-export function boomify<Terr, Data, Decoration>(err: Terr, options: BoomifyOptions<Data> & { decorate: Decoration, data: Data }): (Terr extends Boom ? Terr : Boom<Data>) & Omit<Decoration, 'data'>;
-export function boomify<Terr, Data, Decoration>(err: Terr, options: BoomifyOptions<Data> & { decorate: Decoration }): (Terr extends Boom ? Terr : Boom<Data>) & Decoration;
 export function boomify<Terr, Data = any>(err: Terr, options?: BoomifyOptions<Data>): Terr extends Boom ? Terr : Boom<Data>;
 
 // 4xx Errors

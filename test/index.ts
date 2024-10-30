@@ -4,19 +4,6 @@ import * as Lab from '@hapi/lab';
 const { expect } = Lab.types;
 
 
-class X {
-
-    x: number;
-
-    constructor(value: number) {
-
-        this.x = value;
-    }
-};
-
-
-const decorate = new X(1);
-
 // new Boom.Boom()
 
 expect.type<Error>(new Boom.Boom());
@@ -57,11 +44,8 @@ class BadaBoom extends Boom.Boom {}
 
 expect.type<Boom.Boom>(Boom.boomify(error, { statusCode: 400 }));
 expect.type<Boom.Boom>(Boom.boomify(error, { statusCode: 400, message: 'Unexpected Input', override: false }));
-expect.type<number>(Boom.boomify(error, { decorate }).x);
 expect.type<Boom.Boom>(Boom.boomify('error'));
 expect.type<Boom.Boom<{ foo: 'bar' }>>(Boom.boomify(new Boom.Boom<{ foo: 'bar' }>('error', { data: { foo: 'bar' }})));
-expect.type<number>(Boom.boomify(error, { decorate: { data: 1 } }).data);
-expect.type<string>(Boom.boomify(error, { decorate: { data: 1 }, data: 'bla' }).data);
 expect.type<string>(Boom.boomify(error, { data: 'bla' }).data);
 expect.type<BadaBoom>(Boom.boomify(new BadaBoom(), { statusCode: 400 }));
 
@@ -69,8 +53,7 @@ expect.error(Boom.boomify(error, { statusCode: '400' }));
 expect.error(Boom.boomify(error, { statusCode: 400, message: true }));
 expect.error(Boom.boomify(error, { statusCode: 400, override: 'false' }));
 expect.error(Boom.boomify());
-expect.error(Boom.boomify(error, { decorate: true }));
-expect.error(Boom.boomify(error, { decorate }).y);
+expect.error(Boom.boomify(error, { decorate: { x: 'y' } }));
 
 // isBoom
 
