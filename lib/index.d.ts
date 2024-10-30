@@ -1,12 +1,19 @@
+type NotUnknown = string | number | boolean | bigint | symbol | null | object;
+
+declare namespace Boom {
+    type CtorArgs = [message?: string, options?: Options<unknown>];
+    type WithDataArgs<Data> = [message: string, options: Options<Data> & { data: Data }];
+}
+
 /**
  * An Error object used to return an HTTP response error (4xx, 5xx)
  */
-export class Boom<Data = any> extends Error {
+export class Boom<Data = unknown> extends Error {
 
     /**
      * Creates a new Boom object using the provided message or Error
      */
-    constructor(message?: string, options?: Options<Data>);
+    constructor(...args: Data extends NotUnknown ? Boom.WithDataArgs<Data> : Boom.CtorArgs);
 
     /**
      * Underlying cause for the Boom error
