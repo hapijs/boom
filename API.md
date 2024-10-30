@@ -37,20 +37,17 @@ Creates a new `Boom` object, where:
 	- `statusCode` - the HTTP status code. Defaults to `500`.
  	- `cause` - The error that caused the boom error.
     - `data` - additional error information (assigned to `error.data`).
-    - `decorate` - an option with extra properties to set on the error object.
     - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
     - `ctor` - constructor reference used to crop the exception call stack output.
 
 ##### `boomify(err, [options])`
 
 This works as [`new Boom.Boom()`](#new-boomboommessage-options), except when the `err` argument is a boom error.
-In that case, it will apply the options to the existing error, instead of wrapping it in a new boom error.
-Decorates a boom object with the `Boom` properties where:
-- `err` - the `Error` object to decorate.
+In that case, it will apply the options to the existing error, instead of wrapping it in a new boom error, where:
+- `err` - the object to boomify.
 - `options` - optional object with the following optional settings:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set and `err` is not a `Boom` object.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
-    - `decorate` - an option with extra properties to set on the error object.
 	- `override` - if `false`, the `err` provided is a `Boom` object, and a `statusCode` or `message` are provided,
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
 	  regardless of its type, `Error` or `Boom` object).
