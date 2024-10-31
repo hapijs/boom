@@ -920,6 +920,14 @@ describe('Boom', () => {
             expect(Boom.internal('my message', { my: 'data' }).data.my).to.equal('data');
         });
 
+        it('uses data with Error as cause', () => {
+
+            const insideErr = new Error('inside');
+            const err = Boom.internal('my message', insideErr);
+            expect(err.data).to.not.exist();
+            expect(err.cause).to.shallow.equal(insideErr);
+        });
+
         it('returns an error with composite message', () => {
 
             const x = {};
@@ -949,6 +957,14 @@ describe('Boom', () => {
 
             expect(Boom.notImplemented('my message').message).to.equal('my message');
         });
+
+        it('uses data with Error as cause', () => {
+
+            const insideErr = new Error('inside');
+            const err = Boom.notImplemented('my message', insideErr);
+            expect(err.data).to.not.exist();
+            expect(err.cause).to.shallow.equal(insideErr);
+        });
     });
 
     describe('badGateway()', () => {
@@ -970,6 +986,14 @@ describe('Boom', () => {
             expect(boom.output.statusCode).to.equal(502);
             expect(boom.data).to.equal(upstream);
         });
+
+        it('uses data with Error as cause', () => {
+
+            const insideErr = new Error('inside');
+            const err = Boom.badGateway('my message', insideErr);
+            expect(err.data).to.not.exist();
+            expect(err.cause).to.shallow.equal(insideErr);
+        });
     });
 
     describe('gatewayTimeout()', () => {
@@ -982,6 +1006,14 @@ describe('Boom', () => {
         it('sets the message with the passed in message', () => {
 
             expect(Boom.gatewayTimeout('my message').message).to.equal('my message');
+        });
+
+        it('uses data with Error as cause', () => {
+
+            const insideErr = new Error('inside');
+            const err = Boom.gatewayTimeout('my message', insideErr);
+            expect(err.data).to.not.exist();
+            expect(err.cause).to.shallow.equal(insideErr);
         });
     });
 
