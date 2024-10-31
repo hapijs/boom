@@ -1,57 +1,64 @@
 
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom`
 error response object which includes the following properties:
-- `isBoom` - if `true`, indicates this is a `Boom` object instance. Note that this boolean should
-  only be used if the error is an instance of `Error`. If it is not certain, use `Boom.isBoom()`
-  instead.
-- `isServer` - convenience bool indicating status code >= 500.
 - `message` - the error message.
-- `typeof` - the constructor used to create the error (e.g. `Boom.badRequest`).
 - `output` - the formatted response. Can be directly manipulated after object construction to return a custom
   error response. Allowed root keys:
     - `statusCode` - the HTTP status code (typically 4xx or 5xx).
     - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
-    - `payload` - the formatted object used as the response payload (stringified). Can be directly manipulated but any
-      changes will be lost
-      if `reformat()` is called. Any content allowed and by default includes the following content:
+    - `payload` - the formatted object used as the response payload.
+      Can be directly manipulated but any changes will be lost if `reformat()` is called.
+      Any content allowed and by default includes the following content:
         - `statusCode` - the HTTP status code, derived from `error.output.statusCode`.
         - `error` - the HTTP status message (e.g. 'Bad Request', 'Internal Server Error') derived from `statusCode`.
         - `message` - the error message derived from `error.message`.
-- inherited `Error` properties.
+- `stack` - string with stack trace from where error was created.
+- optional `cause` - the error cause, as set by constructor.
 
-The `Boom` object also supports the following method:
+The object has additional properties from the `Boom` prototype:
+- `name` - string with error name. Set to `'Boom'`.
+- `isBoom` - set to `true`, indicating this is a `Boom` object instance. Note that this boolean should
+   only be tested if the error is an instance of `Error`. If it is not certain, use [`Boom.isBoom()`](#isboomerr-statuscode) instead.
+- `isServer` - convenience boolean indicating status code >= 500.
+
+The object also supports the following method:
 
 #### `reformat(debug)`
 
 Rebuilds `error.output` using the other object properties where:
 
-- `debug` - a Boolean that, when `true`, causes Internal Server Error messages to be left in tact. Defaults to `false`, meaning that Internal Server Error messages are redacted.
+- `debug` - a Boolean that, when `true`, causes Internal Server Error messages to be left intact.
+  Defaults to `false`, meaning that Internal Server Error messages are redacted.
 
-#### Helper Methods
+#### Base Constructor
 
-##### `new Boom.Boom(message, [options])`
+##### `new Boom([message], [options])`
 
-Creates a new `Boom` object, where:
+Creates a new `Boom` sub-classed `Error` object, where:
 - `message` - the error message.
 - `options` - and optional object where:
 	- `statusCode` - the HTTP status code. Defaults to `500`.
  	- `cause` - The error that caused the boom error.
-    - `data` - additional error information (assigned to `error.data`).
+    - `data` - additional error information, assigned to `this.data`.
     - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
     - `ctor` - constructor reference used to crop the exception call stack output.
 
+#### Helper Methods
+
 ##### `boomify(err, [options])`
 
-This works as [`new Boom.Boom()`](#new-boomboommessage-options), except when the `err` argument is a boom error.
-In that case, it will apply the options to the existing error, instead of wrapping it in a new boom error, where:
-- `err` - the object to boomify.
+Creates a `Boom` object similar to [`new Boom()`](#new-boommessage-options), except it
+applies the `options` to the existing error when it is a `Boom` object, where:
+- `err` - the object to boomify, set as `cause` when `err` is not a `Boom` object.
 - `options` - optional object with the following optional settings:
 	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set and `err` is not a `Boom` object.
 	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
 	- `override` - if `false`, the `err` provided is a `Boom` object, and a `statusCode` or `message` are provided,
 	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
-	  regardless of its type, `Error` or `Boom` object).
-- it returns the boomified error
+	  regardless of its type).
+- it returns a `Boom` object with the boomified error
+
+Note that [`new Boom()`](#new-boommessage-options) should generally be preferred in cases where the error can come from awaited logic, or has been passed around.
 
 ```js
 const error = new Error('Unexpected input');
@@ -60,7 +67,7 @@ const boomified = Boom.boomify(error, { statusCode: 400 });
 
 ##### `isBoom(err, [statusCode])`
 
-Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom.Boom`.
+Identifies whether an error is a `Boom` object. Same as calling `err instanceof Boom.Boom`.
 - `err` - Error object.
 - `statusCode` - optional status code.
 
@@ -68,6 +75,7 @@ Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom
 Boom.isBoom(Boom.badRequest()); // true
 Boom.isBoom(Boom.badRequest(), 400); // true
 ```
+
 #### HTTP 4xx Errors
 
 ##### `Boom.badRequest([message], [data])`
@@ -660,7 +668,7 @@ All 500 errors hide your message from the end user.
 
 Returns a 500 Internal Server Error error where:
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.badImplementation('terrible implementation');
@@ -680,7 +688,7 @@ Generates the following response payload:
 
 Returns a 501 Not Implemented error where:
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.notImplemented('method not implemented');
@@ -700,7 +708,7 @@ Generates the following response payload:
 
 Returns a 502 Bad Gateway error where:
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.badGateway('that is a bad gateway');
@@ -720,7 +728,7 @@ Generates the following response payload:
 
 Returns a 503 Service Unavailable error where:
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.serverUnavailable('unavailable');
@@ -740,7 +748,7 @@ Generates the following response payload:
 
 Returns a 504 Gateway Time-out error where:
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.gatewayTimeout();
@@ -759,4 +767,7 @@ Generates the following response payload:
 
 **Q** How do I include extra information in my responses? `output.payload` is missing `data`, what gives?
 
-**A** There is a reason the values passed back in the response payloads are pretty locked down. It's mostly for security and to not leak any important information back to the client. This means you will need to put in a little more effort to include extra information about your custom error. Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.
+**A** There is a reason the values passed back in the response payloads are pretty locked down.
+It's mostly for security and to not leak any important information back to the client.
+This means you will need to put in a little more effort to include extra information about your custom error.
+Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.
