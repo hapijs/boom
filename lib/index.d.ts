@@ -86,7 +86,7 @@ export interface Options<Data> extends BaseOptions<Data> {
 }
 
 
-export interface BoomifyOptions<Data> extends BaseOptions<Data> {
+export interface BoomifyOptions<Data = unknown> extends BaseOptions<Data> {
     /**
      * Error message string
      *
@@ -158,7 +158,10 @@ export function isBoom(obj: unknown, statusCode?: number): obj is Boom;
 *
 * @returns A boom object
 */
-export function boomify<Terr, Data = any>(err: Terr, options?: BoomifyOptions<Data>): Terr extends Boom ? Terr : Boom<Data>;
+export function boomify<Tres extends Omit<Terr, 'data'> & Pick<Boom<Data>, 'data'>, Terr extends Omit<Boom, 'data'> = Boom<any>, Data = unknown>(err: Terr, options: BoomifyOptions & { data: Tres extends Boom<infer Data> ? Data : Data }): Tres;
+export function boomify<Tres extends Boom<Data>, Terr = any, Data = unknown>(err: Terr, options: BoomifyOptions & { data: Tres extends Boom<infer Data> ? Data : Data }): Tres;
+export function boomify<Tres extends Terr, Terr extends Boom<any> = Tres>(err: Terr, options?: BoomifyOptions): Tres;
+export function boomify<Tres extends Boom<unknown>, Terr = any>(err: Terr, options?: BoomifyOptions): Tres;
 
 // 4xx Errors
 

@@ -40,20 +40,31 @@ expect.type<Boom.Output['headers']>(boom.output.headers);
 // boomify()
 
 const error = new Error('Unexpected input');
-class BadaBoom extends Boom.Boom {}
+class BadaBoom extends Boom.Boom<number> {
+    constructor() { super('boom', { data: 1 }) }
+}
 
+expect.type<Boom.Boom>(Boom.boomify(error));
 expect.type<Boom.Boom>(Boom.boomify(error, { statusCode: 400 }));
 expect.type<Boom.Boom>(Boom.boomify(error, { statusCode: 400, message: 'Unexpected Input', override: false }));
 expect.type<Boom.Boom>(Boom.boomify('error'));
 expect.type<Boom.Boom<{ foo: 'bar' }>>(Boom.boomify(new Boom.Boom<{ foo: 'bar' }>('error', { data: { foo: 'bar' }})));
-expect.type<string>(Boom.boomify(error, { data: 'bla' }).data);
+expect.type<Boom.Boom<string>>(Boom.boomify(error, { data: 'bla' }));
+expect.type<Boom.Boom<string>>(Boom.boomify<Boom.Boom<string>>(error, { data: 'bla' }));
 expect.type<BadaBoom>(Boom.boomify(new BadaBoom(), { statusCode: 400 }));
+expect.type<Boom.Boom<number>>(Boom.boomify(new BadaBoom(), { statusCode: 400 }));
+expect.type<string>(Boom.boomify(new BadaBoom(), { data: 'bla' }).data);
 
+expect.type<Boom.Boom<string>>(Boom.boomify(new Boom.Boom<string>('error', { data: 'ok' })));
+expect.type<Boom.Boom<number>>(Boom.boomify(new Boom.Boom<string>('error', { data: 'ok' }), { data: 1 }));
+expect.type<Boom.Boom<number>>(Boom.boomify<Boom.Boom<number>>(new Boom.Boom<string>('error', { data: 'ok' }), { data: 1 }));
+
+expect.error(Boom.boomify());
 expect.error(Boom.boomify(error, { statusCode: '400' }));
 expect.error(Boom.boomify(error, { statusCode: 400, message: true }));
 expect.error(Boom.boomify(error, { statusCode: 400, override: 'false' }));
-expect.error(Boom.boomify());
 expect.error(Boom.boomify(error, { decorate: { x: 'y' } }));
+//expect.error(Boom.boomify<Boom.Boom<number>>(new Boom.Boom<string>('error', { data: 'ok' })));       // Cannot work without partial type inference (https://github.com/microsoft/TypeScript/issues/26242)
 
 // isBoom
 
