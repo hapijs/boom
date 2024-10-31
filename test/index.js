@@ -425,6 +425,17 @@ describe('Boom', () => {
         });
     });
 
+    const utilities = ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
+        'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
+        'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
+        'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
+        'badData', 'preconditionRequired', 'tooManyRequests',
+
+        // 500s
+        'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
+        'gatewayTimeout', 'badImplementation'
+    ];
+
     describe('badRequest()', () => {
 
         it('returns a 400 error statusCode', () => {
@@ -1055,25 +1066,22 @@ describe('Boom', () => {
                 }
             });
         });
+
+        it('uses data with Error as cause', () => {
+
+            const insideErr = new Error('inside');
+            const err = Boom.badImplementation('my message', insideErr);
+            expect(err.data).to.not.exist();
+            expect(err.cause).to.shallow.equal(insideErr);
+        });
     });
 
     describe('stack trace', () => {
 
-        const helpers = ['badRequest', 'unauthorized', 'forbidden', 'notFound', 'methodNotAllowed',
-            'notAcceptable', 'proxyAuthRequired', 'clientTimeout', 'conflict',
-            'resourceGone', 'lengthRequired', 'preconditionFailed', 'entityTooLarge',
-            'uriTooLong', 'unsupportedMediaType', 'rangeNotSatisfiable', 'expectationFailed',
-            'badData', 'preconditionRequired', 'tooManyRequests',
-
-            // 500s
-            'internal', 'notImplemented', 'badGateway', 'serverUnavailable',
-            'gatewayTimeout', 'badImplementation'
-        ];
-
         it('should omit lib', () => {
 
-            for (const helper of helpers) {
-                const err = Boom[helper]();
+            for (const name of utilities) {
+                const err = Boom[name]();
                 expect(err.stack).to.not.match(/(\/|\\)lib(\/|\\)index\.js/);
             }
         });
@@ -1082,10 +1090,10 @@ describe('Boom', () => {
 
             const captureStackTrace = Error.captureStackTrace;
 
-            for (const helper of helpers) {
+            for (const name of utilities) {
                 try {
                     Error.captureStackTrace = undefined;
-                    var err = Boom[helper]();
+                    var err = Boom[name]();
                 }
                 finally {
                     Error.captureStackTrace = captureStackTrace;
@@ -1098,35 +1106,7 @@ describe('Boom', () => {
 
     describe('method with error object instead of message', () => {
 
-        [
-            'badRequest',
-            'unauthorized',
-            'forbidden',
-            'notFound',
-            'methodNotAllowed',
-            'notAcceptable',
-            'proxyAuthRequired',
-            'clientTimeout',
-            'conflict',
-            'resourceGone',
-            'lengthRequired',
-            'preconditionFailed',
-            'entityTooLarge',
-            'uriTooLong',
-            'unsupportedMediaType',
-            'rangeNotSatisfiable',
-            'expectationFailed',
-            'badData',
-            'preconditionRequired',
-            'tooManyRequests',
-            'internal',
-            'notImplemented',
-            'badGateway',
-            'serverUnavailable',
-            'gatewayTimeout',
-            'badImplementation'
-        ].forEach((name) => {
-
+        for (const name of utilities) {
             it(`uses stringified error as message`, () => {
 
                 const error = new Error('An example mongoose validation error');
@@ -1135,7 +1115,7 @@ describe('Boom', () => {
                 expect(err.cause).to.not.exist();
                 expect(err.message).to.equal(error.toString());
             });
-        });
+        }
     });
 
     describe('reformat()', () => {
