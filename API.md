@@ -38,7 +38,7 @@ Creates a new `Boom` sub-classed `Error` object, where:
 - `message` - the error message.
 - `options` - and optional object where:
 	- `statusCode` - the HTTP status code. Defaults to `500`.
- 	- `cause` - The error that caused the boom error.
+ 	- `cause` - the error that caused the boom error.
     - `data` - additional error information, assigned to `this.data`.
     - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
     - `ctor` - constructor reference used to crop the exception call stack output.
