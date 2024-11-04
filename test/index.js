@@ -90,12 +90,17 @@ describe('Boom', () => {
         expect(headers).to.equal({ custom: ['yes'] });
     });
 
-    it('ignores non-object headers option', () => {
+    it('throws TypeError on non-object headers option', () => {
 
-        const err = new Boom.Boom('fail', { statusCode: 400, headers: true });
-        expect(err.output.payload.message).to.equal('fail');
-        expect(err.output.statusCode).to.equal(400);
-        expect(err.output.headers).to.equal({});
+        expect(() => {
+
+            new Boom.Boom('fail', { statusCode: 400, headers: true });
+        }).to.throw(TypeError);
+
+        expect(() => {
+
+            new Boom.Boom('fail', { statusCode: 400, headers: null });
+        }).to.throw(TypeError);
     });
 
     it('throws when statusCode is invalid', () => {
