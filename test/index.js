@@ -123,6 +123,31 @@ describe('Boom', () => {
         expect(err.output.payload.error).to.equal('Unknown');
     });
 
+    it('handles DOMException from fetch abort', async () => {
+
+        // Create a DOMException from fetch abort
+        const controller = new AbortController();
+        controller.abort();
+
+        let fetchDOMException;
+        try {
+            await fetch('https://example.com', { signal: controller.signal });
+        }
+        catch (err) {
+            fetchDOMException = err;
+        }
+
+        expect(fetchDOMException).to.be.instanceof(DOMException);
+        expect(fetchDOMException.name).to.equal('AbortError');
+
+        const err = new Boom.Boom(fetchDOMException, { statusCode: 400 });
+
+        expect(err.isBoom).to.be.true();
+        expect(err.output.statusCode).to.equal(400);
+        expect(err.message).to.equal('This operation was aborted');
+        expect(err.name).to.equal('AbortError');
+    });
+
     describe('instanceof', () => {
 
         it('identifies a boom object', () => {
@@ -926,6 +951,36 @@ describe('Boom', () => {
                 }
             });
         });
+
+        it('handles DOMException without throwing', () => {
+
+            const domException = new DOMException('Test message', 'TestError');
+            const err = Boom.badImplementation(domException);
+
+            expect(err.isDeveloperError).to.equal(true);
+            expect(err.isServer).to.be.true();
+            expect(err.output.statusCode).to.equal(500);
+            expect(err.message).to.equal('Test message');
+            expect(err.name).to.equal('TestError');
+            expect(err.output.payload.error).to.equal('Internal Server Error');
+            expect(err.output.payload.message).to.equal('An internal server error occurred');
+        });
+
+        it('handles DOMException with custom message and name', () => {
+
+            const domException = new DOMException('Custom error message', 'CustomError');
+            const err = Boom.badImplementation(domException);
+
+            expect(err.isDeveloperError).to.equal(true);
+            expect(err.isServer).to.be.true();
+            expect(err.output.statusCode).to.equal(500);
+            expect(err.message).to.equal('Custom error message');
+            expect(err.name).to.equal('CustomError');
+            expect(err.output.payload.error).to.equal('Internal Server Error');
+            expect(err.output.payload.message).to.equal('An internal server error occurred');
+        });
+
+
     });
 
     describe('stack trace', () => {
