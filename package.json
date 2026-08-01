@@ -1,36 +1,50 @@
 {
-  "name": "@hapi/boom",
-  "description": "HTTP-friendly error objects",
-  "version": "10.0.1",
-  "repository": "git://github.com/hapijs/boom",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "keywords": [
-    "error",
-    "http"
-  ],
-  "files": [
-    "lib"
-  ],
-  "eslintConfig": {
-    "extends": [
-      "plugin:@hapi/module"
-    ]
-  },
-  "dependencies": {
-    "@hapi/hoek": "^11.0.2"
-  },
-  "devDependencies": {
-    "@hapi/boom10": "npm:@hapi/boom@^10.0.1",
-    "@hapi/code": "9.x.x",
-    "@hapi/eslint-plugin": "^7.0.0",
-    "@hapi/lab": "^26.0.0",
-    "@types/node": "^18.19.3",
-    "typescript": "~5.6.3"
-  },
-  "scripts": {
-    "test": "lab -a @hapi/code -t 100 -L -Y",
-    "test-cov-html": "lab -a @hapi/code -t 100 -L -r html -o coverage.html"
-  },
-  "license": "BSD-3-Clause"
+    "name": "@hapi/boom",
+    "version": "10.0.1",
+    "description": "HTTP-friendly error objects",
+    "keywords": [
+        "error",
+        "http"
+    ],
+    "license": "BSD-3-Clause",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/hapijs/boom.git"
+    },
+    "files": [
+        "src",
+        "API.md"
+    ],
+    "type": "module",
+    "types": "src/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./src/index.d.ts",
+            "default": "./src/index.js"
+        }
+    },
+    "scripts": {
+        "test": "vitest run --coverage",
+        "typecheck": "tsc --noEmit",
+        "lint": "oxlint",
+        "lint:fix": "oxlint --fix",
+        "fmt": "oxfmt --check",
+        "fmt:fix": "oxfmt",
+        "check": "npm run lint && npm run fmt && npm run typecheck && npm test"
+    },
+    "dependencies": {
+        "@hapi/hoek": "^12.0.0-rc.0"
+    },
+    "devDependencies": {
+        "@hapi/boom10": "npm:@hapi/boom@^10.0.1",
+        "@hapi/oxc-plugin": "^1.0.4",
+        "@vitest/coverage-v8": "^4.1.10",
+        "oxfmt": "^0.61.0",
+        "oxlint": "^1.76.0",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10"
+    },
+    "engines": {
+        "node": ">=22"
+    }
 }
