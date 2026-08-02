@@ -227,6 +227,14 @@ describe('Boom', () => {
             expect(err.data).toBeNull();
         });
 
+        it('wraps a DOMException without touching its getters', () => {
+            const error = new DOMException('kaboom', 'AbortError');
+            const err = Boom.boomify(error, { statusCode: 400 });
+
+            expect(err.cause).toBe(error);
+            expect(err.output.payload.message).toBe('kaboom');
+        });
+
         it('sets new message when none exists', () => {
             const error = new Error();
             const wrapped = Boom.boomify(error, { statusCode: 400, message: 'something bad' });
