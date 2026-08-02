@@ -1,75 +1,77 @@
-
 **boom** provides a set of utilities for returning HTTP errors. Each utility returns a `Boom`
 error response object which includes the following properties:
-- `isBoom` - if `true`, indicates this is a `Boom` object instance. Note that this boolean should
-  only be used if the error is an instance of `Error`. If it is not certain, use `Boom.isBoom()`
-  instead.
-- `isServer` - convenience bool indicating status code >= 500.
+
 - `message` - the error message.
-- `typeof` - the constructor used to create the error (e.g. `Boom.badRequest`).
 - `output` - the formatted response. Can be directly manipulated after object construction to return a custom
   error response. Allowed root keys:
     - `statusCode` - the HTTP status code (typically 4xx or 5xx).
     - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
-    - `payload` - the formatted object used as the response payload (stringified). Can be directly manipulated but any
-      changes will be lost
-      if `reformat()` is called. Any content allowed and by default includes the following content:
+    - `payload` - the formatted object used as the response payload.
+      Can be directly manipulated but any changes will be lost if `reformat()` is called.
+      Any content allowed and by default includes the following content:
         - `statusCode` - the HTTP status code, derived from `error.output.statusCode`.
         - `error` - the HTTP status message (e.g. 'Bad Request', 'Internal Server Error') derived from `statusCode`.
         - `message` - the error message derived from `error.message`.
-- inherited `Error` properties.
+- `stack` - string with stack trace from where error was created.
+- optional `cause` - the error cause, as set by constructor.
 
-The `Boom` object also supports the following method:
+The object has additional properties from the `Boom` prototype:
+
+- `name` - string with error name. Set to `'Boom'`.
+- `isBoom` - set to `true`, indicating this is a `Boom` object instance. Note that this boolean should
+  only be tested if the error is an instance of `Error`. If it is not certain, use [`Boom.isBoom()`](#isboomerr-statuscode) instead.
+- `isServer` - convenience boolean indicating status code >= 500.
+
+The object also supports the following method:
 
 #### `reformat(debug)`
 
 Rebuilds `error.output` using the other object properties where:
 
-- `debug` - a Boolean that, when `true`, causes Internal Server Error messages to be left in tact. Defaults to `false`, meaning that Internal Server Error messages are redacted.
+- `debug` - a Boolean that, when `true`, causes Internal Server Error messages to be left intact.
+  Defaults to `false`, meaning that Internal Server Error messages are redacted.
 
-Note that `Boom` object will return `true` when used with `instanceof Boom`, but do not use the
-`Boom` prototype (they are either plain `Error` or the error prototype passed in). This means
-`Boom` objects should only be tested using `instanceof Boom` or `Boom.isBoom()` but not by looking
-at the prototype or contructor information. This limitation is to avoid manipulating the prototype
-chain which is very slow.
+#### Base Constructor
+
+##### `new Boom([message], [options])`
+
+Creates a new `Boom` sub-classed `Error` object, where:
+
+- `message` - the error message.
+- `options` - and optional object where:
+    - `statusCode` - the HTTP status code. Defaults to `500`.
+    - `cause` - the error that caused the boom error.
+    - `data` - additional error information, assigned to `this.data`.
+    - `headers` - an object containing any HTTP headers where each key is a header name and value is the header content.
+    - `ctor` - constructor reference used to crop the exception call stack output.
 
 #### Helper Methods
 
-##### `new Boom.Boom(message, [options])`
-
-Creates a new `Boom` object using the provided `message` and then calling
-[`boomify()`](#boomifyerr-options) to decorate the error with the `Boom` properties, where:
-- `message` - the error message. If `message` is an error, it is the same as calling
-  [`boomify()`](#boomifyerr-options) directly.
-- `options` - and optional object where:
-	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set.
-    - `data` - additional error information (assigned to `error.data`).
-    - `decorate` - an option with extra properties to set on the error object.
-    - `ctor` - constructor reference used to crop the exception call stack output.
-    - if `message` is an error object, also supports the other [`boomify()`](#boomifyerr-options)
-      options.
-
 ##### `boomify(err, [options])`
 
-Decorates an error with the `Boom` properties where:
-- `err` - the `Error` object to decorate.
+Creates a `Boom` object similar to [`new Boom()`](#new-boommessage-options), except it
+applies the `options` to the existing error when it is a `Boom` object, where:
+
+- `err` - the object to boomify, set as `cause` when `err` is not a `Boom` object.
 - `options` - optional object with the following optional settings:
-	- `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set and `err` is not a `Boom` object.
-	- `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
-	  Defaults to no message.
-    - `decorate` - an option with extra properties to set on the error object.
-	- `override` - if `false`, the `err` provided is a `Boom` object, and a `statusCode` or `message` are provided,
-	  the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
-	  regardless of its type, `Error` or `Boom` object).
+    - `statusCode` - the HTTP status code. Defaults to `500` if no status code is already set and `err` is not a `Boom` object.
+    - `message` - error message string. If the error already has a message, the provided `message` is added as a prefix.
+    - `override` - if `false`, the `err` provided is a `Boom` object, and a `statusCode` or `message` are provided,
+      the values are ignored. Defaults to `true` (apply the provided `statusCode` and `message` options to the error
+      regardless of its type).
+- it returns a `Boom` object with the boomified error
+
+Note that [`new Boom()`](#new-boommessage-options) should generally be preferred in cases where the error can come from awaited logic, or has been passed around.
 
 ```js
-var error = new Error('Unexpected input');
-Boom.boomify(error, { statusCode: 400 });
+const error = new Error('Unexpected input');
+const boomified = Boom.boomify(error, { statusCode: 400 });
 ```
 
 ##### `isBoom(err, [statusCode])`
 
-Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom.Boom`.
+Identifies whether an error is a `Boom` object. Same as calling `err instanceof Boom.Boom`.
+
 - `err` - Error object.
 - `statusCode` - optional status code.
 
@@ -77,11 +79,13 @@ Identifies whether an error is a `Boom` object. Same as calling `instanceof Boom
 Boom.isBoom(Boom.badRequest()); // true
 Boom.isBoom(Boom.badRequest(), 400); // true
 ```
+
 #### HTTP 4xx Errors
 
 ##### `Boom.badRequest([message], [data])`
 
 Returns a 400 Bad Request error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -102,13 +106,15 @@ Generates the following response payload:
 ##### `Boom.unauthorized([message], [scheme], [attributes])`
 
 Returns a 401 Unauthorized error where:
+
 - `message` - optional message.
 - `scheme` can be one of the following:
-  - an authentication scheme name
-  - an array of string values. These values will be separated by ', ' and set to the 'WWW-Authenticate' header.
+    - an authentication scheme name
+    - an array of string values. These values will be separated by ', ' and set to the 'WWW-Authenticate' header.
 - `attributes` - an object of values to use while setting the 'WWW-Authenticate' header. This value is only used
   when `scheme` is a string, otherwise it is ignored. Every key/value pair will be included in the
-  'WWW-Authenticate' in the format of 'key="value"' as well as in the response payload under the `attributes` key.  Alternatively value can be a string which is use to set the value of the scheme, for example setting the token value for negotiate header.  If string is used message parameter must be null.
+  'WWW-Authenticate' in the format of 'key="value"'. Alternatively value can be a string which is used to set the
+  value of the scheme, for example setting the token value for negotiate header. If string is used message parameter must be null.
   `null` and `undefined` will be replaced with an empty string. If `attributes` is set, `message` will be used as
   the 'error' segment of the 'WWW-Authenticate' header. If `message` is unset, the 'error' segment of the header
   will not be present and `isMissing` will be true on the error object.
@@ -141,10 +147,7 @@ Generates the following response:
 "payload": {
     "statusCode": 401,
     "error": "Unauthorized",
-    "message": "invalid password",
-    "attributes": {
-        "error": "invalid password"
-    }
+    "message": "invalid password"
 },
 "headers": {
   "WWW-Authenticate": "sample error=\"invalid password\""
@@ -160,8 +163,7 @@ Generates the following response:
 ```json
 "payload": {
     "statusCode": 401,
-    "error": "Unauthorized",
-    "attributes": "VGhpcyBpcyBhIHRlc3QgdG9rZW4="
+    "error": "Unauthorized"
 },
 "headers": {
   "WWW-Authenticate": "Negotiate VGhpcyBpcyBhIHRlc3QgdG9rZW4="
@@ -178,13 +180,7 @@ Generates the following response:
 "payload": {
     "statusCode": 401,
     "error": "Unauthorized",
-    "message": "invalid password",
-    "attributes": {
-        "error": "invalid password",
-        "ttl": 0,
-        "cache": "",
-        "foo": "bar"
-    }
+    "message": "invalid password"
 },
 "headers": {
   "WWW-Authenticate": "sample ttl=\"0\", cache=\"\", foo=\"bar\", error=\"invalid password\""
@@ -194,6 +190,7 @@ Generates the following response:
 ##### `Boom.paymentRequired([message], [data])`
 
 Returns a 402 Payment Required error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -214,6 +211,7 @@ Generates the following response payload:
 ##### `Boom.forbidden([message], [data])`
 
 Returns a 403 Forbidden error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -234,6 +232,7 @@ Generates the following response payload:
 ##### `Boom.notFound([message], [data])`
 
 Returns a 404 Not Found error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -254,6 +253,7 @@ Generates the following response payload:
 ##### `Boom.methodNotAllowed([message], [data], [allow])`
 
 Returns a 405 Method Not Allowed error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 - `allow` - optional string or array of strings (to be combined and separated by ', ') which is set to the 'Allow' header.
@@ -275,6 +275,7 @@ Generates the following response payload:
 ##### `Boom.notAcceptable([message], [data])`
 
 Returns a 406 Not Acceptable error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -295,6 +296,7 @@ Generates the following response payload:
 ##### `Boom.proxyAuthRequired([message], [data])`
 
 Returns a 407 Proxy Authentication Required error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -315,6 +317,7 @@ Generates the following response payload:
 ##### `Boom.clientTimeout([message], [data])`
 
 Returns a 408 Request Time-out error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -335,6 +338,7 @@ Generates the following response payload:
 ##### `Boom.conflict([message], [data])`
 
 Returns a 409 Conflict error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -355,6 +359,7 @@ Generates the following response payload:
 ##### `Boom.resourceGone([message], [data])`
 
 Returns a 410 Gone error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -375,6 +380,7 @@ Generates the following response payload:
 ##### `Boom.lengthRequired([message], [data])`
 
 Returns a 411 Length Required error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -395,6 +401,7 @@ Generates the following response payload:
 ##### `Boom.preconditionFailed([message], [data])`
 
 Returns a 412 Precondition Failed error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -414,6 +421,7 @@ Generates the following response payload:
 ##### `Boom.entityTooLarge([message], [data])`
 
 Returns a 413 Request Entity Too Large error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -434,6 +442,7 @@ Generates the following response payload:
 ##### `Boom.uriTooLong([message], [data])`
 
 Returns a 414 Request-URI Too Large error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -454,6 +463,7 @@ Generates the following response payload:
 ##### `Boom.unsupportedMediaType([message], [data])`
 
 Returns a 415 Unsupported Media Type error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -474,6 +484,7 @@ Generates the following response payload:
 ##### `Boom.rangeNotSatisfiable([message], [data])`
 
 Returns a 416 Requested Range Not Satisfiable error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -493,6 +504,7 @@ Generates the following response payload:
 ##### `Boom.expectationFailed([message], [data])`
 
 Returns a 417 Expectation Failed error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -513,6 +525,7 @@ Generates the following response payload:
 ##### `Boom.teapot([message], [data])`
 
 Returns a 418 I'm a Teapot error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -533,6 +546,7 @@ Generates the following response payload:
 ##### `Boom.badData([message], [data])`
 
 Returns a 422 Unprocessable Entity error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -553,6 +567,7 @@ Generates the following response payload:
 ##### `Boom.locked([message], [data])`
 
 Returns a 423 Locked error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -573,6 +588,7 @@ Generates the following response payload:
 ##### `Boom.failedDependency([message], [data])`
 
 Returns a 424 Failed Dependency error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -593,6 +609,7 @@ Generates the following response payload:
 ##### `Boom.tooEarly([message], [data])`
 
 Returns a 425 Too Early error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -613,6 +630,7 @@ Generates the following response payload:
 ##### `Boom.preconditionRequired([message], [data])`
 
 Returns a 428 Precondition Required error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -633,6 +651,7 @@ Generates the following response payload:
 ##### `Boom.tooManyRequests([message], [data])`
 
 Returns a 429 Too Many Requests error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -653,6 +672,7 @@ Generates the following response payload:
 ##### `Boom.illegal([message], [data])`
 
 Returns a 451 Unavailable For Legal Reasons error where:
+
 - `message` - optional message.
 - `data` - optional additional error data.
 
@@ -674,11 +694,12 @@ Generates the following response payload:
 
 All 500 errors hide your message from the end user.
 
-##### `Boom.badImplementation([message], [data])` - (*alias: `internal`*)
+##### `Boom.badImplementation([message], [data])` - (_alias: `internal`_)
 
 Returns a 500 Internal Server Error error where:
+
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.badImplementation('terrible implementation');
@@ -697,8 +718,9 @@ Generates the following response payload:
 ##### `Boom.notImplemented([message], [data])`
 
 Returns a 501 Not Implemented error where:
+
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.notImplemented('method not implemented');
@@ -717,8 +739,9 @@ Generates the following response payload:
 ##### `Boom.badGateway([message], [data])`
 
 Returns a 502 Bad Gateway error where:
+
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.badGateway('that is a bad gateway');
@@ -737,8 +760,9 @@ Generates the following response payload:
 ##### `Boom.serverUnavailable([message], [data])`
 
 Returns a 503 Service Unavailable error where:
+
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.serverUnavailable('unavailable');
@@ -757,8 +781,9 @@ Generates the following response payload:
 ##### `Boom.gatewayTimeout([message], [data])`
 
 Returns a 504 Gateway Time-out error where:
+
 - `message` - optional message.
-- `data` - optional additional error data.
+- `data` - optional additional error data. Used as `cause` when when an `Error`.
 
 ```js
 Boom.gatewayTimeout();
@@ -777,4 +802,7 @@ Generates the following response payload:
 
 **Q** How do I include extra information in my responses? `output.payload` is missing `data`, what gives?
 
-**A** There is a reason the values passed back in the response payloads are pretty locked down. It's mostly for security and to not leak any important information back to the client. This means you will need to put in a little more effort to include extra information about your custom error. Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.
+**A** There is a reason the values passed back in the response payloads are pretty locked down.
+It's mostly for security and to not leak any important information back to the client.
+This means you will need to put in a little more effort to include extra information about your custom error.
+Check out the ["Error transformation"](https://github.com/hapijs/hapi/blob/master/API.md#error-transformation) section in the hapi documentation.

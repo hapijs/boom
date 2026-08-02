@@ -1,7 +1,7 @@
 **/node_modules
 **/package-lock.json
 
-coverage.*
+coverage/
 
 **/.DS_Store
 **/._*
