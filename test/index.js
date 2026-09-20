@@ -198,6 +198,15 @@ describe('Boom', () => {
             expect(Boom.isBoom(Boom10.notFound(), 503)).toBe(false);
         });
 
+        it('returns false for Boom-like objects missing output when statusCode is checked', () => {
+            const BadBoom = class extends Error {
+                isBoom = true;
+            };
+
+            expect(Boom.isBoom(new BadBoom())).toBe(true);
+            expect(Boom.isBoom(new BadBoom(), 404)).toBe(false);
+        });
+
         it('works from legacy boom', () => {
             expect(Boom10.isBoom(new Boom.Boom('oops'))).toBe(true);
             expect(Boom10.isBoom(new Boom10.Boom('oops'))).toBe(true);
