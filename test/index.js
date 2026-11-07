@@ -198,6 +198,11 @@ describe('Boom', () => {
             expect(Boom.isBoom(Boom10.notFound(), 503)).toBe(false);
         });
 
+        it('returns false for boom-like object without output property when status code is checked', () => {
+            const badBoom = Object.assign(new Error('oops'), { isBoom: true });
+            expect(Boom.isBoom(badBoom, 404)).toBe(false);
+        });
+
         it('works from legacy boom', () => {
             expect(Boom10.isBoom(new Boom.Boom('oops'))).toBe(true);
             expect(Boom10.isBoom(new Boom10.Boom('oops'))).toBe(true);
