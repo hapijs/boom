@@ -119,7 +119,7 @@ export class Boom extends Error {
 }
 
 export function isBoom(err, statusCode) {
-    return err instanceof Error && !!err.isBoom && (!statusCode || err.output.statusCode === statusCode);
+    return err instanceof Error && !!err.isBoom && (!statusCode || err.output?.statusCode === statusCode);
 }
 
 export function boomify(err, options = {}) {
